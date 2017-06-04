@@ -79,6 +79,6 @@ Some things to do, and ideas for potential features:
 
 * Add video field with yoututbe, vimeo previews
 
-[![Newism Logo](../src/icon.svg)](http://newism.com.au)
+## Credits
 
-Brought to you by [Leevi Graham](http://newism.com.au)
+Brought to you by [Newism](http://newism.com.au)
