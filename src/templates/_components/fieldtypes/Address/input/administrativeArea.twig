@@ -1,0 +1,21 @@
+{% import "_includes/forms" as forms %}
+
+<div class="field-administrativeArea">
+    <label for="{{ name ~ '-administrativeArea' }}">
+        {{ fieldLabels['administrativeArea']|t('nsmfields') }}
+    </label>
+    {% if subdivisionOptions is empty %}
+        {{ forms.text({
+            id: name ~ '-administrativeArea',
+            name: name ~ '[administrativeArea]',
+            value: value ? value.administrativeArea : null
+        }) }}
+    {% else %}
+        {{ forms.select({
+            id: name ~ '-administrativeArea',
+            name: name ~ '[administrativeArea]',
+            value: value ? value.administrativeArea : null,
+            options: subdivisionOptions
+        }) }}
+    {% endif %}
+</div>

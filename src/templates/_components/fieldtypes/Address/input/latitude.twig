@@ -1,0 +1,10 @@
+{% import "_includes/forms" as forms %}
+
+<div class="field-latitude">
+    <label for="{{ name ~ '-latitude' }}">{{ fieldLabels['latitude']|t('nsmfields') }}</label>
+    {{ forms.text({
+        id: name ~ '-latitude',
+        name: name ~ '[latitude]',
+        value: value ? value.latitude : null
+    }) }}
+</div>

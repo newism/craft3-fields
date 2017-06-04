@@ -1,0 +1,25 @@
+{#
+/**
+ * NSM Fields plugin for Craft CMS
+ *
+ * Email Field Settings
+ *
+ * @author    Leevi Graham
+ * @copyright Copyright (c) 2017 Leevi Graham
+ * @link      http://newism.com.auw
+ * @package   NsmFields
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{{ forms.textField({
+    label: "Placeholder Text"|t('app'),
+    instructions: "The text that will be shown if the field doesn’t have a value."|t('app'),
+    id: 'placeholder',
+    name: 'placeholder',
+    value: field.placeholder,
+    translatable: true,
+    errors: field.getErrors('placeholder')
+}) }}

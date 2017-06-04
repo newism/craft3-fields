@@ -1,0 +1,48 @@
+{
+    "name": "newism/craft3-fields",
+    "description": "Address, telephone and email fields for CraftCMS 3.x",
+    "type": "craft-plugin",
+    "version": "0.0.1",
+    "keywords": [
+        "craft",
+        "cms",
+        "craftcms",
+        "craft-plugin",
+        "nsm-fields"
+    ],
+    "support": {
+        "docs": "https://github.com/newism/craft3-fields/blob/master/README.md",
+        "issues": "https://github.com/newism/craft3-fields/issues"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Newism",
+            "homepage": "http://newism.com.au"
+        },
+        {
+            "name": "Leevi Graham",
+            "homepage": "http://leevigraham.com"
+        }
+    ],
+    "require": {
+        "craftcms/plugin-installer": "^1.0.0",
+        "giggsey/libphonenumber-for-php": "^8.3",
+        "symfony/intl": "^3.3",
+        "commerceguys/addressing": "^0.8.4"
+    },
+    "autoload": {
+        "psr-4": {
+          "newism\\fields\\": "src/"
+        }
+    },
+    "extra": {
+        "name": "NSM Fields",
+        "handle": "nsmFields",
+        "schemaVersion": "1.0.0",
+        "hasCpSettings": true,
+        "hasCpSection": false,
+        "changelogUrl": "https://raw.githubusercontent.com/newism/craft3-fields/master/CHANGELOG.md",
+        "class": "newism\\fields\\NsmFields"
+    }
+}

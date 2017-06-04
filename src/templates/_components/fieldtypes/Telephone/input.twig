@@ -1,0 +1,46 @@
+{#
+/**
+ * NSM Fields plugin for Craft CMS 3.x
+ *
+ * Telephone Field Input
+ *
+ * @author    Leevi Graham
+ * @copyright Copyright (c) 2017 Leevi Graham
+ * @link      http://newism.com.au
+ * @package   NsmFields
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+<div class="flex">
+
+    {% if settings.showCountrySelector %}
+        <div>
+            {{ forms.select({
+                size: 'inline',
+                label: 'Country Code',
+                id: name ~ 'CountryCode',
+                name: name ~ '[countryCode]',
+                value: viewData ? viewData.countryCode : null,
+                options: countryOptions
+            }) }}
+        </div>
+    {% endif %}
+
+    <div class="flex-grow">
+        {{ forms.text({
+            class: '',
+            label: 'Phone Number',
+            id: name ~ 'PhoneNumber',
+            name: name ~ '[rawInput]',
+            value: viewData ? viewData.rawInput : null
+        }) }}
+    </div>
+
+</div>
+
+<!--
+<pre>{{ dump(viewData) }}</pre>
+-->

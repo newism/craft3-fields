@@ -1,0 +1,30 @@
+{#
+/**
+ * NSM Fields plugin for Craft CMS
+ *
+ * Telephone Field Settings
+ *
+ * @author    Leevi Graham
+ * @copyright Copyright (c) 2017 Leevi Graham
+ * @link      http://newism.com.au
+ * @package   NsmFields
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{{ forms.checkboxField({
+    label: 'Show country selector',
+    id: 'showCountrySelector',
+    name: 'showCountrySelector',
+    checked: field.showCountrySelector
+})}}
+
+{{ forms.selectField({
+    label: 'Default country code',
+    id: 'defaultCountryCode',
+    name: 'defaultCountryCode',
+    value: field.defaultCountryCode,
+    options: countryOptions
+}) }}

@@ -1,0 +1,11 @@
+{% import "_includes/forms" as forms %}
+
+<div class="field-countryCode">
+    <label for="{{ name ~ '-countryCode' }}">{{ 'Country' | t('app') }}</label>
+    {{ forms.select({
+        id: name ~ '-countryCode',
+        name: name ~ '[countryCode]',
+        value: value ? value.countryCode : null,
+        options: countryOptions
+    }) }}
+</div>

@@ -1,0 +1,10 @@
+{% import "_includes/forms" as forms %}
+
+<div class="flex-grow field-additionalName">
+    <label for="{{ name ~ '-additionalName' }}">{{ fieldLabels['additionalName']|t('nsmfields') }}</label>
+    {{ forms.text({
+        id: name ~ '-additionalName',
+        name: name ~ '[additionalName]',
+        value: value ? value.additionalName : null
+    }) }}
+</div>

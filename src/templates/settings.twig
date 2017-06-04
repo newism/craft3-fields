@@ -1,0 +1,10 @@
+{% import "_includes/forms" as forms %}
+
+{{ forms.textField({
+    label: 'Google API Key'|t('nsm_fields'),
+    instructions: 'See the [official documentation](https://developers.google.com/places/web-service/get-api-key).',
+    id: 'googleApiKey',
+    name: 'googleApiKey',
+    value: settings['googleApiKey'],
+    errors: settings.getErrors('googleApiKey')
+}) }}

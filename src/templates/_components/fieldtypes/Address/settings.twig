@@ -1,0 +1,84 @@
+{#
+/**
+ * NSM Fields plugin for Craft CMS
+ *
+ * Address Field Settings
+ *
+ * @author    Leevi Graham
+ * @copyright Copyright (c) 2017 Leevi Graham
+ * @link      http://newism.com.au
+ * @package   NsmFields
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+{{ forms.selectField({
+    label: 'Default Country',
+    instructions: '',
+    id: 'defaultCountryCode',
+    name: 'defaultCountryCode',
+    value: field['defaultCountryCode'],
+    options: field.countryOptions,
+    errors: field.getErrors('defaultCountryCode')
+}) }}
+
+{{ forms.checkboxField({
+    label: 'Show Organization',
+    instructions: '',
+    id: 'showOrganization',
+    name: 'showOrganization',
+    checked: field['showOrganization'],
+    errors: field.getErrors('showOrganization')
+}) }}
+
+{{ forms.checkboxField({
+    label: 'Show Recipient',
+    instructions: '',
+    id: 'showRecipient',
+    name: 'showRecipient',
+    checked: field['showRecipient'],
+    errors: field.getErrors('showRecipient')
+}) }}
+
+{{ forms.checkboxField({
+    label: 'Show Map Url',
+    instructions: '',
+    id: 'showMapUrl',
+    name: 'showMapUrl',
+    checked: field['showMapUrl'],
+    errors: field.getErrors('showMapUrl')
+}) }}
+
+{{ forms.checkboxField({
+    label: 'Show Latitude / Longitude',
+    instructions: '',
+    id: 'showLatLng',
+    name: 'showLatLng',
+    checked: field['showLatLng'],
+    errors: field.getErrors('showLatLng')
+}) }}
+
+{{ forms.checkboxField({
+    label: 'Show Auto Complete',
+    instructions: '',
+    id: 'showAutoComplete',
+    name: 'showAutoComplete',
+    checked: field['showAutoComplete'],
+    errors: field.getErrors('showAutoComplete')
+}) }}
+
+{{ forms.textAreaField({
+    label: 'Auto-complete Configuration',
+    instructions: '
+A JSON options argument, which can contain the following properties:
+`types`, `bounds`, `strictBounds`, `componentRestrictions`.
+See the [official documentation](https://developers.google.com/maps/documentation/javascript/reference#AutocompleteOptions).',
+    rows: 10,
+    id: 'autoCompleteConfiguration',
+    name: 'autoCompleteConfiguration',
+    value: field['autoCompleteConfiguration'],
+    errors: field.getErrors('autoCompleteConfiguration')
+}) }}
+
