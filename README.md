@@ -24,7 +24,7 @@ Features:
 * Format phone number as E164, international, national or RFC3966
 * Stores Telephone model and raw user input
 
-![Telephone Demo](resources/img/telephone-demo.gif)!
+![Telephone Demo](resources/img/telephone-demo.gif)
 
 ## Email
 
@@ -32,7 +32,7 @@ Features:
 
 * Email validation using Yii validation
 
-![Email Demo](resources/img/email-demo.gif)!
+![Email Demo](resources/img/email-demo.gif)
 
 ## Installation
 
