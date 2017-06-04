@@ -6,13 +6,13 @@
 
 Address field powered by Google's dataset ([commerceguys/addressing](https://github.com/commerceguys/addressing)).
 
-![Address Demo](resources/img/address-demo.gif)
-
 Features:
 
 * Auto-complete powered by Google Place API
 * Address form formatting based on country powered by [commerceguys/addressing](https://github.com/commerceguys/addressing)
 * Validation / Geo-coding on submission (TODO)
+
+![Address Demo](resources/img/address-demo.gif)
 
 ## Telephone
 
@@ -28,11 +28,11 @@ Features:
 
 ## Email
 
-![Email Demo](resources/img/email-demo.gif)!
-
 Features:
 
 * Email validation using Yii validation
+
+![Email Demo](resources/img/email-demo.gif)!
 
 ## Installation
 
@@ -79,8 +79,6 @@ Some things to do, and ideas for potential features:
 
 * Add video field with yoututbe, vimeo previews
 
-
-
-
+[!(Newism Logo)[./src/icon.svg]](http://newism.com.au)
 
 Brought to you by [Leevi Graham](http://newism.com.au)
