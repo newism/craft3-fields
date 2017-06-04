@@ -6,7 +6,7 @@
 
 Address field powered by Google's dataset ([commerceguys/addressing](https://github.com/commerceguys/addressing)).
 
-![Address Demo](resources/img/address-demo.gif)!
+![Address Demo](resources/img/address-demo.gif)
 
 Features:
 
