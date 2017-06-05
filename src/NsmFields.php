@@ -49,7 +49,6 @@ class NsmFields extends Plugin
      * @var static
      */
     public static $plugin;
-    public $hasCpSettings = true;
 
 
     // Public Methods
