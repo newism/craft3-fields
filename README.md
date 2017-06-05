@@ -82,3 +82,5 @@ Some things to do, and ideas for potential features:
 ## Credits
 
 Brought to you by [Newism](http://newism.com.au)
+
+[<img src="http://newism.com.au/uploads/content/newism-logo.png" width="150px" />](http://newism.com.au/)
