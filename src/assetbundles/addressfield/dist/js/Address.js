@@ -17,9 +17,7 @@ function googleMapsPlacesApiLoaded() {
     $('body').trigger('googleMapsPlacesApiLoaded');
 }
 
-
 ;(function ($, Craft, window, document, undefined) {
-
 
     var pluginName = "NsmFieldsAddress",
         defaults = {};
@@ -124,7 +122,7 @@ function googleMapsPlacesApiLoaded() {
             // location types.
             this.autocomplete = new google.maps.places.Autocomplete(
                 this.$autoCompleteInput[0],
-                {types: ['geocode']}
+                this.options.settings.autoCompleteConfiguration
             );
 
             google.maps.event.addDomListener(this.$autoCompleteInput[0], 'keydown', function(e) {

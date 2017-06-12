@@ -181,6 +181,10 @@ class Address extends Field implements PreviewableFieldInterface
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
 
         $fieldSettings = $this->getSettings();
+        $fieldSettings['autoCompleteConfiguration'] =
+            $fieldSettings['autoCompleteConfiguration']
+                ? json_decode($fieldSettings['autoCompleteConfiguration'], true)
+                : array();
 
         // Variables to pass down to our field JavaScript to let it namespace properly
         $jsonVars = [
