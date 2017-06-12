@@ -207,6 +207,9 @@ class Address extends Field implements PreviewableFieldInterface
     /**
      * @param AddressModel $value
      * @return string
+     * @throws \yii\base\Exception
+     * @throws \Twig_Error_Loader
+     * @throws \RuntimeException
      */
     protected function renderFormFields(AddressModel $value)
     {
@@ -434,6 +437,13 @@ JS;
         return $options;
     }
 
+    /**
+     * Get subdivision options
+     *
+     * @param $countryCode
+     * @param null $parentId
+     * @return array
+     */
     private function getSubdivisionOptions(
         $countryCode,
         $parentId = null
@@ -461,6 +471,11 @@ JS;
         return $options;
     }
 
+    /**
+     * @param mixed $value
+     * @param ElementInterface|null $element
+     * @return mixed|AddressModel
+     */
     public function normalizeValue($value, ElementInterface $element = null)
     {
         if (is_null($value)) {
