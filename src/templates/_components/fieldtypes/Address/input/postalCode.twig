@@ -1,7 +1,7 @@
 {% import "_includes/forms" as forms %}
 
 <div class="field-postalCode">
-    <label for="{{ name ~ '-postalCode' }}">{{ fieldLabels['postalCode']|t('nsmfields') }}</label>
+    <label for="{{ name ~ '-postalCode' }}">{{ fieldLabels['postalCode']|t('nsm-fields') }}</label>
     {{ forms.text({
         id: name ~ '-postalCode',
         name: name ~ '[postalCode]',

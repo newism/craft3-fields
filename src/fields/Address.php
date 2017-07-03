@@ -61,7 +61,7 @@ class Address extends Field implements PreviewableFieldInterface
      */
     public static function displayName(): string
     {
-        return Craft::t('nsmfields', 'NSM Address');
+        return Craft::t('nsm-fields', 'NSM Address');
     }
 
     /**

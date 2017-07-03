@@ -38,7 +38,7 @@ class Email extends PlainText
      */
     public static function displayName(): string
     {
-        return Craft::t('nsmfields', 'NSM Email');
+        return Craft::t('nsm-fields', 'NSM Email');
     }
 
     public function getSettingsHtml()

@@ -29,7 +29,8 @@
         "craftcms/plugin-installer": "^1.0.0",
         "giggsey/libphonenumber-for-php": "^8.3",
         "symfony/intl": "^3.3",
-        "commerceguys/addressing": "^0.8.4"
+        "commerceguys/addressing": "^0.8.4",
+        "craftcms/cms": "~3.0.0-beta.20"
     },
     "autoload": {
         "psr-4": {
@@ -38,7 +39,7 @@
     },
     "extra": {
         "name": "NSM Fields",
-        "handle": "nsmFields",
+        "handle": "nsm-fields",
         "schemaVersion": "1.0.0",
         "hasCpSettings": true,
         "hasCpSection": false,

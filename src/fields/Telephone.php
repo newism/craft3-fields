@@ -62,7 +62,7 @@ class Telephone extends Field implements PreviewableFieldInterface
      */
     public static function displayName(): string
     {
-        return Craft::t('nsmfields', 'NSM Telephone');
+        return Craft::t('nsm-fields', 'NSM Telephone');
     }
 
     // Public Methods
@@ -317,7 +317,7 @@ class Telephone extends Field implements PreviewableFieldInterface
             $element->addError(
                 $this->handle,
                 Craft::t(
-                    'nsmfields',
+                    'nsm-fields',
                     'The string supplied did not seem to be a phone number.'
                 )
             );
