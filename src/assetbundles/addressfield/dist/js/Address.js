@@ -116,13 +116,11 @@ function googleMapsPlacesApiLoaded() {
         },
 
         initAutocomplete: function () {
-            console.log('Plugin: initMap');
-
             // Create the autocomplete object, restricting the search to geographical
             // location types.
             this.autocomplete = new google.maps.places.Autocomplete(
                 this.$autoCompleteInput[0],
-                this.options.settings.autoCompleteConfiguration
+                this.options.fieldSettings.autoCompleteConfiguration
             );
 
             google.maps.event.addDomListener(this.$autoCompleteInput[0], 'keydown', function(e) {
@@ -137,8 +135,6 @@ function googleMapsPlacesApiLoaded() {
         },
 
         placeChanged: function () {
-            console.log('Plugin: placeChanged');
-
             var _this = this;
             var place = _this.autocomplete.getPlace();
             var normalisedPlace = this.normalisePlace(place);

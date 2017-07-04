@@ -164,6 +164,7 @@ class Address extends Field implements PreviewableFieldInterface
      * @param ElementInterface|null $element The element the field is associated with, if there is one
      *
      * @return string The input HTML.
+     * @throws \yii\base\InvalidParamException
      * @throws \yii\base\InvalidConfigException
      * @throws \yii\base\Exception
      * @throws \Twig_Error_Loader
@@ -180,10 +181,11 @@ class Address extends Field implements PreviewableFieldInterface
         $id = Craft::$app->getView()->formatInputId($this->handle);
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
 
+        $pluginSettings = NsmFields::getInstance()->getSettings();
         $fieldSettings = $this->getSettings();
         $fieldSettings['autoCompleteConfiguration'] =
             $fieldSettings['autoCompleteConfiguration']
-                ? json_decode($fieldSettings['autoCompleteConfiguration'], true)
+                ? Json::decode($fieldSettings['autoCompleteConfiguration'], true)
                 : array();
 
         // Variables to pass down to our field JavaScript to let it namespace properly
@@ -192,13 +194,14 @@ class Address extends Field implements PreviewableFieldInterface
             'name' => $this->handle,
             'namespace' => $namespacedId,
             'prefix' => Craft::$app->getView()->namespaceInputId(''),
-            'settings' => $fieldSettings,
+            'fieldSettings' => $fieldSettings,
+            'pluginSettings' => $pluginSettings,
         ];
 
         $jsonVars = Json::encode($jsonVars);
 
         Craft::$app->getView()->registerJs(
-            "$('#{$namespacedId}-field').NsmFieldsAddress(".$jsonVars.");"
+            '$("#'.$namespacedId.'-field").NsmFieldsAddress('.$jsonVars.');'
         );
 
         return $this->renderFormFields($value);

@@ -118,6 +118,7 @@ class Telephone extends Field implements PreviewableFieldInterface
     public function normalizeValue($value, ElementInterface $element = null)
     {
         $settings = $this->getSettings();
+
         if (!$value) {
             return new TelephoneModel(
                 $settings['defaultCountryCode'],

@@ -11,18 +11,26 @@
  */
 
 div.nsmFields-address-container {
-    padding: 0 14px 14px 14px;
+    padding: 14px;
     border: 1px solid #e3e5e8;
     background: #fafafa;
     border-radius: 4px;
     margin-top: 4px;
 }
-.nsmfields-address-autoComplete{
-    margin-top: 14px;
+
+.nsmfields-address-autoCompleteContainer {
+    margin-bottom: 14px;
     padding-bottom: 14px;
     border-bottom: 1px dashed #e3e5e8;
 }
-div.nsmFields-fieldRow { margin-top: 14px; align-items: flex-end;}
+
+.nsmFields-address-countryCodeContainer {
+    margin-bottom: 14px;
+}
+
+
+div.nsmFields-fieldRow {align-items: flex-end;}
+div.nsmFields-fieldRow + div.nsmFields-fieldRow { margin-top: 14px;}
 div.nsmFields-fieldRow > *, div.nsmFields-fieldRow > * > * { vertical-align: bottom; }
 div.nsmFields-fieldRow-addressLine1 + div.nsmFields-fieldRow-addressLine2,
 div.nsmFields-fieldRow-addressLine2 + div.nsmFields-fieldRow-addressLine1 { margin-top: 5px; }

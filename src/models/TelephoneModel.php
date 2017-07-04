@@ -25,7 +25,7 @@ class TelephoneModel extends Model implements \JsonSerializable
     /**
      * @return array
      */
-    public function attributeLabels()
+    public function attributeLabels(): array
     {
         return [
             'countryCode' => 'Country Code',

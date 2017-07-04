@@ -19,7 +19,7 @@
     <div class="nsmFields-address-container">
 
         {% if settings.showAutoComplete %}
-            <div class="flex nsmfields-address-autoComplete">
+            <div class="nsmfields-address-autoCompleteContainer">
                 <div class="texticon search icon clearable flex-grow">
                     {{ forms.text({ id: name ~ '-autoComplete' }) }}
                 </div>
@@ -31,13 +31,13 @@
                 {{ countryCodeField | raw }}
             </div>
         </div>
+
         <div class="nsmFields-address-addressFieldsContainer" style="display:{{ value and value.countryCode ? 'block' : 'none'}}">
             {{ addressFields | raw }}
             <div>
-                <a class="fieldtoggle collapsed" data-target="{{ name }}-advanced">Advanced</a>
+                <a class="fieldtoggle collapsed" data-target="{{ name }}-advanced">Place Data</a>
             </div>
-            <div id="{{ name }}-advanced" class="hidden" style="margin: 14px 0">
-                <div>Place Data</div>
+            <div id="{{ name }}-advanced" class="hidden">
                 {{ forms.textarea({
                     label: 'Place Data',
                     id: name ~ '-placeData',

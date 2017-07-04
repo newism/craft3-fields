@@ -26,6 +26,7 @@
         }
     ],
     "require": {
+        "roave/security-advisories": "dev-master",
         "craftcms/plugin-installer": "^1.0.0",
         "giggsey/libphonenumber-for-php": "^8.3",
         "symfony/intl": "^3.3",

@@ -116,11 +116,20 @@ class NsmFields extends Plugin
     // Protected Methods
     // =========================================================================
 
+    /**
+     * @return Settings
+     */
     protected function createSettingsModel()
     {
         return new Settings();
     }
 
+    /**
+     * @return string
+     * @throws \yii\base\Exception
+     * @throws \Twig_Error_Loader
+     * @throws \RuntimeException
+     */
     protected function settingsHtml(): string
     {
         return \Craft::$app->getView()->renderTemplate(
