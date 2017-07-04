@@ -1,0 +1,28 @@
+{#
+/**
+ * NSM Fields plugin for Craft CMS 3.x
+ *
+ * Email Field Input
+ *
+ * @author    Leevi Graham
+ * @copyright Copyright (c) 2017 Leevi Graham
+ * @link      http://newism.com.au
+ * @package   NsmFields
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+<div class="nsmFields-embed-tableAttributeHtml">
+    <div class="nsmFields-embed-tableAttributeHtml-providerIcon">
+        <img src="{{ value.embedData.providerIcon }}" alt="{{ value.embedData.providerName }}" width="24px">
+    </div>
+    <div>
+        <div class="nsmFields-embed-tableAttributeHtml-url">{{ value.embedData.url }}</div>
+        <div class="nsmFields-embed-tableAttributeHtml-title">{{ value.embedData.title }}</div>
+    </div>
+</div>
+
+
+

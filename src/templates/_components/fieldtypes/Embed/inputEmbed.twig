@@ -1,0 +1,24 @@
+{% import "_includes/forms" as forms %}
+
+{% if value %}
+    {% if value.embedData %}
+        {% if value.embedData.code %}
+            <div class="nsmFields-embed-embedDataCodePreview">
+                {{ value.embedData.code | raw }}
+            </div>
+        {% endif %}
+        <a class="fieldtoggle collapsed" data-target="{{ name }}-advanced">Embed Data</a>
+        <div id="{{ name }}-advanced" class="hidden">
+            {{ forms.textarea({
+                id: name ~ 'EmbedData',
+                name: name ~ '[embedData]',
+                value: value ? value.embedData | json_encode(constant('JSON_PRETTY_PRINT') b-or constant('JSON_UNESCAPED_SLASHES')) : null,
+                class: 'nicetext nsmFields-embed-embedDataInput'
+            }) }}
+        </div>
+    {% else %}
+        <ul class="errors">
+            <li>There was an error parsing the URL.</li>
+        </ul>
+    {% endif %}
+{% endif %}

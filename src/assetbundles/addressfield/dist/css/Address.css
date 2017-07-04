@@ -28,7 +28,6 @@ div.nsmFields-address-container {
     margin-bottom: 14px;
 }
 
-
 div.nsmFields-fieldRow {align-items: flex-end;}
 div.nsmFields-fieldRow + div.nsmFields-fieldRow { margin-top: 14px;}
 div.nsmFields-fieldRow > *, div.nsmFields-fieldRow > * > * { vertical-align: bottom; }
