@@ -44,7 +44,7 @@ class Email extends PlainText
     public function getSettingsHtml()
     {
         return Craft::$app->getView()->renderTemplate(
-            'nsmfields/_components/fieldtypes/Email/settings',
+            'nsm-fields/_components/fieldtypes/Email/settings',
             [
                 'field' => $this,
             ]

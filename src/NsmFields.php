@@ -124,7 +124,7 @@ class NsmFields extends Plugin
     protected function settingsHtml(): string
     {
         return \Craft::$app->getView()->renderTemplate(
-            'nsmfields/settings',
+            'nsm-fields/settings',
             [
                 'settings' => $this->getSettings(),
             ]

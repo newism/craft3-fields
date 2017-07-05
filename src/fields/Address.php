@@ -90,7 +90,7 @@ class Address extends Field implements PreviewableFieldInterface
     {
         // Render the settings template
         return Craft::$app->getView()->renderTemplate(
-            'nsmfields/_components/fieldtypes/Address/settings',
+            'nsm-fields/_components/fieldtypes/Address/settings',
             [
                 'field' => $this,
             ]
@@ -246,7 +246,7 @@ class Address extends Field implements PreviewableFieldInterface
         }
 
         $countryCodeField = Craft::$app->getView()->renderTemplate(
-            'nsmfields/_components/fieldtypes/Address/input/countryCode',
+            'nsm-fields/_components/fieldtypes/Address/input/countryCode',
             [
                 'name' => $this->handle,
                 'value' => $value,
@@ -286,7 +286,7 @@ class Address extends Field implements PreviewableFieldInterface
                 $formatRow = str_replace(
                     '%'.$match,
                     Craft::$app->getView()->renderTemplate(
-                        'nsmfields/_components/fieldtypes/Address/input/'.$match,
+                        'nsm-fields/_components/fieldtypes/Address/input/'.$match,
                         [
                             'name' => $this->handle,
                             'value' => $value,
@@ -328,7 +328,7 @@ JS;
 
         // Render the input template
         return Craft::$app->getView()->renderTemplate(
-            'nsmfields/_components/fieldtypes/Address/input',
+            'nsm-fields/_components/fieldtypes/Address/input',
             [
                 'name' => $this->handle,
                 'value' => $value,

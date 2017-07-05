@@ -186,7 +186,7 @@ class Telephone extends Field implements PreviewableFieldInterface
     {
         // Render the settings template
         return Craft::$app->getView()->renderTemplate(
-            'nsmfields/_components/fieldtypes/Telephone/settings',
+            'nsm-fields/_components/fieldtypes/Telephone/settings',
             [
                 'field' => $this,
                 'countryOptions' => $this->getCountryOptions(),
@@ -215,7 +215,7 @@ class Telephone extends Field implements PreviewableFieldInterface
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
 
         return Craft::$app->getView()->renderTemplate(
-            'nsmfields/_components/fieldtypes/Telephone/input',
+            'nsm-fields/_components/fieldtypes/Telephone/input',
             [
                 'name' => $this->handle,
                 'viewData' => $value->getViewData(),
