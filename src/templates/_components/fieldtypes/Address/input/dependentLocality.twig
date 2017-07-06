@@ -1,7 +1,7 @@
 {% import "_includes/forms" as forms %}
 
 <div class="field-dependentLocality">
-    <label for="{{ name ~ '-dependentLocality' }}">{{ fieldLabels['dependentLocality']|t('nsmfields') }}</label>
+    <label for="{{ name ~ '-dependentLocality' }}">{{ fieldLabels['dependentLocality']|t('nsm-fields') }}</label>
     {{ forms.text({
         id: name ~ '-dependentLocality',
         name: name ~ '[dependentLocality]',

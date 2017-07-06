@@ -46,7 +46,7 @@ class Embed extends Field implements PreviewableFieldInterface
      */
     public static function displayName(): string
     {
-        return Craft::t('nsmfields', 'NSM Embed');
+        return Craft::t('nsm-fields', 'NSM Embed');
     }
 
     public function getContentColumnType(): string
@@ -65,7 +65,7 @@ class Embed extends Field implements PreviewableFieldInterface
     public function getSettingsHtml()
     {
         return Craft::$app->getView()->renderTemplate(
-            'nsmfields/_components/fieldtypes/Embed/settings',
+            'nsm-fields/_components/fieldtypes/Embed/settings',
             [
                 'field' => $this,
             ]
@@ -157,7 +157,7 @@ class Embed extends Field implements PreviewableFieldInterface
         );
 
         return Craft::$app->getView()->renderTemplate(
-            'nsmfields/_components/fieldtypes/Embed/input',
+            'nsm-fields/_components/fieldtypes/Embed/input',
             [
                 'name' => $this->handle,
                 'value' => $value,
@@ -192,7 +192,7 @@ class Embed extends Field implements PreviewableFieldInterface
         }
 
         return Craft::$app->getView()->renderTemplate(
-            'nsmfields/_components/fieldtypes/Embed/tableAttributeHtml', ['value' => $value]
+            'nsm-fields/_components/fieldtypes/Embed/tableAttributeHtml', ['value' => $value]
         );
     }
 }

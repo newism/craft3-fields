@@ -1,7 +1,7 @@
 {% import "_includes/forms" as forms %}
 
 <div class="flex-grow field-locality">
-    <label for="{{ name ~ '-locality' }}">{{ fieldLabels['locality']|t('nsmfields') }}</label>
+    <label for="{{ name ~ '-locality' }}">{{ fieldLabels['locality']|t('nsm-fields') }}</label>
     {{ forms.text({
         id: name ~ '-locality',
         name: name ~ '[locality]',

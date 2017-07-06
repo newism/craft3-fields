@@ -126,7 +126,7 @@ class NsmFields extends Plugin
          * http://www.yiiframework.com/doc-2.0/guide-runtime-logging.html
          */
         Craft::info(
-            'NsmFields '.Craft::t('nsmfields', 'plugin loaded'),
+            'NsmFields '.Craft::t('nsm-fields', 'plugin loaded'),
             __METHOD__
         );
     }
@@ -151,7 +151,7 @@ class NsmFields extends Plugin
     protected function settingsHtml(): string
     {
         return \Craft::$app->getView()->renderTemplate(
-            'nsmfields/settings',
+            'nsm-fields/settings',
             [
                 'settings' => $this->getSettings(),
             ]

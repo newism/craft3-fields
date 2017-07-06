@@ -62,7 +62,7 @@ class Telephone extends Field implements PreviewableFieldInterface
      */
     public static function displayName(): string
     {
-        return Craft::t('nsmfields', 'NSM Telephone');
+        return Craft::t('nsm-fields', 'NSM Telephone');
     }
 
     // Public Methods
@@ -187,7 +187,7 @@ class Telephone extends Field implements PreviewableFieldInterface
     {
         // Render the settings template
         return Craft::$app->getView()->renderTemplate(
-            'nsmfields/_components/fieldtypes/Telephone/settings',
+            'nsm-fields/_components/fieldtypes/Telephone/settings',
             [
                 'field' => $this,
                 'countryOptions' => $this->getCountryOptions(),
@@ -216,7 +216,7 @@ class Telephone extends Field implements PreviewableFieldInterface
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
 
         return Craft::$app->getView()->renderTemplate(
-            'nsmfields/_components/fieldtypes/Telephone/input',
+            'nsm-fields/_components/fieldtypes/Telephone/input',
             [
                 'name' => $this->handle,
                 'viewData' => $value->getViewData(),
@@ -318,7 +318,7 @@ class Telephone extends Field implements PreviewableFieldInterface
             $element->addError(
                 $this->handle,
                 Craft::t(
-                    'nsmfields',
+                    'nsm-fields',
                     'The string supplied did not seem to be a phone number.'
                 )
             );
