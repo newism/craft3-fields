@@ -10,13 +10,6 @@
  * @since     1.0.0NsmFieldsAddress
  */
 
-window.googleMapsPlacesApiLoaded = false;
-
-function googleMapsPlacesApiLoaded() {
-    window.googleMapsPlacesApiLoaded = true;
-    $('body').trigger('googleMapsPlacesApiLoaded');
-}
-
 ;(function ($, Craft, window, document, undefined) {
 
     var pluginName = "NsmFieldsAddress",
@@ -146,7 +139,7 @@ function googleMapsPlacesApiLoaded() {
             $.when((currentCountryCode === newCountryCode) || this.refreshCountry()).then(function () {
                 _this.getElement('addressLine2').val((normalisedPlace.streetNumber || '') + ' ' + (normalisedPlace.route || ''));
                 _this.getElement('locality').val(normalisedPlace.locality);
-                _this.getElement('administrativeArea').val([normalisedPlace.countryCode, normalisedPlace.administrativeAreaCode].join('-'));
+                _this.getElement('administrativeArea').val(normalisedPlace.administrativeAreaCode);
                 _this.getElement('postalCode').val(normalisedPlace.postalCode);
                 _this.getElement('placeData').val(JSON.stringify(place, null, 4));
                 _this.getElement('latitude').val(normalisedPlace.latitude);

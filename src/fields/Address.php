@@ -458,7 +458,7 @@ JS;
         }
 
         $subdivisionRepository = new SubdivisionRepository();
-        $subdivisions = $subdivisionRepository->getList(
+        $subdivisions = $subdivisionRepository->getAll(
             $countryCode,
             $parentId
         );
@@ -466,8 +466,8 @@ JS;
 
         foreach ($subdivisions as $key => $option) {
             $options[] = [
-                'value' => $key,
-                'label' => $option,
+                'value' => $option->getCode(),
+                'label' => $option->getName(),
             ];
         }
 
