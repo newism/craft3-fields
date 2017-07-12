@@ -73,7 +73,7 @@ class EmbedController extends Controller
         }
 
         return Craft::$app->getView()->renderTemplate(
-            'nsmfields/_components/fieldtypes/Embed/inputEmbed.twig',
+            'nsm-fields/_components/fieldtypes/Embed/inputEmbed.twig',
             [
                 'name' => Craft::$app->request->get('name'),
                 'value' => $value,

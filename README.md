@@ -34,6 +34,16 @@ Features:
 
 ![Email Demo](resources/img/email-demo.gif)
 
+
+## Embed
+
+Features:
+
+* Embed social media posts / media directly from a URL
+* Live preview
+
+![Embed Demo](resources/img/embed-demo.gif)
+
 ## Installation
 
 ### Step 1: Download the Bundle
@@ -77,7 +87,7 @@ Some things to do, and ideas for potential features:
 
 ### 1.2
 
-* Add video field with yoututbe, vimeo previews
+* ~~Add video field with yoututbe, vimeo previews~~ See Embed Field
 
 ## Credits
 
