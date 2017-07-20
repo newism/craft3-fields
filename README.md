@@ -67,7 +67,7 @@ Install plugin in the Craft Control Panel under Settings > Plugins.
 
 The plugin comes with a config.php file that defines some sensible defaults. 
 
-Copy `src/config.php` to `CRAFT_CONFIG_PATH` and rename the file to `nsmfields.php`.
+Copy `src/config.php` to `CRAFT_CONFIG_PATH` and rename the file to `nsm-fields.php`.
 
 ## Road Map
 
