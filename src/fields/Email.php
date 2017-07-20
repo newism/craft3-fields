@@ -11,6 +11,7 @@
 namespace newism\fields\fields;
 
 use Craft;
+use craft\base\ElementInterface;
 use craft\fields\PlainText;
 
 /**
@@ -57,6 +58,16 @@ class Email extends PlainText
         $rules[] = 'email';
 
         return $rules;
+    }
+
+    public function getInputHtml($value, ElementInterface $element = null): string
+    {
+        return Craft::$app->getView()->renderTemplate('nsm-fields/_components/fieldtypes/Email/input',
+            [
+                'name' => $this->handle,
+                'value' => $value,
+                'field' => $this,
+            ]);
     }
 
 }
