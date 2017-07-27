@@ -1,7 +1,7 @@
 {% import "_includes/forms" as forms %}
 
 {% if value %}
-    {% if value.embedData %}
+    {% if value and value.embedData %}
         {% if value.embedData.code %}
             <div class="nsmFields-embed-embedDataCodePreview">
                 {{ value.embedData.code | raw }}

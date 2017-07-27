@@ -1,0 +1,87 @@
+{#
+/**
+ * NSM Fields plugin for Craft CMS 3.x
+ *
+ * Email Field Input
+ *
+ * @author    Leevi Graham
+ * @copyright Copyright (c) 2017 Leevi Graham
+ * @link      http://newism.com.au
+ * @package   NsmFields
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+<style>
+    .personName {
+        display: flex
+    }
+
+    .personName label {
+        font-size: 11px;
+        display: block;
+    }
+
+    .personName input {
+        width: 100%;
+    }
+
+    .personName > div {
+        flex: 1 0 auto;
+    }
+
+    .personName > div:first-child,
+    .personName > div:last-child {
+        flex: 0 0 auto;
+    }
+
+    .personName > div + div {
+        margin-left: 5px;
+    }
+</style>
+<div class="personName">
+    <div>
+        <label for="">Prefix</label>
+        {{ forms.text({
+            id: name ~ '-honorificPrefix',
+            name: value['honorificPrefix'],
+            class: 'nicetext',
+            style:"width: 6ch"
+        }) }}
+    </div>
+    <div>
+        <label for="">Given Names</label>
+        {{ forms.text({
+            id: name ~ '-givenNames',
+            name: value['givenNames'],
+            class: 'nicetext'
+        }) }}
+    </div>
+    <div>
+        <label for="">Additional Names</label>
+        {{ forms.text({
+            id: name ~ '-additionalNames',
+            name: value['additionalNames'],
+            class: 'nicetext'
+        }) }}
+    </div>
+    <div>
+        <label for="">Family Names</label>
+        {{ forms.text({
+            id: name ~ '-familyNames',
+            name: value['familyNames'],
+            class: 'nicetext'
+        }) }}
+    </div>
+    <div>
+        <label for="">Suffix</label>
+        {{ forms.text({
+            id: name ~ '-honorificSuffix',
+            name: value['honorificSuffix'],
+            class: 'nicetext',
+            style:"width: 12ch"
+        }) }}
+    </div>
+</div>

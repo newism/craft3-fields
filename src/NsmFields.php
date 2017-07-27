@@ -18,11 +18,11 @@ use craft\events\RegisterUrlRulesEvent;
 use craft\services\Fields;
 use craft\services\Plugins;
 use craft\web\UrlManager;
-use newism\fields\assetbundles\embedfield\EmbedFieldAsset;
 use newism\fields\fields\Address as AddressField;
 use newism\fields\fields\Email as EmailField;
 use newism\fields\fields\Embed as EmbedField;
 use newism\fields\fields\Telephone as TelephoneField;
+use newism\fields\fields\PersonName as PersonNameField;
 use newism\fields\models\Settings;
 use newism\fields\services\Embed;
 use yii\base\Event;
@@ -83,12 +83,15 @@ class NsmFields extends Plugin
                 $event->types[] = AddressField::class;
                 $event->types[] = EmailField::class;
                 $event->types[] = EmbedField::class;
+//                $event->types[] = PersonNameField::class;
             }
         );
 
-        $this->setComponents([
-            'embed' => Embed::class,
-        ]);
+        $this->setComponents(
+            [
+                'embed' => Embed::class,
+            ]
+        );
 
         // Register our CP routes
         Event::on(

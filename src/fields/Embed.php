@@ -49,6 +49,9 @@ class Embed extends Field implements PreviewableFieldInterface
         return Craft::t('nsm-fields', 'NSM Embed');
     }
 
+    /**
+     * @return string
+     */
     public function getContentColumnType(): string
     {
         return Schema::TYPE_TEXT;
@@ -72,11 +75,15 @@ class Embed extends Field implements PreviewableFieldInterface
         );
     }
 
+    /**
+     * @return array
+     */
     public function rules(): array
     {
         $rules = parent::rules();
         $rules = array_merge(
-            $rules, []
+            $rules,
+            []
         );
 
         return $rules;
@@ -90,7 +97,7 @@ class Embed extends Field implements PreviewableFieldInterface
     public function normalizeValue($value, ElementInterface $element = null)
     {
         if (!$value) {
-            return new EmbedModel();
+            return null;
         }
 
         if (is_string($value)) {
@@ -98,9 +105,11 @@ class Embed extends Field implements PreviewableFieldInterface
         }
 
         if (is_array($value)) {
-            if($value['rawInput']) {
+            if ($value['rawInput']) {
                 if (Craft::$app->getRequest()->getIsPost()) {
-                    $embedData = NsmFields::getInstance()->embed->parse($value['rawInput']);
+                    $embedData = NsmFields::getInstance()->embed->parse(
+                        $value['rawInput']
+                    );
                     $value ['embedData'] = $embedData;
                 }
                 $value = new EmbedModel($value);
@@ -147,7 +156,7 @@ class Embed extends Field implements PreviewableFieldInterface
             'prefix' => Craft::$app->getView()->namespaceInputId(''),
             'fieldSettings' => $fieldSettings,
             'pluginSettings' => $pluginSettings,
-            'endpointUrl' => UrlHelper::actionUrl('nsm-fields/embed/parse')
+            'endpointUrl' => UrlHelper::actionUrl('nsm-fields/embed/parse'),
         ];
 
         $jsonVars = Json::encode($jsonVars);
@@ -170,6 +179,19 @@ class Embed extends Field implements PreviewableFieldInterface
         );
     }
 
+    public function getElementValidationRules(): array
+    {
+        $rules = parent::getElementValidationRules();
+
+        return $rules;
+    }
+
+
+    /**
+     * @param mixed $value
+     * @param ElementInterface $element
+     * @return string
+     */
     public function getSearchKeywords($value, ElementInterface $element): string
     {
         return json_encode($this);
@@ -192,7 +214,8 @@ class Embed extends Field implements PreviewableFieldInterface
         }
 
         return Craft::$app->getView()->renderTemplate(
-            'nsm-fields/_components/fieldtypes/Embed/tableAttributeHtml', ['value' => $value]
+            'nsm-fields/_components/fieldtypes/Embed/tableAttributeHtml',
+            ['value' => $value]
         );
     }
 }

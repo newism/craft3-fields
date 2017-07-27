@@ -169,7 +169,7 @@ class Telephone extends Field implements PreviewableFieldInterface
     public function serializeValue($value, ElementInterface $element = null): string
     {
         if(!$value || !$value->phoneNumber) {
-            return null;
+            return '';
         }
 
         return parent::serializeValue($value, $element);
