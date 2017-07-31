@@ -316,7 +316,7 @@ class Address extends Field implements PreviewableFieldInterface
 window.googleMapsPlacesApiLoaded = false;
 function googleMapsPlacesApiLoadedCallback() {
     window.googleMapsPlacesApiLoaded = true;
-    $('body').trigger('googleMapsPlacesApiLoaded');
+    document.body.dispatchEvent(new Event('googleMapsPlacesApiLoaded'));
 }
 JS;
         Craft::$app->view->registerJs($js, View::POS_BEGIN);

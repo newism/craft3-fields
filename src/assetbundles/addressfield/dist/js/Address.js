@@ -42,14 +42,14 @@
         },
 
         getElementSelector: function (name) {
-            return '#fields-' + this.options.name + '-' + name;
+            return '#' + this.options.namespace + '-' + name;
         },
 
         initCountryCode: function () {
 
             var _this = this;
 
-            this.fieldSelector = '#fields-' + _this.options.name + '-field';
+            this.fieldSelector = '#' + _this.options.namespace;
             this.$field = $(this.fieldSelector);
 
             this.addressFieldsContainerSelector = this.fieldSelector + ' .nsmFields-address-addressFieldsContainer';
