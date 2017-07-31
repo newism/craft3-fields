@@ -70,4 +70,13 @@ class Email extends PlainText
             ]);
     }
 
+    public function normalizeValue($value, ElementInterface $element = null)
+    {
+        if(empty($value)) {
+            return null;
+        }
+
+        return $value;
+    }
+
 }

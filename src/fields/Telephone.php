@@ -117,62 +117,22 @@ class Telephone extends Field implements PreviewableFieldInterface
      */
     public function normalizeValue($value, ElementInterface $element = null)
     {
-        $settings = $this->getSettings();
-
-        if (!$value) {
-            return new TelephoneModel(
-                $settings['defaultCountryCode'],
-                null
-            );
-        }
-
         /**
-         * A string value is pulled from the DB.
-         * We json_decode to create an array which is handled in the next stepr
+         * Serialised value from the DB
          */
         if (is_string($value)) {
             $value = json_decode($value, true);
         }
 
         /**
-         * An array value comes from a form post, or the decoded database value
-         * If it's from a post it's possible the value is not a valid
-         *
-         * We create a new PhoneNumber object and set the raw value then
-         * we try and parse the phone number, if an exception is thrown then
-         * we ignore it and set the original $phoneNumber object to the $value
-         *
-         * This keeps our $value['phoneNumber'] in two possible states:
-         *   - A parsed (but not validated) PhoneNumber
-         *   - A non parsed PhoneNumber with a rawInput. The rawInput is returned
-         *     by the format() method if there's no national number
+         * Array value from post or unserialised array
          */
-        if (is_array($value)) {
-            if (!array_key_exists('countryCode', $value)) {
-                $value['countryCode'] = $settings['defaultCountryCode'];
-            }
-
-            $value = new TelephoneModel(
-                $value['countryCode'],
-                $value['rawInput']
-            );
+        if (is_array($value) && !empty(array_filter($value))) {
+            return new TelephoneModel($value['countryCode'], $value['rawInput']);
         }
 
-        return $value;
-    }
+        return null;
 
-    /**
-     * @param mixed $value
-     * @param ElementInterface|null $element
-     * @return string
-     */
-    public function serializeValue($value, ElementInterface $element = null): string
-    {
-        if(!$value || !$value->phoneNumber) {
-            return '';
-        }
-
-        return parent::serializeValue($value, $element);
     }
 
     /**
@@ -209,7 +169,8 @@ class Telephone extends Field implements PreviewableFieldInterface
     public function getInputHtml(
         $value,
         ElementInterface $element = null
-    ): string {
+    ): string
+    {
 
         // Get our id and namespace
         $id = Craft::$app->getView()->formatInputId($this->handle);
@@ -219,7 +180,7 @@ class Telephone extends Field implements PreviewableFieldInterface
             'nsm-fields/_components/fieldtypes/Telephone/input',
             [
                 'name' => $this->handle,
-                'viewData' => $value->getViewData(),
+                'viewData' => $value,
                 'field' => $this,
                 'id' => $id,
                 'namespacedId' => $namespacedId,
@@ -236,7 +197,7 @@ class Telephone extends Field implements PreviewableFieldInterface
      */
     private function getCountryOptions(): array
     {
-        $countries = [];
+        $countries = [['value' => '', 'label' => '']];
         $countryData = Intl::getRegionBundle()->getCountryNames();
 
         foreach ($countryData as $key => $option) {
@@ -245,7 +206,7 @@ class Telephone extends Field implements PreviewableFieldInterface
             );
             $countries[] = [
                 'value' => $key,
-                'label' => $option.($regionCode ? ' +'.$regionCode : ''),
+                'label' => $option . ($regionCode ? ' +' . $regionCode : ''),
             ];
         }
 
@@ -292,7 +253,11 @@ class Telephone extends Field implements PreviewableFieldInterface
      */
     public function isEmpty($value): bool
     {
-        return (null === $value->phoneNumber);
+        if ($value instanceof TelephoneModel) {
+            return (null === $value->phoneNumber);
+        }
+
+        return parent::isEmpty($value);
     }
 
     /**
@@ -305,7 +270,8 @@ class Telephone extends Field implements PreviewableFieldInterface
     public function validatePhoneNumber(
         ElementInterface $element,
         array $params = null
-    ) {
+    )
+    {
 
         /** @var TelephoneModel $value */
         $value = $element->getFieldValue($this->handle);
@@ -328,12 +294,13 @@ class Telephone extends Field implements PreviewableFieldInterface
     /**
      * Returns the HTML that should be shown for this field in Table View.
      *
-     * @param mixed            $value   The field’s value
+     * @param mixed $value The field’s value
      * @param ElementInterface $element The element the field is associated with
      *
      * @return string The HTML that should be shown for this field in Table View
      */
-    public function getTableAttributeHtml($value, ElementInterface $element): string {
+    public function getTableAttributeHtml($value, ElementInterface $element): string
+    {
         if (!$value->phoneNumber) {
             return '';
         }

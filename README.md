@@ -44,6 +44,27 @@ Features:
 
 ![Embed Demo](resources/img/embed-demo.gif)
 
+## Person Name
+
+Person name field with:
+
+* Honorific Prefix
+* Given Names
+* Additional Names
+* Family Names
+* Honorific Suffix
+
+![Person Name Demo](resources/img/person-name-field.png)
+
+## Gender
+
+Non-binary gender field with:
+
+* Sex
+* Identity
+
+![Gender](resources/img/gender-field.png)
+
 ## Installation
 
 ### Step 1: Download the Bundle

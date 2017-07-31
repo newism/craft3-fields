@@ -42,7 +42,6 @@ use yii\db\Schema;
  */
 class Address extends Field implements PreviewableFieldInterface
 {
-
     public $defaultCountryCode = false;
     public $showAutoComplete = false;
     public $autoCompleteConfiguration = '';
@@ -214,7 +213,7 @@ class Address extends Field implements PreviewableFieldInterface
      * @throws \Twig_Error_Loader
      * @throws \RuntimeException
      */
-    protected function renderFormFields(AddressModel $value)
+    protected function renderFormFields(AddressModel $value = null)
     {
         // Get our id and namespace
         $id = Craft::$app->getView()->formatInputId($this->handle);
@@ -223,31 +222,10 @@ class Address extends Field implements PreviewableFieldInterface
         $fieldSettings = $this->getSettings();
         $pluginSettings = NsmFields::getInstance()->getSettings();
 
-        $addressFormatRepository = new AddressFormatRepository();
-        $addressFormat = $addressFormatRepository->get($value->getCountryCode());
-        $fieldLabels = $this->getFieldLabels($addressFormat);
+        $fieldLabels = null;
+        $addressFields = null;
 
-        $formatTemplate = $addressFormat->getFormat();
-
-        if (!$fieldSettings['showRecipient']) {
-            $formatTemplate = str_replace('%givenName', '', $formatTemplate);
-            $formatTemplate = str_replace('%additionalName', '', $formatTemplate);
-            $formatTemplate = str_replace('%familyName', '', $formatTemplate);
-            $formatTemplate = str_replace('%recipient', '', $formatTemplate);
-        }
-
-        if (!$fieldSettings['showOrganization']) {
-            $formatTemplate = str_replace('%organization', '', $formatTemplate);
-        }
-
-        if ($fieldSettings['showLatLng']) {
-            $formatTemplate .= "\n%latitude %longitude";
-        }
-
-        if ($fieldSettings['showMapUrl']) {
-            $formatTemplate .= "\n%mapUrl";
-        }
-
+        $countryCode = $value ? $value->getCountryCode() : null;
         $countryCodeField = Craft::$app->getView()->renderTemplate(
             'nsm-fields/_components/fieldtypes/Address/input/countryCode',
             [
@@ -257,57 +235,81 @@ class Address extends Field implements PreviewableFieldInterface
                 'id' => $id,
                 'namespacedId' => $namespacedId,
                 'settings' => $fieldSettings,
-                'addressFormat' => $addressFormat,
-                'fieldLabels' => $fieldLabels,
                 'countryOptions' => $this->getCountryOptions(),
             ]
         );
 
-        $formatTemplate = preg_replace(
-            '/(?:(?:\r\n|\r|\n)\s*){2}/s',
-            "\n",
-            $formatTemplate
-        );
-        $formatRows = array_filter(
-            array_map('trim', explode("\n", $formatTemplate))
-        );
+        if($countryCode) {
 
-        $addressFields = '';
+            $addressFormatRepository = new AddressFormatRepository();
+            $addressFormat = $addressFormatRepository->get($countryCode);
+            $fieldLabels = $this->getFieldLabels($addressFormat);
+            $formatTemplate = $addressFormat->getFormat();
 
-        foreach ($formatRows as $formatRow) {
-            preg_match_all('/%([a-zA-Z0-9]+)/i', $formatRow, $matches);
-            $className = implode('-', $matches[1]);
-            $addressFields .= '<div class="flex nsmFields-fieldRow nsmFields-fieldRow-'.$className.'">';
-            foreach ($matches[1] as $match) {
-
-                $subdivisionOptions = ($match === 'administrativeArea') ?
-                    $subdivisionOptions = $this->getSubdivisionOptions(
-                        $addressFormat->getCountryCode()
-                    ) :
-                    [];
-
-                $formatRow = str_replace(
-                    '%'.$match,
-                    Craft::$app->getView()->renderTemplate(
-                        'nsm-fields/_components/fieldtypes/Address/input/'.$match,
-                        [
-                            'name' => $this->handle,
-                            'value' => $value,
-                            'field' => $this,
-                            'id' => $id,
-                            'namespacedId' => $namespacedId,
-                            'settings' => $fieldSettings,
-                            'addressFormat' => $addressFormat,
-                            'fieldLabels' => $fieldLabels,
-                            'subdivisionOptions' => $subdivisionOptions,
-                            'template' => $match,
-                        ]
-                    ),
-                    $formatRow
-                );
+            if (!$fieldSettings['showRecipient']) {
+                $formatTemplate = str_replace('%givenName', '', $formatTemplate);
+                $formatTemplate = str_replace('%additionalName', '', $formatTemplate);
+                $formatTemplate = str_replace('%familyName', '', $formatTemplate);
+                $formatTemplate = str_replace('%recipient', '', $formatTemplate);
             }
-            $addressFields .= $formatRow;
-            $addressFields .= '</div>';
+
+            if (!$fieldSettings['showOrganization']) {
+                $formatTemplate = str_replace('%organization', '', $formatTemplate);
+            }
+
+            if ($fieldSettings['showLatLng']) {
+                $formatTemplate .= "\n%latitude %longitude";
+            }
+
+            if ($fieldSettings['showMapUrl']) {
+                $formatTemplate .= "\n%mapUrl";
+            }
+
+            $formatTemplate = preg_replace(
+                '/(?:(?:\r\n|\r|\n)\s*){2}/s',
+                "\n",
+                $formatTemplate
+            );
+
+            $formatRows = array_filter(
+                array_map('trim', explode("\n", $formatTemplate))
+            );
+
+            $addressFields = '';
+
+            foreach ($formatRows as $formatRow) {
+                preg_match_all('/%([a-zA-Z0-9]+)/i', $formatRow, $matches);
+                $className = implode('-', $matches[1]);
+                $addressFields .= '<div class="flex nsmFields-fieldRow nsmFields-fieldRow-'.$className.'">';
+                foreach ($matches[1] as $match) {
+
+                    $subdivisionOptions = ($match === 'administrativeArea')
+                        ? $this->getSubdivisionOptions($countryCode)
+                        : [];
+
+                    $formatRow = str_replace(
+                        '%'.$match,
+                        Craft::$app->getView()->renderTemplate(
+                            'nsm-fields/_components/fieldtypes/Address/input/'.$match,
+                            [
+                                'name' => $this->handle,
+                                'value' => $value,
+                                'field' => $this,
+                                'id' => $id,
+                                'namespacedId' => $namespacedId,
+                                'settings' => $fieldSettings,
+                                'addressFormat' => $addressFormat,
+                                'fieldLabels' => $fieldLabels,
+                                'subdivisionOptions' => $subdivisionOptions,
+                                'template' => $match,
+                            ]
+                        ),
+                        $formatRow
+                    );
+                }
+                $addressFields .= $formatRow;
+                $addressFields .= '</div>';
+            }
         }
 
         $js = <<<JS
@@ -338,9 +340,8 @@ JS;
                 'field' => $this,
                 'id' => $id,
                 'namespacedId' => $namespacedId,
-                'settings' => $fieldSettings,
-                'addressFormat' => $addressFormat,
-                'fieldLabels' => $fieldLabels,
+                'fieldSettings' => $fieldSettings,
+                'pluginSettings' => $pluginSettings,
                 'addressFields' => $addressFields,
                 'countryCodeField' => $countryCodeField,
             ]
@@ -481,23 +482,20 @@ JS;
      */
     public function normalizeValue($value, ElementInterface $element = null)
     {
-        if (is_null($value)) {
-            $value = new AddressModel();
-            $value->countryCode = $this->getSettings()['defaultCountryCode'];
-        }
-
+        /**
+         * Serialised value from the DB
+         */
         if (is_string($value)) {
             $value = json_decode($value, true);
         }
 
-        if (is_array($value)) {
-            $addressModel = new AddressModel();
-            $addressModel->attributes = $value;
-            $value = $addressModel;
+        /**
+         * Array value from post or unserialised array
+         */
+        if (is_array($value) && !empty(array_filter($value))) {
+            return new AddressModel($value);
         }
 
-        return $value;
+        return null;
     }
-
-
 }

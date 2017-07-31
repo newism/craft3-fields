@@ -33,6 +33,19 @@ class PersonNameModel extends Model
         ];
     }
 
+    /**
+     * @return string
+     */
+    public function __toString() {
+        return implode(" ", [
+            $this->honorificPrefix,
+            $this->givenNames,
+            $this->additionalNames,
+            $this->familyNames,
+            $this->honorificSuffix
+        ]);
+    }
+
     public $honorificPrefix;
     public $givenNames;
     public $additionalNames;
@@ -79,5 +92,18 @@ class PersonNameModel extends Model
         return $this->honorificSuffix;
     }
 
+    /**
+     * @return bool
+     */
+    public function isEmpty()
+    {
+        return empty(array_filter([
+            $this->honorificPrefix,
+            $this->givenNames,
+            $this->additionalNames,
+            $this->familyNames,
+            $this->honorificPrefix
+        ]));
+    }
 
 }

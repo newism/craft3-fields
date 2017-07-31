@@ -21,6 +21,7 @@ use craft\web\UrlManager;
 use newism\fields\fields\Address as AddressField;
 use newism\fields\fields\Email as EmailField;
 use newism\fields\fields\Embed as EmbedField;
+use newism\fields\fields\Gender;
 use newism\fields\fields\Telephone as TelephoneField;
 use newism\fields\fields\PersonName as PersonNameField;
 use newism\fields\models\Settings;
@@ -83,7 +84,8 @@ class NsmFields extends Plugin
                 $event->types[] = AddressField::class;
                 $event->types[] = EmailField::class;
                 $event->types[] = EmbedField::class;
-//                $event->types[] = PersonNameField::class;
+                $event->types[] = PersonNameField::class;
+                $event->types[] = Gender::class;
             }
         );
 
@@ -110,24 +112,6 @@ class NsmFields extends Plugin
             }
         );
 
-        /**
-         * Logging in Craft involves using one of the following methods:
-         *
-         * Craft::trace(): record a message to trace how a piece of code runs. This is mainly for development use.
-         * Craft::info(): record a message that conveys some useful information.
-         * Craft::warning(): record a warning message that indicates something unexpected has happened.
-         * Craft::error(): record a fatal error that should be investigated as soon as possible.
-         *
-         * Unless `devMode` is on, only Craft::warning() & Craft::error() will log to `craft/storage/logs/web.log`
-         *
-         * It's recommended that you pass in the magic constant `__METHOD__` as the second parameter, which sets
-         * the category to the method (prefixed with the fully qualified class name) where the constant appears.
-         *
-         * To enable the Yii debug toolbar, go to your user account in the AdminCP and check the
-         * [] Show the debug toolbar on the front end & [] Show the debug toolbar on the Control Panel
-         *
-         * http://www.yiiframework.com/doc-2.0/guide-runtime-logging.html
-         */
         Craft::info(
             'NsmFields '.Craft::t('nsm-fields', 'plugin loaded'),
             __METHOD__

@@ -17,16 +17,14 @@
 <div class="flex">
 
     {% if settings.showCountrySelector %}
-        <div>
-            {{ forms.select({
-                size: 'inline',
-                label: 'Country Code',
-                id: name ~ 'CountryCode',
-                name: name ~ '[countryCode]',
-                value: viewData ? viewData.countryCode : null,
-                options: countryOptions
-            }) }}
-        </div>
+        {{ forms.select({
+            size: 'inline',
+            label: 'Country Code',
+            id: name ~ 'CountryCode',
+            name: name ~ '[countryCode]',
+            value: viewData ? viewData.countryCode,
+            options: countryOptions
+        }) }}
     {% endif %}
 
     <div class="flex-grow">
@@ -35,7 +33,7 @@
             label: 'Phone Number',
             id: name ~ 'PhoneNumber',
             name: name ~ '[rawInput]',
-            value: viewData ? viewData.rawInput : null
+            value: viewData ? viewData.rawInput
         }) }}
     </div>
 

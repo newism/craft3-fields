@@ -14,11 +14,11 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
-use newism\fields\models\PersonNameModel;
+use newism\fields\models\GenderModel;
 use yii\db\Schema;
 
 /**
- * Email Field
+ * Gender Field
  *
  * Whenever someone creates a new field in Craft, they must specify what
  * type of field it is. The system comes with a handful of field types baked in,
@@ -30,7 +30,7 @@ use yii\db\Schema;
  * @package   NsmFields
  * @since     1.0.0
  */
-class PersonName extends Field implements PreviewableFieldInterface
+class Gender extends Field implements PreviewableFieldInterface
 {
     // Static Methods
     // =========================================================================
@@ -42,7 +42,7 @@ class PersonName extends Field implements PreviewableFieldInterface
      */
     public static function displayName(): string
     {
-        return Craft::t('nsm-fields', 'NSM Person Name');
+        return Craft::t('nsm-fields', 'NSM Gender');
     }
 
     /**
@@ -70,7 +70,7 @@ class PersonName extends Field implements PreviewableFieldInterface
     public function getSettingsHtml()
     {
         return Craft::$app->getView()->renderTemplate(
-            'nsm-fields/_components/fieldtypes/PersonName/settings',
+            'nsm-fields/_components/fieldtypes/Gender/settings',
             [
                 'field' => $this,
             ]
@@ -88,7 +88,7 @@ class PersonName extends Field implements PreviewableFieldInterface
     /**
      * @param mixed $value
      * @param ElementInterface|null $element
-     * @return mixed|PersonNameModel
+     * @return mixed|GenderModel
      */
     public function normalizeValue(
         $value,
@@ -100,7 +100,7 @@ class PersonName extends Field implements PreviewableFieldInterface
         }
 
         if (is_array($value) && !empty(array_filter($value))) {
-            return new PersonNameModel($value);
+            return new GenderModel($value);
         }
 
         return null;
@@ -124,13 +124,25 @@ class PersonName extends Field implements PreviewableFieldInterface
     ): string
     {
         return Craft::$app->getView()->renderTemplate(
-            'nsm-fields/_components/fieldtypes/PersonName/input',
+            'nsm-fields/_components/fieldtypes/Gender/input',
             [
                 'name' => $this->handle,
                 'value' => $value,
                 'field' => $this,
+                'sexOptions' => $this->getSexOptions()
             ]
         );
+    }
+    
+    protected function getSexOptions() {
+        return [
+            '' => '',
+            'M' => 'Male',
+            'F' => 'Female',
+            'O' => 'Other',
+            'N' => 'None',
+            'U' => 'Unknown'
+        ];
     }
 
     /**
@@ -156,7 +168,7 @@ class PersonName extends Field implements PreviewableFieldInterface
      */
     public function isEmpty($value): bool
     {
-        if($value instanceof PersonNameModel) {
+        if($value instanceof GenderModel) {
             return $value->isEmpty();
         }
 

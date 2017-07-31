@@ -96,29 +96,19 @@ class Embed extends Field implements PreviewableFieldInterface
      */
     public function normalizeValue($value, ElementInterface $element = null)
     {
-        if (!$value) {
-            return null;
-        }
-
         if (is_string($value)) {
             $value = json_decode($value, true);
         }
 
-        if (is_array($value)) {
-            if ($value['rawInput']) {
-                if (Craft::$app->getRequest()->getIsPost()) {
-                    $embedData = NsmFields::getInstance()->embed->parse(
-                        $value['rawInput']
-                    );
-                    $value ['embedData'] = $embedData;
-                }
-                $value = new EmbedModel($value);
-            } else {
-                $value = null;
+        if (is_array($value) && $value['rawInput']) {
+            if (Craft::$app->getRequest()->getIsPost()) {
+                $embedData = NsmFields::getInstance()->embed->parse($value['rawInput']);
+                $value['embedData'] = $embedData;
             }
+            return new EmbedModel($value);
         }
 
-        return $value;
+        return null;
     }
 
     /**
@@ -218,4 +208,23 @@ class Embed extends Field implements PreviewableFieldInterface
             ['value' => $value]
         );
     }
+
+    /**
+     * Returns whether the given value should be considered “empty” to a validator.
+     *
+     * @param mixed $value The field’s value
+     *
+     * @return bool Whether the value should be considered “empty”
+     * @see Validator::$isEmpty
+     */
+    public function isEmpty($value): bool
+    {
+        if($value instanceof EmbedModel) {
+            return $value->isEmpty();
+        }
+
+        return parent::isEmpty($value);
+    }
+
+
 }

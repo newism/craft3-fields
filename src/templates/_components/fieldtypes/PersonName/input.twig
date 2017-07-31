@@ -2,7 +2,7 @@
 /**
  * NSM Fields plugin for Craft CMS 3.x
  *
- * Email Field Input
+ * Person Name Field Input
  *
  * @author    Leevi Graham
  * @copyright Copyright (c) 2017 Leevi Graham
@@ -41,12 +41,14 @@
         margin-left: 5px;
     }
 </style>
+
 <div class="personName">
     <div>
         <label for="">Prefix</label>
         {{ forms.text({
             id: name ~ '-honorificPrefix',
-            name: value['honorificPrefix'],
+            name: name ~ '[honorificPrefix]',
+            value: value ? value.honorificPrefix,
             class: 'nicetext',
             style:"width: 6ch"
         }) }}
@@ -55,7 +57,8 @@
         <label for="">Given Names</label>
         {{ forms.text({
             id: name ~ '-givenNames',
-            name: value['givenNames'],
+            name: name ~ '[givenNames]',
+            value: value ? value.givenNames,
             class: 'nicetext'
         }) }}
     </div>
@@ -63,7 +66,8 @@
         <label for="">Additional Names</label>
         {{ forms.text({
             id: name ~ '-additionalNames',
-            name: value['additionalNames'],
+            name: name ~ '[additionalNames]',
+            value: value ? value.additionalNames,
             class: 'nicetext'
         }) }}
     </div>
@@ -71,7 +75,8 @@
         <label for="">Family Names</label>
         {{ forms.text({
             id: name ~ '-familyNames',
-            name: value['familyNames'],
+            name: name ~ '[familyNames]',
+            value: value ? value.familyNames,
             class: 'nicetext'
         }) }}
     </div>
@@ -79,7 +84,8 @@
         <label for="">Suffix</label>
         {{ forms.text({
             id: name ~ '-honorificSuffix',
-            name: value['honorificSuffix'],
+            name: name ~ '[honorificSuffix]',
+            value: value ? value.honorificSuffix,
             class: 'nicetext',
             style:"width: 12ch"
         }) }}

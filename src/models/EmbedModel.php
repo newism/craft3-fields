@@ -22,4 +22,8 @@ class EmbedModel extends Model implements \JsonSerializable
             'embedData' => $this->embedData
         ];
     }
+
+    public function isEmpty(): bool {
+        return empty($this->rawInput);
+    }
 }

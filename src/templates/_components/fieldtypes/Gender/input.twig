@@ -1,0 +1,65 @@
+{#
+/**
+ * NSM Fields plugin for Craft CMS 3.x
+ *
+ * Gender Field Input
+ *
+ * @author    Leevi Graham
+ * @copyright Copyright (c) 2017 Leevi Graham
+ * @link      http://newism.com.au
+ * @package   NsmFields
+ * @since     1.0.0
+ */
+#}
+
+{% import "_includes/forms" as forms %}
+
+<style>
+    .gender {
+        display: flex
+    }
+
+    .gender label {
+        font-size: 11px;
+        display: block;
+    }
+
+    .gender input {
+        width: 100%;
+    }
+
+    .gender > div {
+        flex: 1 0 auto;
+    }
+
+    .gender > div:first-child,
+    .gender > div:last-child {
+        flex: 0 0 auto;
+    }
+
+    .gender > div + div {
+        margin-left: 5px;
+    }
+</style>
+
+<div class="gender">
+    <div>
+        <label for="{{ name }}-sex">Sex</label>
+        {{ forms.select({
+            id: name ~ '-sex',
+            name: name ~ '[sex]',
+            value: value ? value.sex,
+            required: false,
+            options: sexOptions
+        }) }}
+    </div>
+    <div>
+        <label for="{{ name }}-identity">Identity</label>
+        {{ forms.text({
+            id: name ~ '-identity',
+            name: name ~ '[identity]',
+            value: value ? value.identity,
+            class: 'nicetext'
+        }) }}
+    </div>
+</div>

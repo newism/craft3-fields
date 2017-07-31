@@ -2,7 +2,7 @@
 /**
  * NSM Fields plugin for Craft CMS 3.x
  *
- * Email Field Input
+ * Embed Field Input
  *
  * @author    Leevi Graham
  * @copyright Copyright (c) 2017 Leevi Graham
@@ -21,7 +21,7 @@
             {{ forms.text({
                 id: name ~ 'RawInput',
                 name: name ~ '[rawInput]',
-                value: value ? value.rawInput : null,
+                value: value ? value.rawInput,
                 class: 'nsmFields-embed-rawInput'
             }) }}
         </div>
