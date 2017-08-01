@@ -21,7 +21,9 @@
         {% if fieldSettings.showAutoComplete %}
             <div class="nsmfields-address-autoCompleteContainer">
                 <div class="texticon search icon clearable flex-grow">
-                    {{ forms.text({ id: name ~ '-autoComplete' }) }}
+                    {{ forms.text({
+                        id: name ~ '-autoComplete'
+                    }) }}
                 </div>
             </div>
         {% endif %}

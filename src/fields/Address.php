@@ -225,6 +225,8 @@ class Address extends Field implements PreviewableFieldInterface
         $fieldLabels = null;
         $addressFields = null;
 
+        $this->renderFieldJs();
+
         $countryCode = $value ? $value->getCountryCode() : null;
         $countryCodeField = Craft::$app->getView()->renderTemplate(
             'nsm-fields/_components/fieldtypes/Address/input/countryCode',
@@ -239,97 +241,7 @@ class Address extends Field implements PreviewableFieldInterface
             ]
         );
 
-        if($countryCode) {
-
-            $addressFormatRepository = new AddressFormatRepository();
-            $addressFormat = $addressFormatRepository->get($countryCode);
-            $fieldLabels = $this->getFieldLabels($addressFormat);
-            $formatTemplate = $addressFormat->getFormat();
-
-            if (!$fieldSettings['showRecipient']) {
-                $formatTemplate = str_replace('%givenName', '', $formatTemplate);
-                $formatTemplate = str_replace('%additionalName', '', $formatTemplate);
-                $formatTemplate = str_replace('%familyName', '', $formatTemplate);
-                $formatTemplate = str_replace('%recipient', '', $formatTemplate);
-            }
-
-            if (!$fieldSettings['showOrganization']) {
-                $formatTemplate = str_replace('%organization', '', $formatTemplate);
-            }
-
-            if ($fieldSettings['showLatLng']) {
-                $formatTemplate .= "\n%latitude %longitude";
-            }
-
-            if ($fieldSettings['showMapUrl']) {
-                $formatTemplate .= "\n%mapUrl";
-            }
-
-            $formatTemplate = preg_replace(
-                '/(?:(?:\r\n|\r|\n)\s*){2}/s',
-                "\n",
-                $formatTemplate
-            );
-
-            $formatRows = array_filter(
-                array_map('trim', explode("\n", $formatTemplate))
-            );
-
-            $addressFields = '';
-
-            foreach ($formatRows as $formatRow) {
-                preg_match_all('/%([a-zA-Z0-9]+)/i', $formatRow, $matches);
-                $className = implode('-', $matches[1]);
-                $addressFields .= '<div class="flex nsmFields-fieldRow nsmFields-fieldRow-'.$className.'">';
-                foreach ($matches[1] as $match) {
-
-                    $subdivisionOptions = ($match === 'administrativeArea')
-                        ? $this->getSubdivisionOptions($countryCode)
-                        : [];
-
-                    $formatRow = str_replace(
-                        '%'.$match,
-                        Craft::$app->getView()->renderTemplate(
-                            'nsm-fields/_components/fieldtypes/Address/input/'.$match,
-                            [
-                                'name' => $this->handle,
-                                'value' => $value,
-                                'field' => $this,
-                                'id' => $id,
-                                'namespacedId' => $namespacedId,
-                                'settings' => $fieldSettings,
-                                'addressFormat' => $addressFormat,
-                                'fieldLabels' => $fieldLabels,
-                                'subdivisionOptions' => $subdivisionOptions,
-                                'template' => $match,
-                            ]
-                        ),
-                        $formatRow
-                    );
-                }
-                $addressFields .= $formatRow;
-                $addressFields .= '</div>';
-            }
-        }
-
-        $js = <<<JS
-window.googleMapsPlacesApiLoaded = false;
-function googleMapsPlacesApiLoadedCallback() {
-    window.googleMapsPlacesApiLoaded = true;
-    document.body.dispatchEvent(new Event('googleMapsPlacesApiLoaded'));
-}
-JS;
-        Craft::$app->view->registerJs($js, View::POS_BEGIN);
-
-        $googleApiKey = $pluginSettings->googleApiKey;
-        $mapUrl = sprintf(
-            'https://maps.googleapis.com/maps/api/js?key=%s&libraries=places&callback=googleMapsPlacesApiLoadedCallback',
-            $googleApiKey
-        );
-        Craft::$app->view->registerJsFile(
-            $mapUrl,
-            ['async' => '', 'defer' => '', 'position' => View::POS_END]
-        );
+        $addressFields = $this->renderAddressFields($value);
 
         // Render the input template
         return Craft::$app->getView()->renderTemplate(
@@ -346,6 +258,115 @@ JS;
                 'countryCodeField' => $countryCodeField,
             ]
         );
+    }
+
+    private function renderFieldJs() {
+
+        $pluginSettings = NsmFields::getInstance()->getSettings();
+
+        $js = <<<JS
+window.googleMapsPlacesApiLoaded = window.googleMapsPlacesApiLoaded || false;
+function googleMapsPlacesApiLoadedCallback() {
+    window.googleMapsPlacesApiLoaded = true;
+    document.body.dispatchEvent(new Event('googleMapsPlacesApiLoaded'));
+}
+JS;
+        Craft::$app->view->registerJs($js, View::POS_BEGIN);
+
+        $googleApiKey = $pluginSettings->googleApiKey;
+        $mapUrl = sprintf(
+            'https://maps.googleapis.com/maps/api/js?key=%s&libraries=places&callback=googleMapsPlacesApiLoadedCallback',
+            $googleApiKey
+        );
+        Craft::$app->view->registerJsFile(
+            $mapUrl,
+            ['async' => '', 'defer' => '', 'position' => View::POS_END]
+        );
+    }
+
+    private function renderAddressFields($value) {
+
+        $id = Craft::$app->getView()->formatInputId($this->handle);
+        $namespacedId = Craft::$app->getView()->namespaceInputId($id);
+        $countryCode = $value ? $value->getCountryCode() : null;
+
+        if(empty($countryCode)) {
+            return;
+        }
+
+        $fieldSettings = $this->getSettings();
+
+        $addressFormatRepository = new AddressFormatRepository();
+        $addressFormat = $addressFormatRepository->get($countryCode);
+        $fieldLabels = $this->getFieldLabels($addressFormat);
+        $formatTemplate = $addressFormat->getFormat();
+
+        if (!$fieldSettings['showRecipient']) {
+            $formatTemplate = str_replace('%givenName', '', $formatTemplate);
+            $formatTemplate = str_replace('%additionalName', '', $formatTemplate);
+            $formatTemplate = str_replace('%familyName', '', $formatTemplate);
+            $formatTemplate = str_replace('%recipient', '', $formatTemplate);
+        }
+
+        if (!$fieldSettings['showOrganization']) {
+            $formatTemplate = str_replace('%organization', '', $formatTemplate);
+        }
+
+        if ($fieldSettings['showLatLng']) {
+            $formatTemplate .= "\n%latitude %longitude";
+        }
+
+        if ($fieldSettings['showMapUrl']) {
+            $formatTemplate .= "\n%mapUrl";
+        }
+
+        $formatTemplate = preg_replace(
+            '/(?:(?:\r\n|\r|\n)\s*){2}/s',
+            "\n",
+            $formatTemplate
+        );
+
+        $formatRows = array_filter(
+            array_map('trim', explode("\n", $formatTemplate))
+        );
+
+        $addressFields = '';
+
+        foreach ($formatRows as $formatRow) {
+            preg_match_all('/%([a-zA-Z0-9]+)/i', $formatRow, $matches);
+            $className = implode('-', $matches[1]);
+            $addressFields .= '<div class="flex nsmFields-fieldRow nsmFields-fieldRow-'.$className.'">';
+            foreach ($matches[1] as $match) {
+
+                $subdivisionOptions = ($match === 'administrativeArea')
+                    ? $this->getSubdivisionOptions($countryCode)
+                    : [];
+
+                $formatRow = str_replace(
+                    '%'.$match,
+                    Craft::$app->getView()->renderTemplate(
+                        'nsm-fields/_components/fieldtypes/Address/input/'.$match,
+                        [
+                            'name' => $this->handle,
+                            'value' => $value,
+                            'field' => $this,
+                            'id' => $id,
+                            'namespacedId' => $namespacedId,
+                            'settings' => $fieldSettings,
+                            'addressFormat' => $addressFormat,
+                            'fieldLabels' => $fieldLabels,
+                            'subdivisionOptions' => $subdivisionOptions,
+                            'template' => $match,
+                        ]
+                    ),
+                    $formatRow
+                );
+            }
+            $addressFields .= $formatRow;
+            $addressFields .= '</div>';
+        }
+
+        return $addressFields;
     }
 
     protected function getFieldLabels(AddressFormat $addressFormat): array

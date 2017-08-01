@@ -22,50 +22,54 @@
         this._defaults = defaults;
         this._name = pluginName;
         this.init();
-
-        if (window.googleMapsPlacesApiLoaded) {
-            this.initAutocomplete();
-        }
     }
 
     Plugin.prototype = {
 
+        getElement: function(element) {
+            return this.$element.find('#'+this.options.namespace+'-'+element);
+        },
+
         init: function (id) {
-            this.id = id;
-            this.$autoCompleteInput = this.getElement('autoComplete');
-            this.initCountryCode();
-            $('body').on('googleMapsPlacesApiLoaded', $.proxy(this.initAutocomplete, this));
-        },
 
-        getElement: function (name) {
-            return this.$element.find(this.getElementSelector(name));
-        },
-
-        getElementSelector: function (name) {
-            return '#' + this.options.namespace + '-' + name;
-        },
-
-        initCountryCode: function () {
-
-            var _this = this;
-
-            this.fieldSelector = '#' + _this.options.namespace;
-            this.$field = $(this.fieldSelector);
-
-            this.addressFieldsContainerSelector = this.fieldSelector + ' .nsmFields-address-addressFieldsContainer';
-            this.$addressFieldsContainer = $(this.addressFieldsContainerSelector);
-
+            // Init country code
+            this.$addressFieldsContainer = this.$element.find('.nsmFields-address-addressFieldsContainer');
             this.$autoCompleteInput = this.getElement('autoComplete');
             this.$countryCodeInput = this.getElement('countryCode');
             this.currentCountryCode = this.$countryCodeInput.val();
-
-            this.$spinner = $('<div class="spinner hidden"/>').insertAfter(this.$countryCodeInput.parent());
             this.$countryCodeInput.on('change', $.proxy(this.refreshCountry, this));
+
+            // Add loading state
+            this.$spinner = $('<div class="spinner hidden"/>').insertAfter(this.$countryCodeInput.parent());
+
+            if (window.googleMapsPlacesApiLoaded) {
+                this.initAutocomplete();
+            } else {
+                $('body').on('googleMapsPlacesApiLoaded', $.proxy(this.initAutocomplete, this));
+            }
+        },
+
+        initAutocomplete: function () {
+            this.$autoCompleteInput = this.$element.find('#'+this.options.namespace+'-autoComplete');
+
+            this.autocomplete = new google.maps.places.Autocomplete(
+                this.$autoCompleteInput[0],
+                this.options.fieldSettings.autoCompleteConfiguration
+            );
+
+            google.maps.event.addDomListener(this.$autoCompleteInput[0], 'keydown', function(e) {
+                if (e.keyCode === 13) {
+                    e.preventDefault();
+                }
+            });
+
+            // When the user selects an address from the dropdown, populate the address
+            // fields in the form.
+            this.autocomplete.addListener('place_changed', $.proxy(this.placeChanged, this));
         },
 
         refreshCountry: function () {
-            var _this = this,
-                newCountryCode = this.$countryCodeInput.val(),
+            var newCountryCode = this.$countryCodeInput.val(),
                 jqXHR;
 
             if(!newCountryCode) {
@@ -77,20 +81,22 @@
             }
 
             this.currentCountryCode = newCountryCode;
+            this.$spinner.removeClass('hidden');
 
-            _this.$spinner.removeClass('hidden');
-
-            jqXHR = Craft.postActionRequest('entries/switch-entry-type', Craft.cp.$container.serialize(), $.proxy(function (response, textStatus) {
-                var newHtml;
-                this.$spinner.addClass('hidden');
-                if (textStatus === 'success') {
-                    newHtml = $(response.paneHtml).find(this.addressFieldsContainerSelector);
-                    newHtml.toggle(!! this.$countryCodeInput.val());
-                    this.$addressFieldsContainer.replaceWith(newHtml);
-                    this.$addressFieldsContainer = newHtml;
-                    Craft.initUiElements(this.$addressFieldsContainer);
-                }
-            }, _this));
+            jqXHR = Craft.postActionRequest(
+                'entries/switch-entry-type',
+                Craft.cp.$container.serialize(),
+                $.proxy(function (response, textStatus) {
+                    var newHtml;
+                    this.$spinner.addClass('hidden');
+                    if (textStatus === 'success') {
+                        newHtml = $(response.paneHtml).find('#'+this.options.namespace+'-field .nsmFields-address-addressFieldsContainer');
+                        newHtml.toggle(!! this.$countryCodeInput.val());
+                        this.$addressFieldsContainer.replaceWith(newHtml);
+                        this.$addressFieldsContainer = newHtml;
+                        Craft.initUiElements(this.$addressFieldsContainer);
+                    }
+                }, this));
 
             return jqXHR;
         },
@@ -107,34 +113,16 @@
             this.getElement('mapUrl').val('');
         },
 
-        initAutocomplete: function () {
-            // Create the autocomplete object, restricting the search to geographical
-            // location types.
-            this.autocomplete = new google.maps.places.Autocomplete(
-                this.$autoCompleteInput[0],
-                this.options.fieldSettings.autoCompleteConfiguration
-            );
-
-            google.maps.event.addDomListener(this.$autoCompleteInput[0], 'keydown', function(e) {
-                if (e.keyCode === 13 && $('.pac-container:visible').length) {
-                    e.preventDefault();
-                }
-            });
-
-            // When the user selects an address from the dropdown, populate the address
-            // fields in the form.
-            this.autocomplete.addListener('place_changed', $.proxy(this.placeChanged, this));
-        },
 
         placeChanged: function () {
             var _this = this;
             var place = _this.autocomplete.getPlace();
             var normalisedPlace = this.normalisePlace(place);
-            var currentCountryCode = _this.getElement('countryCode').val();
+            var currentCountryCode = this.getElement('countryCode').val();
             var newCountryCode = normalisedPlace.countryCode || '';
 
-            _this.$autoCompleteInput.val('');
-            _this.getElement('countryCode').val(newCountryCode);
+            this.$autoCompleteInput.val('');
+            this.getElement('countryCode').val(newCountryCode);
 
             $.when((currentCountryCode === newCountryCode) || this.refreshCountry()).then(function () {
                 _this.getElement('addressLine2').val((normalisedPlace.streetNumber || '') + ' ' + (normalisedPlace.route || ''));
@@ -184,7 +172,6 @@
                     }
                 }
             }
-
 
             return normalised;
         }

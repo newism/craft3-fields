@@ -21,10 +21,6 @@
         this._defaults = defaults;
         this._name = pluginName;
         this.init();
-
-        if (window.googleMapsPlacesApiLoaded) {
-            this.initAutocomplete();
-        }
     }
 
     Plugin.prototype = {
