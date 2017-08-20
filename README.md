@@ -94,6 +94,7 @@ Copy `src/config.php` to `CRAFT_CONFIG_PATH` and rename the file to `nsm-fields.
 
 Some things to do, and ideas for potential features:
 
+* Split out each field into it's own plugin. Keep this plugin as a single composer file which pulls all felds in
 * Address validation / Geo-coding on submission
 * Display address as text in field with option to "Edit" to reduce size of field in UI
 * Update commerceguys/addressing when next stable version is released
