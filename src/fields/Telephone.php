@@ -73,6 +73,7 @@ class Telephone extends Field implements PreviewableFieldInterface
      */
     public function init()
     {
+        parent::init();
         $this->phoneNumberUtil = PhoneNumberUtil::getInstance();
     }
 
