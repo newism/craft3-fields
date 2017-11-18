@@ -12,6 +12,30 @@ Features:
 * Address form formatting based on country powered by [commerceguys/addressing](https://github.com/commerceguys/addressing)
 * Validation / Geo-coding on submission (TODO)
 
+Template Tags:
+
+The [`normalizeValue`](./src/fields/Address.php#L504) method always returns an [`AddressModel`](./src/models/AddressModel.php). All public properties are available:
+
+Given `entry.address` is your field…
+
+```
+{{ entry.address.countryCode }}
+{{ entry.address.administrativeArea }}
+{{ entry.address.locality }}
+{{ entry.address.dependentLocality }}
+{{ entry.address.postalCode }}
+{{ entry.address.sortingCode }}
+{{ entry.address.addressLine1 }}
+{{ entry.address.addressLine2 }}
+{{ entry.address.organization }}
+{{ entry.address.recipient }}
+{{ entry.address.locale }}
+{{ entry.address.placeData }}
+{{ entry.address.latitude }}
+{{ entry.address.longitude }}
+{{ entry.address.mapUrl }}
+```
+
 ![Address Demo](resources/img/address-demo.gif)
 
 ## Telephone
@@ -26,20 +50,22 @@ Features:
 
 Template Tags:
 
-`{{ somefield }}` outputs the phone number in international format.
+Given `entry.telephone` is your field…
+
+`{{ entry.telephone }}` outputs the phone number in international format.
 
 You can also choose a specific format:
 
 ```
-{{ some_field.format('E164') }}
-{{ some_field.format('international') }}
-{{ some_field.format('national }}
-{{ some_field.format('RFC3966') }}
+{{ entry.telephone.format('E164') }}
+{{ entry.telephone.format('international') }}
+{{ entry.telephone.format('national }}
+{{ entry.telephone.format('RFC3966') }}
 ```
 
 The raw input from the user is also available:
 
-```{{ some_field.rawInput }}```
+```{{ entry.telephone.rawInput }}```
 
 ![Telephone Demo](resources/img/telephone-demo.gif)
 
