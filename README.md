@@ -24,6 +24,23 @@ Features:
 * Format phone number as E164, international, national or RFC3966
 * Stores Telephone model and raw user input
 
+Template Tags:
+
+`{{ somefield }}` outputs the phone number in international format.
+
+You can also choose a specific format:
+
+```
+{{ some_field.format('E164') }}
+{{ some_field.format('international') }}
+{{ some_field.format('national }}
+{{ some_field.format('RFC3966') }}
+```
+
+The raw input from the user is also available:
+
+```{{ some_field.rawInput }}```
+
 ![Telephone Demo](resources/img/telephone-demo.gif)
 
 ## Email
@@ -33,7 +50,6 @@ Features:
 * Email validation using Yii validation
 
 ![Email Demo](resources/img/email-demo.gif)
-
 
 ## Embed
 
