@@ -12,6 +12,30 @@ Features:
 * Address form formatting based on country powered by [commerceguys/addressing](https://github.com/commerceguys/addressing)
 * Validation / Geo-coding on submission (TODO)
 
+Template Tags:
+
+The [`normalizeValue`](./src/fields/Address.php#L504) method always returns an [`AddressModel`](./src/models/AddressModel.php). All public properties are available:
+
+Given `entry.address` is your field…
+
+```
+{{ entry.address.countryCode }}
+{{ entry.address.administrativeArea }}
+{{ entry.address.locality }}
+{{ entry.address.dependentLocality }}
+{{ entry.address.postalCode }}
+{{ entry.address.sortingCode }}
+{{ entry.address.addressLine1 }}
+{{ entry.address.addressLine2 }}
+{{ entry.address.organization }}
+{{ entry.address.recipient }}
+{{ entry.address.locale }}
+{{ entry.address.placeData }}
+{{ entry.address.latitude }}
+{{ entry.address.longitude }}
+{{ entry.address.mapUrl }}
+```
+
 ![Address Demo](resources/img/address-demo.gif)
 
 ## Telephone
@@ -24,6 +48,25 @@ Features:
 * Format phone number as E164, international, national or RFC3966
 * Stores Telephone model and raw user input
 
+Template Tags:
+
+Given `entry.telephone` is your field…
+
+`{{ entry.telephone }}` outputs the phone number in international format.
+
+You can also choose a specific format:
+
+```
+{{ entry.telephone.format('E164') }}
+{{ entry.telephone.format('international') }}
+{{ entry.telephone.format('national }}
+{{ entry.telephone.format('RFC3966') }}
+```
+
+The raw input from the user is also available:
+
+```{{ entry.telephone.rawInput }}```
+
 ![Telephone Demo](resources/img/telephone-demo.gif)
 
 ## Email
@@ -33,7 +76,6 @@ Features:
 * Email validation using Yii validation
 
 ![Email Demo](resources/img/email-demo.gif)
-
 
 ## Embed
 
@@ -94,6 +136,7 @@ Copy `src/config.php` to `CRAFT_CONFIG_PATH` and rename the file to `nsm-fields.
 
 Some things to do, and ideas for potential features:
 
+* Split out each field into it's own plugin. Keep this plugin as a single composer file which pulls all felds in
 * Address validation / Geo-coding on submission
 * Display address as text in field with option to "Edit" to reduce size of field in UI
 * Update commerceguys/addressing when next stable version is released
