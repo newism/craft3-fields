@@ -16,16 +16,14 @@
 
 <div class="flex">
 
-    {% if settings.showCountrySelector %}
-        {{ forms.select({
-            size: 'inline',
-            label: 'Country Code',
-            id: name ~ 'CountryCode',
-            name: name ~ '[countryCode]',
-            value: viewData ? viewData.countryCode,
-            options: countryOptions
-        }) }}
-    {% endif %}
+    {{ forms.select({
+        size: 'inline',
+        label: 'Country Code',
+        id: name ~ 'CountryCode',
+        name: name ~ '[countryCode]',
+        value: viewData ? viewData.countryCode,
+        options: countryOptions
+    }) }}
 
     <div class="flex-grow">
         {{ forms.text({

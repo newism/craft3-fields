@@ -48,8 +48,7 @@ class TelephoneModel extends Model implements \JsonSerializable
         try {
             $phoneNumber = $this->phoneNumberUtil->parse(
                 $rawInput,
-                $this->countryCode,
-                null
+                $this->countryCode
             );
             $this->phoneNumber = $phoneNumber;
         } catch (\Exception $e) {

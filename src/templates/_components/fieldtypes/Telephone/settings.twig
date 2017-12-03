@@ -14,13 +14,6 @@
 
 {% import "_includes/forms" as forms %}
 
-{{ forms.checkboxField({
-    label: 'Show country selector',
-    id: 'showCountrySelector',
-    name: 'showCountrySelector',
-    checked: field.showCountrySelector
-})}}
-
 {{ forms.selectField({
     label: 'Default country code',
     id: 'defaultCountryCode',

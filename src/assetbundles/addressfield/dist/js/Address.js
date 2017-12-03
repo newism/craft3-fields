@@ -113,7 +113,6 @@
             this.getElement('mapUrl').val('');
         },
 
-
         placeChanged: function () {
             var _this = this;
             var place = _this.autocomplete.getPlace();

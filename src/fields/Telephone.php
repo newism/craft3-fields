@@ -16,10 +16,8 @@ use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
 use libphonenumber\PhoneNumberUtil;
-use newism\fields\assetbundles\telephonefield\TelephoneFieldAsset;
 use newism\fields\models\TelephoneModel;
 use Symfony\Component\Intl\Intl;
-use yii\db\Schema;
 
 /**
  * Telephone Field
@@ -37,13 +35,6 @@ class Telephone extends Field implements PreviewableFieldInterface
      * @var PhoneNumberUtil
      */
     protected $phoneNumberUtil;
-
-    /**
-     * Show Country Selector
-     *
-     * @var boolean
-     */
-    public $showCountrySelector = true;
 
     /**
      * Default Country Code
@@ -92,8 +83,6 @@ class Telephone extends Field implements PreviewableFieldInterface
         $rules = array_merge(
             $rules,
             [
-                [['showCountrySelector'], 'boolean'],
-                [['showCountrySelector'], 'default', 'value' => false],
                 [['defaultCountryCode'], 'string'],
                 [['defaultCountryCode'], 'default', 'value' => 'US'],
             ]
@@ -125,15 +114,30 @@ class Telephone extends Field implements PreviewableFieldInterface
         }
 
         /**
-         * Array value from post or unserialised array
+         * Default values
          */
-        if (is_array($value) && !empty(array_filter($value))) {
-            return new TelephoneModel($value['countryCode'], $value['rawInput']);
+        if (!is_array($value)) {
+            $value = [
+                'countryCode' => $this->defaultCountryCode,
+                'rawInput' => '',
+            ];
         }
 
-        return null;
-
+        return new TelephoneModel($value['countryCode'] ?? $this->defaultCountryCode, $value['rawInput']);
     }
+
+    /**
+     * @inheritdoc
+     */
+    public function serializeValue($value, ElementInterface $element = null)
+    {
+        if ($value instanceof TelephoneModel && !$value->phoneNumber) {
+            return null;
+        }
+
+        return parent::serializeValue($value, $element);
+    }
+
 
     /**
      * Returns the component’s settings HTML.
@@ -158,19 +162,16 @@ class Telephone extends Field implements PreviewableFieldInterface
     /**
      * Returns the field’s input HTML.
      *
-     * @param mixed $value
+     * @param $value
      * @param ElementInterface|null $element
      * @return string
-     * @throws \yii\base\Exception
      * @throws \Twig_Error_Loader
-     * @throws \RuntimeException
-     * @throws \yii\base\InvalidConfigException
+     * @throws \yii\base\Exception
      */
     public function getInputHtml(
         $value,
         ElementInterface $element = null
-    ): string
-    {
+    ): string {
 
         // Get our id and namespace
         $id = Craft::$app->getView()->formatInputId($this->handle);
@@ -270,9 +271,7 @@ class Telephone extends Field implements PreviewableFieldInterface
     public function validatePhoneNumber(
         ElementInterface $element,
         array $params = null
-    )
-    {
-
+    ) {
         /** @var TelephoneModel $value */
         $value = $element->getFieldValue($this->handle);
         $valid = $value->isValid();
