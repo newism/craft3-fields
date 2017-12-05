@@ -40,7 +40,7 @@ Given `entry.address` is your field…
 
 ## Telephone
 
-Telephone field powered by [Googles phone number library](https://github.com/googlei18n/libphonenumber) implemented via [giggsey/libphonenumber-for-php](https://github.com/googlei18n/libphonenumber/)
+Telephone field powered by [Googles phone number library](https://github.com/googlei18n/libphonenumber) implemented via [giggsey/libphonenumber-for-php](https://github.com/giggsey/libphonenumber-for-php)
 
 Features:
 
