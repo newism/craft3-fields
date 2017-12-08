@@ -85,12 +85,12 @@
 
             jqXHR = Craft.postActionRequest(
                 'entries/switch-entry-type',
-                Craft.cp.$container.serialize(),
+                Craft.cp.$primaryForm.serialize(),
                 $.proxy(function (response, textStatus) {
                     var newHtml;
                     this.$spinner.addClass('hidden');
                     if (textStatus === 'success') {
-                        newHtml = $(response.paneHtml).find('#'+this.options.namespace+'-field .nsmFields-address-addressFieldsContainer');
+                        newHtml = $(response.fieldsHtml).find('#'+this.options.namespace+'-field .nsmFields-address-addressFieldsContainer');
                         newHtml.toggle(!! this.$countryCodeInput.val());
                         this.$addressFieldsContainer.replaceWith(newHtml);
                         this.$addressFieldsContainer = newHtml;
