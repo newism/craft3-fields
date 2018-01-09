@@ -88,7 +88,8 @@ Template Tags:
 
 Given `entry.embedField` is your field…
 
-`{{ entry.embedField.embedData }}` outputs the embed code required to render the embed.
+* `{{ entry.embedField.embedData }}` outputs the returned embed object.
+* `{{ entry.embedField.embedData.code | raw }}` outputs the returned embed javascript code.
 
 ![Embed Demo](resources/img/embed-demo.gif)
 
