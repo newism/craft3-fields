@@ -84,6 +84,12 @@ Features:
 * Embed social media posts / media directly from a URL
 * Live preview
 
+Template Tags:
+
+Given `entry.embedField` is your field…
+
+`{{ entry.embedField.embedData }}` outputs the embed code required to render the embed.
+
 ![Embed Demo](resources/img/embed-demo.gif)
 
 ## Person Name
