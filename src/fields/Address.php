@@ -504,6 +504,13 @@ JS;
     public function normalizeValue($value, ElementInterface $element = null)
     {
         /**
+         * Just return value if it's already an AdressModel.
+         */
+        if ($value instanceof AddressModel){
+            return $value;
+        }
+
+        /**
          * Serialised value from the DB
          */
         if (is_string($value)) {
