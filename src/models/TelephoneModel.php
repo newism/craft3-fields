@@ -63,6 +63,10 @@ class TelephoneModel extends Model implements \JsonSerializable
      */
     public function __toString()
     {
+        if(empty($this->phoneNumber)) {
+            return "";
+        }
+
         return $this->phoneNumberUtil->format($this->phoneNumber, PhoneNumberFormat::INTERNATIONAL);
     }
 
