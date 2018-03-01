@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.0.10 - 2018.1.03
+### Fixed
+- Fixes #22 Encode all emoticons in shortcodes using LitEmoji
+- Craft 3 RC-13 compatibility 
+
 ## 0.0.8 - 2018.6.02
 ### Fixed
 - Fixes #18 Telephone field causes a PHP error when entry is saved 
