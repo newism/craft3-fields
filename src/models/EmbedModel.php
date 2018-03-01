@@ -2,28 +2,15 @@
 
 namespace newism\fields\models;
 
-use CommerceGuys\Addressing\Model\AddressInterface;
 use yii\base\Model;
 
-class EmbedModel extends Model implements \JsonSerializable
+class EmbedModel extends Model
 {
     public $rawInput;
     public $embedData;
 
-    /**
-     * json serialize countryCode and phoneNumber for DB storage
-     *
-     * @return array
-     */
-    public function jsonSerialize(): array
+    public function isEmpty(): bool
     {
-        return [
-            'rawInput' => $this->rawInput,
-            'embedData' => $this->embedData
-        ];
-    }
-
-    public function isEmpty(): bool {
         return empty($this->rawInput);
     }
 }

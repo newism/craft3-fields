@@ -15,6 +15,7 @@ use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
 use craft\helpers\UrlHelper;
+use LitEmoji\LitEmoji;
 use newism\fields\assetbundles\embedfield\EmbedFieldAsset;
 use newism\fields\models\EmbedModel;
 use newism\fields\NsmFields;
@@ -97,7 +98,7 @@ class Embed extends Field implements PreviewableFieldInterface
     public function normalizeValue($value, ElementInterface $element = null)
     {
         if (is_string($value)) {
-            $value = json_decode($value, true);
+            $value = json_decode(LitEmoji::shortcodeToUnicode($value), true);
         }
 
         if (is_array($value) && $value['rawInput']) {
@@ -109,6 +110,25 @@ class Embed extends Field implements PreviewableFieldInterface
         }
 
         return null;
+    }
+
+    /**
+     * @param mixed $value
+     * @param ElementInterface|null $element
+     * @return array|mixed|null|string
+     */
+    public function serializeValue($value, ElementInterface $element = null)
+    {
+        if(empty($value)) {
+            return null;
+        }
+
+        $data = json_encode([
+            'rawInput' => $value->rawInput,
+            'embedData' => $value->embedData
+        ]);
+
+        return LitEmoji::unicodeToShortcode($data);
     }
 
     /**
@@ -176,7 +196,6 @@ class Embed extends Field implements PreviewableFieldInterface
         return $rules;
     }
 
-
     /**
      * @param mixed $value
      * @param ElementInterface $element
@@ -191,6 +210,9 @@ class Embed extends Field implements PreviewableFieldInterface
      * @param mixed $value
      * @param ElementInterface $element
      * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \yii\base\Exception
+     * @throws \yii\base\InvalidConfigException
      */
     public function getTableAttributeHtml(
         $value,

@@ -52,6 +52,8 @@ class EmbedController extends Controller
 
     /**
      * @return string
+     * @throws \Twig_Error_Loader
+     * @throws \yii\base\Exception
      */
     public function actionParse(): string
     {
