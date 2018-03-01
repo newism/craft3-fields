@@ -27,7 +27,6 @@
     ],
     "require": {
         "craftcms/cms": "^3.0.0-RC8",
-        "craftcms/plugin-installer": "^1.0.0",
         "giggsey/libphonenumber-for-php": "^8.3",
         "symfony/intl": "^3.3",
         "commerceguys/addressing": "^0.8.4",
