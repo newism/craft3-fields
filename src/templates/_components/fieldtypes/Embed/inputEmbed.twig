@@ -13,7 +13,8 @@
                 id: name ~ 'EmbedData',
                 name: name ~ '[embedData]',
                 value: value ? value.embedData | json_encode(constant('JSON_PRETTY_PRINT') b-or constant('JSON_UNESCAPED_SLASHES')) : null,
-                class: 'nicetext nsmFields-embed-embedDataInput'
+                class: 'nicetext nsmFields-embed-embedDataInput',
+                disabled: true
             }) }}
         </div>
     {% else %}
