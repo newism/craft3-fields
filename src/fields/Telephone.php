@@ -249,17 +249,18 @@ class Telephone extends Field implements PreviewableFieldInterface
      * Returns whether the given value should be considered “empty” to a validator.
      *
      * @param mixed $value The field’s value
+     * @param ElementInterface $element
      *
      * @return bool Whether the value should be considered “empty”
-     * @see Validator::$isEmpty
+     * @see Validator::$isValueEmpty
      */
-    public function isEmpty($value): bool
+    public function isValueEmpty($value, ElementInterface $element = null ): bool
     {
         if ($value instanceof TelephoneModel) {
             return (null === $value->phoneNumber);
         }
 
-        return parent::isEmpty($value);
+        return parent::isValueEmpty($value);
     }
 
     /**
