@@ -150,17 +150,18 @@ class PersonName extends Field implements PreviewableFieldInterface
      * Returns whether the given value should be considered “empty” to a validator.
      *
      * @param mixed $value The field’s value
+     * @param ElementInterface $element
      *
      * @return bool Whether the value should be considered “empty”
      * @see Validator::$isEmpty
      */
-    public function isEmpty($value): bool
+    public function isValueEmpty($value, ElementInterface $element = null): bool
     {
         if($value instanceof PersonNameModel) {
             return $value->isEmpty();
         }
 
-        return parent::isEmpty($value);
+        return parent::isValueEmpty($value);
     }
 
 }
