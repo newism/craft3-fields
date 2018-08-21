@@ -10,16 +10,16 @@
 
 namespace newism\fields\fields;
 
-use CommerceGuys\Addressing\Enum\AddressField;
-use CommerceGuys\Addressing\Enum\AdministrativeAreaType;
-use CommerceGuys\Addressing\Enum\DependentLocalityType;
-use CommerceGuys\Addressing\Enum\LocalityType;
-use CommerceGuys\Addressing\Enum\PostalCodeType;
+use CommerceGuys\Addressing\AddressFormat\AddressField;
+use CommerceGuys\Addressing\AddressFormat\AddressFormat;
+use CommerceGuys\Addressing\AddressFormat\AddressFormatRepository;
+use CommerceGuys\Addressing\AddressFormat\AdministrativeAreaType;
+use CommerceGuys\Addressing\AddressFormat\DependentLocalityType;
+use CommerceGuys\Addressing\AddressFormat\LocalityType;
+use CommerceGuys\Addressing\AddressFormat\PostalCodeType;
+use CommerceGuys\Addressing\Country\CountryRepository;
 use CommerceGuys\Addressing\Formatter\DefaultFormatter;
-use CommerceGuys\Addressing\Model\AddressFormat;
-use CommerceGuys\Addressing\Repository\AddressFormatRepository;
-use CommerceGuys\Addressing\Repository\CountryRepository;
-use CommerceGuys\Addressing\Repository\SubdivisionRepository;
+use CommerceGuys\Addressing\Subdivision\SubdivisionRepository;
 use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
@@ -30,7 +30,6 @@ use newism\fields\assetbundles\addressfield\AddressFieldAsset;
 use newism\fields\models\AddressModel;
 use newism\fields\NsmFields;
 use newism\fields\validators\JsonValidator;
-use Symfony\Component\Intl\Intl;
 use yii\db\Schema;
 
 /**
@@ -147,14 +146,13 @@ class Address extends Field implements PreviewableFieldInterface
             $addressFormatRepository,
             $countryRepository,
             $subdivisionRepository,
-            null,
             [
                 'html' => false,
                 'html_attributes' => [],
             ]
         );
 
-        return '<pre>'.$formatter->format($value).'</pre>';
+        return '<pre>' . $formatter->format($value) . '</pre>';
     }
 
     /**
@@ -185,7 +183,7 @@ class Address extends Field implements PreviewableFieldInterface
         $fieldSettings['autoCompleteConfiguration'] =
             $fieldSettings['autoCompleteConfiguration']
                 ? Json::decode($fieldSettings['autoCompleteConfiguration'], true)
-                : array();
+                : [];
 
         // Variables to pass down to our field JavaScript to let it namespace properly
         $jsonVars = [
@@ -200,7 +198,7 @@ class Address extends Field implements PreviewableFieldInterface
         $jsonVars = Json::encode($jsonVars);
 
         Craft::$app->getView()->registerJs(
-            '$("#'.$namespacedId.'-field").NsmFieldsAddress('.$jsonVars.');'
+            '$("#' . $namespacedId . '-field").NsmFieldsAddress(' . $jsonVars . ');'
         );
 
         return $this->renderFormFields($value);
@@ -260,8 +258,8 @@ class Address extends Field implements PreviewableFieldInterface
         );
     }
 
-    private function renderFieldJs() {
-
+    private function renderFieldJs()
+    {
         $pluginSettings = NsmFields::getInstance()->getSettings();
 
         $js = <<<JS
@@ -284,13 +282,13 @@ JS;
         );
     }
 
-    private function renderAddressFields($value) {
-
+    private function renderAddressFields($value)
+    {
         $id = Craft::$app->getView()->formatInputId($this->handle);
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
         $countryCode = $value ? $value->getCountryCode() : null;
 
-        if(empty($countryCode)) {
+        if (empty($countryCode)) {
             return;
         }
 
@@ -335,7 +333,7 @@ JS;
         foreach ($formatRows as $formatRow) {
             preg_match_all('/%([a-zA-Z0-9]+)/i', $formatRow, $matches);
             $className = implode('-', $matches[1]);
-            $addressFields .= '<div class="flex nsmFields-fieldRow nsmFields-fieldRow-'.$className.'">';
+            $addressFields .= '<div class="flex nsmFields-fieldRow nsmFields-fieldRow-' . $className . '">';
             foreach ($matches[1] as $match) {
 
                 $subdivisionOptions = ($match === 'administrativeArea')
@@ -343,9 +341,9 @@ JS;
                     : [];
 
                 $formatRow = str_replace(
-                    '%'.$match,
+                    '%' . $match,
                     Craft::$app->getView()->renderTemplate(
-                        'nsm-fields/_components/fieldtypes/Address/input/'.$match,
+                        'nsm-fields/_components/fieldtypes/Address/input/' . $match,
                         [
                             'name' => $this->handle,
                             'value' => $value,
@@ -430,7 +428,9 @@ JS;
             AddressField::ADDRESS_LINE1 => 'Street Address',
             AddressField::ADDRESS_LINE2 => 'Street Address',
             AddressField::ORGANIZATION => 'Company',
-            AddressField::RECIPIENT => 'Recipient',
+            AddressField::GIVEN_NAME => 'Given Name',
+            AddressField::ADDITIONAL_NAME => 'Additional Name',
+            AddressField::FAMILY_NAME => 'Family Name',
             // Google's libaddressinput provides no label for this field type,
             // Google wallet calls it "CEDEX" for every country that uses it.
             AddressField::SORTING_CODE => 'Cedex',
@@ -450,7 +450,8 @@ JS;
      */
     public function getCountryOptions(): array
     {
-        $countryData = Intl::getRegionBundle()->getCountryNames();
+        $countryRepository = new CountryRepository();
+        $countryData = $countryRepository->getList();
         $options = [['value' => '', 'label' => '']];
         foreach ($countryData as $key => $option) {
             $options[] = [
@@ -475,16 +476,16 @@ JS;
     ): array {
 
 
-        if(!$countryCode) {
+        if (!$countryCode) {
             return [];
         }
 
         $subdivisionRepository = new SubdivisionRepository();
-        $subdivisions = $subdivisionRepository->getAll(
-            $countryCode,
-            $parentId
-        );
-        $options = [];
+        $subdivisions = $subdivisionRepository->getAll(array_filter([$countryCode, $parentId]));
+        $options = [[
+            'value' => '',
+            'label' => ''
+        ]];
 
         foreach ($subdivisions as $key => $option) {
             $options[] = [
@@ -506,7 +507,7 @@ JS;
         /**
          * Just return value if it's already an AdressModel.
          */
-        if ($value instanceof AddressModel){
+        if ($value instanceof AddressModel) {
             return $value;
         }
 

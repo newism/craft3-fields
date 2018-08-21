@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.0.11 - 2018.08.21
+### Added
+- `{{ entry.address.country }}` object to model
+### Changed
+- Craft 3.0.20 compatibility
+- Updated `commerceguys/addressing` to 1.0.1 which should add more stability moving forward
+- Removed `symfony/intl` in favour of `commerceguys/addressing` countryRepository
+
+
 ## 0.0.10 - 2018.1.03
 ### Fixed
 - Fixes #22 Encode all emoticons in shortcodes using LitEmoji

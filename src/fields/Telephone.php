@@ -11,13 +11,13 @@
 
 namespace newism\fields\fields;
 
+use CommerceGuys\Addressing\Country\CountryRepository;
 use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
 use libphonenumber\PhoneNumberUtil;
 use newism\fields\models\TelephoneModel;
-use Symfony\Component\Intl\Intl;
 
 /**
  * Telephone Field
@@ -200,7 +200,9 @@ class Telephone extends Field implements PreviewableFieldInterface
     private function getCountryOptions(): array
     {
         $countries = [['value' => '', 'label' => '']];
-        $countryData = Intl::getRegionBundle()->getCountryNames();
+
+        $countryRepository = new CountryRepository();
+        $countryData = $countryRepository->getList();
 
         foreach ($countryData as $key => $option) {
             $regionCode = $this->phoneNumberUtil->getCountryCodeForRegion(
@@ -260,7 +262,7 @@ class Telephone extends Field implements PreviewableFieldInterface
             return (null === $value->phoneNumber);
         }
 
-        return parent::isValueEmpty($value);
+        return parent::isValueEmpty($value, $element);
     }
 
     /**

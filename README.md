@@ -19,6 +19,7 @@ The [`normalizeValue`](./src/fields/Address.php#L504) method always returns an [
 Given `entry.address` is your field…
 
 ```
+See: https://github.com/commerceguys/addressing/blob/master/src/AddressInterface.php
 {{ entry.address.countryCode }}
 {{ entry.address.administrativeArea }}
 {{ entry.address.locality }}
@@ -30,10 +31,20 @@ Given `entry.address` is your field…
 {{ entry.address.organization }}
 {{ entry.address.recipient }}
 {{ entry.address.locale }}
+
+See: https://github.com/commerceguys/addressing/blob/master/src/Country/Country.php
+{{ entry.address.country.countryCode }}
+{{ entry.address.country.name }}
+{{ entry.address.country.threeLetterCode }}
+{{ entry.address.country.numericCode }}
+{{ entry.address.country.currencyCode }}
+{{ entry.address.country.locale }}
+
 {{ entry.address.placeData }}
 {{ entry.address.latitude }}
 {{ entry.address.longitude }}
 {{ entry.address.mapUrl }}
+
 ```
 
 ![Address Demo](resources/img/address-demo.gif)

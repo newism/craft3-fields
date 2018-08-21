@@ -2,7 +2,8 @@
 
 namespace newism\fields\models;
 
-use CommerceGuys\Addressing\Model\AddressInterface;
+use CommerceGuys\Addressing\AddressInterface;
+use CommerceGuys\Addressing\Country\CountryRepository;
 use yii\base\Model;
 
 class AddressModel extends Model implements AddressInterface
@@ -21,7 +22,9 @@ class AddressModel extends Model implements AddressInterface
                     'addressLine1',
                     'addressLine2',
                     'organization',
-                    'recipient',
+                    'giveName',
+                    'additionalName',
+                    'familyName',
                     'locale',
 
                     'placeData',
@@ -33,6 +36,19 @@ class AddressModel extends Model implements AddressInterface
             ],
         ];
     }
+
+    public function __construct(array $config = [])
+    {
+        parent::__construct($config);
+
+        if (isset($config['countryCode'])) {
+            $countryRepository = new CountryRepository();
+            $country = $countryRepository->get($config['countryCode']);
+            $this->country = $country;
+        }
+    }
+
+    public $country;
 
     /**
      * Google Place Data
@@ -94,9 +110,6 @@ class AddressModel extends Model implements AddressInterface
         return $this->mapUrl;
     }
 
-    /**
-     * Copied from
-     */
     /**
      * The two-letter country code.
      *
@@ -166,6 +179,9 @@ class AddressModel extends Model implements AddressInterface
      * @var string
      */
     public $recipient;
+    public $givenName;
+    public $additionalName;
+    public $familyName;
 
     /**
      * The locale.
@@ -252,7 +268,7 @@ class AddressModel extends Model implements AddressInterface
      */
     public function getRecipient()
     {
-        return $this->recipient;
+        return join(" ", [$this->getGivenName(), $this->getAdditionalName(), $this->getFamilyName()]);
     }
 
     /**
@@ -261,5 +277,29 @@ class AddressModel extends Model implements AddressInterface
     public function getLocale()
     {
         return $this->locale;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getGivenName()
+    {
+        return $this->givenName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getAdditionalName()
+    {
+        return $this->additionalName;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getFamilyName()
+    {
+        return $this->familyName;
     }
 }
