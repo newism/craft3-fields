@@ -102,7 +102,7 @@ class Embed extends Field implements PreviewableFieldInterface
         }
 
         if (is_array($value) && $value['rawInput']) {
-            if (Craft::$app->getRequest()->getIsPost()) {
+            if (!Craft::$app->getRequest()->getIsConsoleRequest() && Craft::$app->getRequest()->getIsPost()) {
                 $embedData = NsmFields::getInstance()->embed->parse($value['rawInput']);
                 $value['embedData'] = $embedData;
             }
