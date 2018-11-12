@@ -70,7 +70,7 @@ You can also choose a specific format:
 ```
 {{ entry.telephone.format('E164') }}
 {{ entry.telephone.format('international') }}
-{{ entry.telephone.format('national }}
+{{ entry.telephone.format('national') }}
 {{ entry.telephone.format('RFC3966') }}
 ```
 
