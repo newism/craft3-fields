@@ -246,7 +246,7 @@ class Embed extends Field implements PreviewableFieldInterface
             return $value->isEmpty();
         }
 
-        return parent::isValueEmpty($value);
+        return parent::isValueEmpty($value, $element);
     }
 
 
