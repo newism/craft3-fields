@@ -103,7 +103,7 @@ class Embed extends Field implements PreviewableFieldInterface
         }
 
         if (is_array($value) && $value['rawInput']) {
-            if (Craft::$app->getRequest()->getIsPost()) {
+            if (!Craft::$app->getRequest()->getIsConsoleRequest() && Craft::$app->getRequest()->getIsPost()) {
                 $embedData = NsmFields::getInstance()->embed->parse($value['rawInput']);
                 $value['embedData'] = $embedData;
             }
@@ -259,7 +259,7 @@ class Embed extends Field implements PreviewableFieldInterface
             return $value->isEmpty();
         }
 
-        return parent::isValueEmpty($value);
+        return parent::isValueEmpty($value, $element);
     }
 
 
