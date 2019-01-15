@@ -34,8 +34,7 @@
             </div>
         </div>
 
-
-        <div class="nsmFields-address-addressFieldsContainer" style="display:{{ value and value.countryCode ? 'block' : 'none'}}">
+        <div class="nsmFields-address-addressFieldsContainer" style="display:{{ countryCode ? 'block' : 'none'}}">
             {% if addressFields %}
                 {{ addressFields | raw }}
                 <div>

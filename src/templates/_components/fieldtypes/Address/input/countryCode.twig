@@ -5,7 +5,7 @@
     {{ forms.select({
         id: name ~ '-countryCode',
         name: name ~ '[countryCode]',
-        value: value ? value.countryCode : null,
+        value: value,
         options: countryOptions
     }) }}
 </div>

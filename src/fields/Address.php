@@ -213,12 +213,12 @@ class Address extends Field implements PreviewableFieldInterface
 
         $this->renderFieldJs();
 
-        $countryCode = $value ? $value->getCountryCode() : null;
+        $countryCode = $value ? $value->getCountryCode() : $this->defaultCountryCode;
         $countryCodeField = Craft::$app->getView()->renderTemplate(
             'nsm-fields/_components/fieldtypes/Address/input/countryCode',
             [
                 'name' => $this->handle,
-                'value' => $value,
+                'value' => $countryCode,
                 'field' => $this,
                 'id' => $id,
                 'namespacedId' => $namespacedId,
@@ -241,6 +241,7 @@ class Address extends Field implements PreviewableFieldInterface
                 'fieldSettings' => $fieldSettings,
                 'pluginSettings' => $pluginSettings,
                 'addressFields' => $addressFields,
+                'countryCode' => $countryCode,
                 'countryCodeField' => $countryCodeField,
             ]
         );
@@ -274,7 +275,7 @@ JS;
     {
         $id = Craft::$app->getView()->formatInputId($this->handle);
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
-        $countryCode = $value ? $value->getCountryCode() : null;
+        $countryCode = $value ? $value->getCountryCode() : $this->defaultCountryCode;
 
         if (empty($countryCode)) {
             return;

@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.0.14 - 2019.01.15
+### Fixes
+ - Fixes #30: Default Country Code doesn't do anything.
+
 ## 0.0.13 - 2019.01.15
 ### Changed
  - Fixes #35: latitude & longitude not being saved. Latitude and longitude are now hidden with CSS. The values are saved in the DB. Map Url is now hidden with CSS. The values are saved in the DB.
