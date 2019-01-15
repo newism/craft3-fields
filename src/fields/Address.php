@@ -298,13 +298,8 @@ JS;
             $formatTemplate = str_replace('%organization', '', $formatTemplate);
         }
 
-        if ($fieldSettings['showLatLng']) {
-            $formatTemplate .= "\n%latitude %longitude";
-        }
-
-        if ($fieldSettings['showMapUrl']) {
-            $formatTemplate .= "\n%mapUrl";
-        }
+        $formatTemplate .= "\n%latitude %longitude";
+        $formatTemplate .= "\n%mapUrl";
 
         $formatTemplate = preg_replace(
             '/(?:(?:\r\n|\r|\n)\s*){2}/s',
@@ -321,6 +316,15 @@ JS;
         foreach ($formatRows as $formatRow) {
             preg_match_all('/%([a-zA-Z0-9]+)/i', $formatRow, $matches);
             $className = implode('-', $matches[1]);
+
+            if (!$fieldSettings['showLatLng'] && $className === 'latitude-longitude') {
+                $className .= ' hidden';
+            }
+
+            if (!$fieldSettings['showMapUrl'] && $className === 'map-url') {
+                $className .= ' hidden';
+            }
+
             $addressFields .= '<div class="flex nsmFields-fieldRow nsmFields-fieldRow-' . $className . '">';
             foreach ($matches[1] as $match) {
 
