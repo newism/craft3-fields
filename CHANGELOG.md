@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.0.12 - 2019.01.15
+### Changed
+- Address uses a formatted string for search keywords
+- Embed uses the embed title for search keywords
+### Fixed
+- Fixes #39 Adresse cannot contain emoji - Address and Embed now use `StringHelper::encodeMb4` to serialize their DB value 
+
 ## 0.0.11 - 2018.08.21
 ### Added
 - `{{ entry.address.country }}` object to model

@@ -14,6 +14,7 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
+use craft\helpers\StringHelper;
 use craft\helpers\UrlHelper;
 use LitEmoji\LitEmoji;
 use newism\fields\assetbundles\embedfield\EmbedFieldAsset;
@@ -98,7 +99,7 @@ class Embed extends Field implements PreviewableFieldInterface
     public function normalizeValue($value, ElementInterface $element = null)
     {
         if (is_string($value)) {
-            $value = json_decode(LitEmoji::shortcodeToUnicode($value), true);
+            $value = json_decode($value, true);
         }
 
         if (is_array($value) && $value['rawInput']) {
@@ -128,8 +129,30 @@ class Embed extends Field implements PreviewableFieldInterface
             'embedData' => $value->embedData
         ]);
 
-        return LitEmoji::unicodeToShortcode($data);
+        if (Craft::$app->getDb()->getIsMysql()) {
+            // Encode any 4-byte UTF-8 characters.
+            $data = StringHelper::encodeMb4($data);
+        }
+
+        return $data;
     }
+
+
+    /**
+     * @param mixed $value
+     * @param ElementInterface $element
+     * @return string
+     */
+    public function getSearchKeywords($value, ElementInterface $element): string
+    {
+        $data = (string)$value;
+        if (Craft::$app->getDb()->getIsMysql()) {
+            // Encode any 4-byte UTF-8 characters.
+            $data = StringHelper::encodeMb4($data);
+        }
+        return $data;
+    }
+
 
     /**
      * Returns the field’s input HTML.
@@ -194,16 +217,6 @@ class Embed extends Field implements PreviewableFieldInterface
         $rules = parent::getElementValidationRules();
 
         return $rules;
-    }
-
-    /**
-     * @param mixed $value
-     * @param ElementInterface $element
-     * @return string
-     */
-    public function getSearchKeywords($value, ElementInterface $element): string
-    {
-        return json_encode($this);
     }
 
     /**

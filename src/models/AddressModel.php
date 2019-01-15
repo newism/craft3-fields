@@ -2,8 +2,11 @@
 
 namespace newism\fields\models;
 
+use CommerceGuys\Addressing\AddressFormat\AddressFormatRepository;
 use CommerceGuys\Addressing\AddressInterface;
 use CommerceGuys\Addressing\Country\CountryRepository;
+use CommerceGuys\Addressing\Formatter\DefaultFormatter;
+use CommerceGuys\Addressing\Subdivision\SubdivisionRepository;
 use yii\base\Model;
 
 class AddressModel extends Model implements AddressInterface
@@ -46,6 +49,24 @@ class AddressModel extends Model implements AddressInterface
             $country = $countryRepository->get($config['countryCode']);
             $this->country = $country;
         }
+    }
+
+    public function __toString()
+    {
+        $addressFormatRepository = new AddressFormatRepository();
+        $countryRepository = new CountryRepository();
+        $subdivisionRepository = new SubdivisionRepository();
+        $formatter = new DefaultFormatter(
+            $addressFormatRepository,
+            $countryRepository,
+            $subdivisionRepository,
+            [
+                'html' => false,
+                'html_attributes' => [],
+            ]
+        );
+
+        return $formatter->format($this);
     }
 
     public $country;

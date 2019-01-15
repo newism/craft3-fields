@@ -13,4 +13,9 @@ class EmbedModel extends Model
     {
         return empty($this->rawInput);
     }
+
+    public function __toString()
+    {
+        return (string) empty($this->embedData) ? $this->rawInput : $this->embedData['title'];
+    }
 }

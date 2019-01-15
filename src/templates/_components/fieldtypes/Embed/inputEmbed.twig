@@ -12,7 +12,7 @@
             {{ forms.textarea({
                 id: name ~ 'EmbedData',
                 name: name ~ '[embedData]',
-                value: value ? value.embedData | json_encode(constant('JSON_PRETTY_PRINT') b-or constant('JSON_UNESCAPED_SLASHES')) : null,
+                value: value ? value.embedData | json_encode(constant('JSON_PRETTY_PRINT') b-or constant('JSON_UNESCAPED_SLASHES') b-or constant('JSON_UNESCAPED_UNICODE')) : null,
                 class: 'nicetext nsmFields-embed-embedDataInput',
                 disabled: true
             }) }}
