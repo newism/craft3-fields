@@ -85,7 +85,7 @@ class TelephoneModel extends Model implements \JsonSerializable
 
         $format = array_key_exists($format, $formats) ? $formats[$format] : $format;
 
-        return $this->phoneNumberUtil->format($this->phoneNumber, $format);
+        return !empty($this->phoneNumber) ? $this->phoneNumberUtil->format($this->phoneNumber, $format) : '';
     }
 
     /**
