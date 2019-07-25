@@ -98,8 +98,16 @@ class Embed extends Field implements PreviewableFieldInterface
      */
     public function normalizeValue($value, ElementInterface $element = null)
     {
-        if (is_string($value)) {
-            $value = json_decode($value, true);
+        if(is_string($value)) {
+            // Attempt to migrate any old plain text URL values
+            if (filter_var($value, FILTER_VALIDATE_URL) !== false) {
+                $value = [
+                    'rawInput' => $value,
+                    'embedData' => NsmFields::getInstance()->embed->parse($value)
+                ];
+            } else {
+                $value = json_decode($value, true);
+            }
         }
 
         if (is_array($value) && $value['rawInput']) {
