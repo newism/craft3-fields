@@ -162,6 +162,8 @@ class Address extends Field implements PreviewableFieldInterface
         // Register our asset bundle
         Craft::$app->getView()->registerAssetBundle(AddressFieldAsset::class);
 
+        $this->renderFieldJs();
+
         // Get our id and namespace
         $id = Craft::$app->getView()->formatInputId($this->handle);
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
@@ -211,8 +213,6 @@ class Address extends Field implements PreviewableFieldInterface
         $fieldLabels = null;
         $addressFields = null;
 
-        $this->renderFieldJs();
-
         $countryCode = $value ? $value->getCountryCode() : $this->defaultCountryCode;
         $countryCodeField = Craft::$app->getView()->renderTemplate(
             'nsm-fields/_components/fieldtypes/Address/input/countryCode',
@@ -251,15 +251,7 @@ class Address extends Field implements PreviewableFieldInterface
     {
         $pluginSettings = NsmFields::getInstance()->getSettings();
 
-        $js = <<<JS
-window.googleMapsPlacesApiLoaded = window.googleMapsPlacesApiLoaded || false;
-function googleMapsPlacesApiLoadedCallback() {
-    window.googleMapsPlacesApiLoaded = true;
-    document.body.dispatchEvent(new Event('googleMapsPlacesApiLoaded'));
-}
-JS;
-        Craft::$app->view->registerJs($js, View::POS_BEGIN);
-
+        // Note: refer to src/assetbundles/addressfield/dist/js/Address.js for the callback name
         $googleApiKey = $pluginSettings->googleApiKey;
         $mapUrl = sprintf(
             'https://maps.googleapis.com/maps/api/js?key=%s&libraries=places&callback=googleMapsPlacesApiLoadedCallback',
@@ -267,7 +259,12 @@ JS;
         );
         Craft::$app->view->registerJsFile(
             $mapUrl,
-            ['async' => '', 'defer' => '', 'position' => View::POS_END]
+            [
+                'async' => '',
+                'defer' => '',
+                'position' => View::POS_END,
+                'depends' => [AddressFieldAsset::class]
+            ]
         );
     }
 
