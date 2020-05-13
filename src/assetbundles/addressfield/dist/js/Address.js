@@ -11,6 +11,12 @@
  */
 
 ;(function ($, Craft, window, document, undefined) {
+  // We need to create a callback for the Google Maps API to use when it has loaded
+    window.googleMapsPlacesApiLoaded = window.googleMapsPlacesApiLoaded || false;
+    window.googleMapsPlacesApiLoadedCallback = function() {
+      window.googleMapsPlacesApiLoaded = true;
+      document.body.dispatchEvent(new Event('googleMapsPlacesApiLoaded'));
+    };
 
     var pluginName = "NsmFieldsAddress",
         defaults = {};
