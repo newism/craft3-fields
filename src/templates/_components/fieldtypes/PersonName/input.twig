@@ -16,7 +16,8 @@
 
 <style>
     .personName {
-        display: flex
+        display: flex;
+        flex-wrap: wrap;
     }
 
     .personName label {
@@ -37,13 +38,26 @@
         flex: 0 0 auto;
     }
 
-    .personName > div + div {
-        margin-left: 5px;
+    .personName > div {
+        margin-right: 5px;
+    }
+
+    .personName > div:last-child {
+        margin-right: 0;
+    }
+
+    .personName > div:last-child {
+        margin-right: 0;
+    }
+
+    .personName-honorificPrefix,
+    .personName-honorificSuffix {
+        width: 60px;
     }
 </style>
 
 <div class="personName">
-    <div>
+    <div class="personName-honorificPrefix">
         <label for="">Prefix</label>
         {{ forms.text({
             id: name ~ '-honorificPrefix',
@@ -53,7 +67,7 @@
             style:"width: 6ch"
         }) }}
     </div>
-    <div>
+    <div class="personName-givenNames">
         <label for="">Given Names</label>
         {{ forms.text({
             id: name ~ '-givenNames',
@@ -62,7 +76,7 @@
             class: 'nicetext'
         }) }}
     </div>
-    <div>
+    <div class="personName-additionalNames">
         <label for="">Additional Names</label>
         {{ forms.text({
             id: name ~ '-additionalNames',
@@ -71,7 +85,7 @@
             class: 'nicetext'
         }) }}
     </div>
-    <div>
+    <div class="personName-familyNames">
         <label for="">Family Names</label>
         {{ forms.text({
             id: name ~ '-familyNames',
@@ -80,7 +94,7 @@
             class: 'nicetext'
         }) }}
     </div>
-    <div>
+    <div class="personName-honorificSuffix">
         <label for="">Suffix</label>
         {{ forms.text({
             id: name ~ '-honorificSuffix',
