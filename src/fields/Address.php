@@ -319,7 +319,7 @@ class Address extends Field implements PreviewableFieldInterface
                 $className .= ' hidden';
             }
 
-            if (!$fieldSettings['showMapUrl'] && $className === 'map-url') {
+            if (!$fieldSettings['showMapUrl'] && $className === 'mapUrl') {
                 $className .= ' hidden';
             }
 
