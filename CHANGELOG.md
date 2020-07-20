@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.0.16 - 2020.07.21
+### Fixes
+ - Fixes Show Map Url field option
+ - Fixes Person Name field spacing - Added flex wrap and margins
+ 
 ## 0.0.15 - 2020.05.19
 ### Fixes
  - Fixes Neo / Matrix integration
