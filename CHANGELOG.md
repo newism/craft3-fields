@@ -7,6 +7,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 0.0.17 - 2020.07.22
 ### Added
  - New setting to hide Address Place Data
+### Fixes
+ - Disabling AutoComplete breaks things! #43
  
 ## 0.0.16 - 2020.07.21
 ### Fixes
