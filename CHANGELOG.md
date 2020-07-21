@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.0.17 - 2020.07.22
+### Added
+ - New setting to hide Address Place Data
+ 
 ## 0.0.16 - 2020.07.21
 ### Fixes
  - Fixes Show Map Url field option
@@ -35,7 +39,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Craft 3.0.20 compatibility
 - Updated `commerceguys/addressing` to 1.0.1 which should add more stability moving forward
 - Removed `symfony/intl` in favour of `commerceguys/addressing` countryRepository
-
 
 ## 0.0.10 - 2018.1.03
 ### Fixed
