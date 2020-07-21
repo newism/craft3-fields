@@ -12,10 +12,11 @@
 
 div.nsmFields-address-container {
     padding: 14px;
-    border: 1px solid #e3e5e8;
-    background: #fafafa;
-    border-radius: 4px;
-    margin-top: 4px;
+    border: 1px solid #d5d8dd;
+    background: #f3f7fc;
+    border-radius: 5px;
+    margin-top: 10px;
+    box-shadow: 0 1px 5px -1px rgba(0,0,0,0.1)
 }
 
 .nsmfields-address-autoCompleteContainer {
@@ -25,11 +26,11 @@ div.nsmFields-address-container {
 }
 
 .nsmFields-address-countryCodeContainer {
-    margin-bottom: 14px;
+    margin-bottom: 10px;
 }
 
 div.nsmFields-fieldRow {align-items: flex-end;}
-div.nsmFields-fieldRow + div.nsmFields-fieldRow { margin-top: 14px;}
+div.nsmFields-fieldRow + div.nsmFields-fieldRow { margin-top: 10px;}
 div.nsmFields-fieldRow > *, div.nsmFields-fieldRow > * > * { vertical-align: bottom; }
 div.nsmFields-fieldRow-addressLine1 + div.nsmFields-fieldRow-addressLine2,
 div.nsmFields-fieldRow-addressLine2 + div.nsmFields-fieldRow-addressLine1 { margin-top: 5px; }
@@ -39,4 +40,4 @@ div.nsmFields-fieldRow .field-latitude { max-width: 200px; }
 div.nsmFields-fieldRow .field-longitude { max-width: 200px; }
 div.nsmFields-fieldRow .field-postalCode { max-width: 200px; }
 div.nsmFields-fieldRow label { display: block; font-size: 11px;}
-div.nsmFields-fieldRow > *:not(:last-child) { margin-right: 1ch;}
+div.nsmFields-fieldRow > *:not(:last-child) { margin-right: 1ch !important; }
