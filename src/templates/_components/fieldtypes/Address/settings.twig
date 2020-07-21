@@ -61,6 +61,15 @@
 }) }}
 
 {{ forms.checkboxField({
+    label: 'Show Place Data',
+    instructions: '',
+    id: 'showPlaceData',
+    name: 'showPlaceData',
+    checked: field['showPlaceData'],
+    errors: field.getErrors('showPlaceData')
+}) }}
+
+{{ forms.checkboxField({
     label: 'Show Auto Complete',
     instructions: '',
     id: 'showAutoComplete',

@@ -49,6 +49,7 @@ class Address extends Field implements PreviewableFieldInterface
     public $showRecipient = true;
     public $showLatLng = true;
     public $showMapUrl = true;
+    public $showPlaceData = false;
 
     // Static Methods
     // =========================================================================
