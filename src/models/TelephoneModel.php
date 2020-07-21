@@ -2,24 +2,25 @@
 
 namespace newism\fields\models;
 
-use Craft;
 use craft\base\Model;
+use Exception;
+use JsonSerializable;
 use libphonenumber\PhoneNumber;
 use libphonenumber\PhoneNumberFormat;
 use libphonenumber\PhoneNumberUtil;
 
-class TelephoneModel extends Model implements \JsonSerializable
+class TelephoneModel extends Model implements JsonSerializable
 {
-    /** @var string  */
+    /** @var string */
     public $countryCode;
 
-    /** @var string  */
+    /** @var string */
     public $rawInput;
 
-    /** @var PhoneNumber  */
+    /** @var PhoneNumber */
     public $phoneNumber;
 
-    /** @var PhoneNumberUtil  */
+    /** @var PhoneNumberUtil */
     private $phoneNumberUtil;
 
     /**
@@ -51,7 +52,7 @@ class TelephoneModel extends Model implements \JsonSerializable
                 $this->countryCode
             );
             $this->phoneNumber = $phoneNumber;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
 //            $phoneNumber = new PhoneNumber();
 //            $phoneNumber->setCountryCode($countryCode);
 //            $phoneNumber->setRawInput($rawInput);
@@ -63,7 +64,7 @@ class TelephoneModel extends Model implements \JsonSerializable
      */
     public function __toString()
     {
-        if(empty($this->phoneNumber)) {
+        if (empty($this->phoneNumber)) {
             return "";
         }
 
@@ -74,7 +75,8 @@ class TelephoneModel extends Model implements \JsonSerializable
      * @param $format
      * @return string
      */
-    public function format($format): string {
+    public function format($format): string
+    {
 
         $formats = [
             'E164' => PhoneNumberFormat::E164,
@@ -98,7 +100,7 @@ class TelephoneModel extends Model implements \JsonSerializable
         return [
             'countryCode' => $this->countryCode,
             'rawInput' => $this->rawInput,
-            'phoneNumber' => $this->format(PhoneNumberFormat::E164)
+            'phoneNumber' => $this->format(PhoneNumberFormat::E164),
         ];
     }
 
@@ -107,13 +109,14 @@ class TelephoneModel extends Model implements \JsonSerializable
      *
      * @return array
      */
-    public function getViewData(): array {
+    public function getViewData(): array
+    {
         return [
             'countryCode' => $this->countryCode,
             'rawInput' => $this->rawInput,
             'phoneNumber' => $this->phoneNumber
                 ? $this->format(PhoneNumberFormat::NATIONAL)
-                : null
+                : null,
         ];
     }
 
@@ -122,7 +125,8 @@ class TelephoneModel extends Model implements \JsonSerializable
      *
      * @return bool
      */
-    public function isValid() {
+    public function isValid()
+    {
         return (boolean) ($this->phoneNumber && $this->phoneNumberUtil->isValidNumberForRegion(
                 $this->phoneNumber,
                 $this->countryCode

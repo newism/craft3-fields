@@ -11,18 +11,18 @@
  */
 
 ;(function ($, Craft, window, document, undefined) {
-  // We need to create a callback for the Google Maps API to use when it has loaded
+    // We need to create a callback for the Google Maps API to use when it has loaded
     window.googleMapsPlacesApiLoaded = window.googleMapsPlacesApiLoaded || false;
-    window.googleMapsPlacesApiLoadedCallback = function() {
-      window.googleMapsPlacesApiLoaded = true;
-      document.body.dispatchEvent(new Event('googleMapsPlacesApiLoaded'));
+    window.googleMapsPlacesApiLoadedCallback = function () {
+        window.googleMapsPlacesApiLoaded = true;
+        document.body.dispatchEvent(new Event('googleMapsPlacesApiLoaded'));
     };
 
-    var pluginName = "NsmFieldsAddress",
+    var pluginName = 'NsmFieldsAddress',
         defaults = {};
 
     // Plugin constructor
-    function Plugin(element, options) {
+    function Plugin (element, options) {
         this.$element = $(element);
         this.options = $.extend({}, defaults, options);
         this._defaults = defaults;
@@ -32,8 +32,8 @@
 
     Plugin.prototype = {
 
-        getElement: function(element) {
-            return this.$element.find('#'+this.options.namespace+'-'+element);
+        getElement: function (element) {
+            return this.$element.find('#' + this.options.namespace + '-' + element);
         },
 
         init: function (id) {
@@ -56,16 +56,16 @@
         },
 
         initAutocomplete: function () {
-            this.$autoCompleteInput = this.$element.find('#'+this.options.namespace+'-autoComplete');
+            this.$autoCompleteInput = this.$element.find('#' + this.options.namespace + '-autoComplete');
 
-            if(this.$autoCompleteInput.length){
+            if (this.$autoCompleteInput.length) {
 
                 this.autocomplete = new google.maps.places.Autocomplete(
                     this.$autoCompleteInput[0],
-                    this.options.fieldSettings.autoCompleteConfiguration
+                    this.options.fieldSettings.autoCompleteConfiguration,
                 );
 
-                google.maps.event.addDomListener(this.$autoCompleteInput[0], 'keydown', function(e) {
+                google.maps.event.addDomListener(this.$autoCompleteInput[0], 'keydown', function (e) {
                     if (e.keyCode === 13) {
                         e.preventDefault();
                     }
@@ -81,11 +81,11 @@
             var newCountryCode = this.$countryCodeInput.val(),
                 jqXHR;
 
-            if(!newCountryCode) {
+            if (!newCountryCode) {
                 this.$addressFieldsContainer.hide();
             }
 
-            if(this.currentCountryCode !== newCountryCode) {
+            if (this.currentCountryCode !== newCountryCode) {
                 this.clearInputs();
             }
 
@@ -99,8 +99,8 @@
                     var newHtml;
                     this.$spinner.addClass('hidden');
                     if (textStatus === 'success') {
-                        newHtml = $(response.fieldsHtml).find('#'+this.options.namespace+'-field .nsmFields-address-addressFieldsContainer');
-                        newHtml.toggle(!! this.$countryCodeInput.val());
+                        newHtml = $(response.fieldsHtml).find('#' + this.options.namespace + '-field .nsmFields-address-addressFieldsContainer');
+                        newHtml.toggle(!!this.$countryCodeInput.val());
                         this.$addressFieldsContainer.replaceWith(newHtml);
                         this.$addressFieldsContainer = newHtml;
                         Craft.initUiElements(this.$addressFieldsContainer);
@@ -110,7 +110,7 @@
             return jqXHR;
         },
 
-        clearInputs: function() {
+        clearInputs: function () {
             this.getElement('addressLine1').val('');
             this.getElement('addressLine2').val('');
             this.getElement('locality').val('');
@@ -154,26 +154,26 @@
             for (var i in result.address_components) {
                 for (var j in result.address_components[i].types) {
                     switch (result.address_components[i].types[j]) {
-                        case "street_number":
+                        case 'street_number':
                             normalised.streetNumber = result.address_components[i].long_name;
                             break;
-                        case "route":
+                        case 'route':
                             normalised.route = result.address_components[i].short_name;
                             break;
-                        case "locality":
+                        case 'locality':
                             normalised.locality = result.address_components[i].long_name;
                             break;
-                        case "administrative_area_level_1":
+                        case 'administrative_area_level_1':
                             normalised.administrativeArea = result.address_components[i].long_name;
                             normalised.administrativeAreaCode = result.address_components[i].short_name;
                             // Normalise Japan
                             normalised.administrativeAreaCode = normalised.administrativeAreaCode.replace(' Prefecture', '');
                             normalised.administrativeAreaCode = normalised.administrativeAreaCode.replace(' Parish', '');
                             break;
-                        case "postal_code":
+                        case 'postal_code':
                             normalised.postalCode = result.address_components[i].long_name;
                             break;
-                        case "country":
+                        case 'country':
                             normalised.country = result.address_components[i].long_name;
                             normalised.countryCode = result.address_components[i].short_name;
                             break;
@@ -182,15 +182,15 @@
             }
 
             return normalised;
-        }
+        },
     };
 
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
     $.fn[pluginName] = function (options) {
         return this.each(function () {
-            if (!$.data(this, "plugin_" + pluginName)) {
-                $.data(this, "plugin_" + pluginName,
+            if (!$.data(this, 'plugin_' + pluginName)) {
+                $.data(this, 'plugin_' + pluginName,
                     new Plugin(this, options));
             }
         });

@@ -1,10 +1,13 @@
 {% import "_includes/forms" as forms %}
 
-{{ forms.textField({
+{% set fileConfig = craft.app.config.getConfigFromFile('nsm-fields') %}
+{{ forms.autoSuggestField({
+    suggestEnvVars: true,
     label: 'Google API Key'|t('nsm-fields'),
-    instructions: 'See the [official documentation](https://developers.google.com/places/web-service/get-api-key).',
+    instructions: 'Required for Address Autocomplete - See the [official documentation](https://developers.google.com/places/web-service/get-api-key).',
     id: 'googleApiKey',
     name: 'googleApiKey',
-    value: settings['googleApiKey'],
-    errors: settings.getErrors('googleApiKey')
+    value: settings.googleApiKey,
+    errors: settings.getErrors('googleApiKey'),
+    warning: (fileConfig.googleApiKey is defined) ? 'This is being overridden by the `googleApiKey` setting in `config/nsm-fields.php`.' : null,
 }) }}

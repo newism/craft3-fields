@@ -11,11 +11,11 @@
  */
 ;(function ($, Craft, window, document, undefined) {
 
-    var pluginName = "NsmFieldsEmbed",
+    var pluginName = 'NsmFieldsEmbed',
         defaults = {};
 
     // Plugin constructor
-    function Plugin(element, options) {
+    function Plugin (element, options) {
         this.$element = $(element);
         this.options = $.extend({}, defaults, options);
         this._defaults = defaults;
@@ -35,7 +35,7 @@
             this.$spinner = $('<div class="spinner hidden"/>').insertAfter(this.$rawInput.parent());
         },
 
-        fetchEmbedData: function(event) {
+        fetchEmbedData: function (event) {
             var self = this;
             var jxhr;
 
@@ -45,21 +45,21 @@
             this.$embedDataInput.val(null);
             this.$spinner.removeClass('hidden');
 
-            jxhr = $.get(this.options.endpointUrl,{
+            jxhr = $.get(this.options.endpointUrl, {
                 url: this.$rawInput.val(),
-                name: this.options.name
+                name: this.options.name,
             });
 
-            jxhr.done(function(data, textStatus, jqXHR){
+            jxhr.done(function (data, textStatus, jqXHR) {
                 console.log(data);
                 self.$embedDataContainer.html(data);
             });
 
-            jxhr.fail(function(jqXHR, textStatus, errorThrown){
+            jxhr.fail(function (jqXHR, textStatus, errorThrown) {
                 console.log(errorThrown);
             });
 
-            jxhr.always(function(){
+            jxhr.always(function () {
                 Craft.initUiElements(self.$embedDataContainer);
                 self.$embedDataContainer.removeClass('is-loading');
                 self.$spinner.addClass('hidden');
@@ -67,20 +67,20 @@
 
         },
 
-        handleKeydown: function(event) {
+        handleKeydown: function (event) {
             if (event.keyCode === 13) {
                 event.preventDefault();
                 this.fetchEmbedData(event);
             }
-        }
+        },
     };
 
     // A really lightweight plugin wrapper around the constructor,
     // preventing against multiple instantiations
     $.fn[pluginName] = function (options) {
         return this.each(function () {
-            if (!$.data(this, "plugin_" + pluginName)) {
-                $.data(this, "plugin_" + pluginName,
+            if (!$.data(this, 'plugin_' + pluginName)) {
+                $.data(this, 'plugin_' + pluginName,
                     new Plugin(this, options));
             }
         });

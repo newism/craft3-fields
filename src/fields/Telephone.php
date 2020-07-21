@@ -18,6 +18,9 @@ use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
 use libphonenumber\PhoneNumberUtil;
 use newism\fields\models\TelephoneModel;
+use RuntimeException;
+use Twig_Error_Loader;
+use yii\base\Exception;
 
 /**
  * Telephone Field
@@ -144,9 +147,9 @@ class Telephone extends Field implements PreviewableFieldInterface
      * Returns the component’s settings HTML.
      *
      * @return string
-     * @throws \yii\base\Exception
-     * @throws \Twig_Error_Loader
-     * @throws \RuntimeException
+     * @throws Exception
+     * @throws Twig_Error_Loader
+     * @throws RuntimeException
      */
     public function getSettingsHtml(): string
     {
@@ -166,8 +169,8 @@ class Telephone extends Field implements PreviewableFieldInterface
      * @param $value
      * @param ElementInterface|null $element
      * @return string
-     * @throws \Twig_Error_Loader
-     * @throws \yii\base\Exception
+     * @throws Twig_Error_Loader
+     * @throws Exception
      */
     public function getInputHtml(
         $value,
@@ -210,7 +213,7 @@ class Telephone extends Field implements PreviewableFieldInterface
             );
             $countries[] = [
                 'value' => $key,
-                'label' => $option . ($regionCode ? ' +' . $regionCode : ''),
+                'label' => $option.($regionCode ? ' +'.$regionCode : ''),
             ];
         }
 
@@ -256,7 +259,7 @@ class Telephone extends Field implements PreviewableFieldInterface
      * @return bool Whether the value should be considered “empty”
      * @see Validator::$isValueEmpty
      */
-    public function isValueEmpty($value, ElementInterface $element = null ): bool
+    public function isValueEmpty($value, ElementInterface $element = null): bool
     {
         if ($value instanceof TelephoneModel) {
             return (null === $value->phoneNumber);
@@ -308,6 +311,6 @@ class Telephone extends Field implements PreviewableFieldInterface
             return '';
         }
 
-        return (string)sprintf('%s [%s]', (string)$value, $value->countryCode);
+        return (string) sprintf('%s [%s]', (string) $value, $value->countryCode);
     }
 }

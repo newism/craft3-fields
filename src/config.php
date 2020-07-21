@@ -21,11 +21,11 @@
  * have different settings groups for each environment, just as you do for 'general.php'
  */
 
-return array(
+return [
     /**
      * Google Api Key
      *
      * @see: See the [official documentation](https://developers.google.com/places/web-service/get-api-key).
      */
     'googleApiKey' => '',
-);
+];

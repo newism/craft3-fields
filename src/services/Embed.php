@@ -43,7 +43,7 @@ class Embed extends Component
     public function parse($url)
     {
         $info = \Embed\Embed::create($url);
-        $result = array();
+        $result = [];
         $result['title'] = $info->title;
         $result['description'] = $info->description;
         $result['url'] = $info->url;

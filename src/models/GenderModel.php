@@ -23,7 +23,7 @@ class GenderModel extends Model
             [
                 [
                     'sex',
-                    'identity'
+                    'identity',
                 ],
                 'safe',
             ],
@@ -34,18 +34,19 @@ class GenderModel extends Model
     {
         return [
             'sex' => 'Sex',
-            'identity' => 'Identity'
+            'identity' => 'Identity',
         ];
     }
 
     /**
      * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
 
-        $str =  self::$sexLabels[$this->sex];
+        $str = self::$sexLabels[$this->sex];
 
-        if($this->identity) {
+        if ($this->identity) {
             $str .= " [".$this->identity."]";
         }
 
@@ -57,10 +58,14 @@ class GenderModel extends Model
      */
     public function isEmpty()
     {
-        return empty(array_filter([
-            $this->sex,
-            $this->identity
-        ]));
+        return empty(
+        array_filter(
+            [
+                $this->sex,
+                $this->identity,
+            ]
+        )
+        );
     }
 
 }

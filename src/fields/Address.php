@@ -18,7 +18,6 @@ use CommerceGuys\Addressing\AddressFormat\DependentLocalityType;
 use CommerceGuys\Addressing\AddressFormat\LocalityType;
 use CommerceGuys\Addressing\AddressFormat\PostalCodeType;
 use CommerceGuys\Addressing\Country\CountryRepository;
-use CommerceGuys\Addressing\Formatter\DefaultFormatter;
 use CommerceGuys\Addressing\Subdivision\SubdivisionRepository;
 use Craft;
 use craft\base\ElementInterface;
@@ -27,10 +26,16 @@ use craft\base\PreviewableFieldInterface;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
 use craft\web\View;
+use JsonException;
 use newism\fields\assetbundles\addressfield\AddressFieldAsset;
 use newism\fields\models\AddressModel;
 use newism\fields\NsmFields;
 use newism\fields\validators\JsonValidator;
+use RuntimeException;
+use Twig_Error_Loader;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
+use yii\base\InvalidParamException;
 use yii\db\Schema;
 
 /**
@@ -82,9 +87,9 @@ class Address extends Field implements PreviewableFieldInterface
 
     /**
      * @return string
-     * @throws \yii\base\Exception
-     * @throws \Twig_Error_Loader
-     * @throws \RuntimeException
+     * @throws Exception
+     * @throws Twig_Error_Loader
+     * @throws RuntimeException
      */
     public function getSettingsHtml(): string
     {
@@ -141,7 +146,7 @@ class Address extends Field implements PreviewableFieldInterface
             return '';
         }
 
-        return '<pre>' . (string)$value . '</pre>';
+        return '<pre>'.(string) $value.'</pre>';
     }
 
     /**
@@ -150,11 +155,11 @@ class Address extends Field implements PreviewableFieldInterface
      * @param ElementInterface|null $element The element the field is associated with, if there is one
      *
      * @return string The input HTML.
-     * @throws \yii\base\InvalidParamException
-     * @throws \yii\base\InvalidConfigException
-     * @throws \yii\base\Exception
-     * @throws \Twig_Error_Loader
-     * @throws \RuntimeException
+     * @throws InvalidParamException
+     * @throws InvalidConfigException
+     * @throws Exception
+     * @throws Twig_Error_Loader
+     * @throws RuntimeException
      */
     public function getInputHtml(
         $value,
@@ -189,7 +194,7 @@ class Address extends Field implements PreviewableFieldInterface
         $jsonVars = Json::encode($jsonVars);
 
         Craft::$app->getView()->registerJs(
-            '$("#' . $namespacedId . '-field").NsmFieldsAddress(' . $jsonVars . ');'
+            '$("#'.$namespacedId.'-field").NsmFieldsAddress('.$jsonVars.');'
         );
 
         return $this->renderFormFields($value);
@@ -198,9 +203,9 @@ class Address extends Field implements PreviewableFieldInterface
     /**
      * @param AddressModel $value
      * @return string
-     * @throws \yii\base\Exception
-     * @throws \Twig_Error_Loader
-     * @throws \RuntimeException
+     * @throws Exception
+     * @throws Twig_Error_Loader
+     * @throws RuntimeException
      */
     protected function renderFormFields(AddressModel $value = null)
     {
@@ -253,7 +258,7 @@ class Address extends Field implements PreviewableFieldInterface
         $pluginSettings = NsmFields::getInstance()->getSettings();
 
         // Note: refer to src/assetbundles/addressfield/dist/js/Address.js for the callback name
-        $googleApiKey = $pluginSettings->googleApiKey;
+        $googleApiKey = \Craft::parseEnv($pluginSettings->googleApiKey);
         $mapUrl = sprintf(
             'https://maps.googleapis.com/maps/api/js?key=%s&libraries=places&callback=googleMapsPlacesApiLoadedCallback',
             $googleApiKey
@@ -264,7 +269,7 @@ class Address extends Field implements PreviewableFieldInterface
                 'async' => '',
                 'defer' => '',
                 'position' => View::POS_END,
-                'depends' => [AddressFieldAsset::class]
+                'depends' => [AddressFieldAsset::class],
             ]
         );
     }
@@ -324,7 +329,7 @@ class Address extends Field implements PreviewableFieldInterface
                 $className .= ' hidden';
             }
 
-            $addressFields .= '<div class="flex nsmFields-fieldRow nsmFields-fieldRow-' . $className . '">';
+            $addressFields .= '<div class="flex nsmFields-fieldRow nsmFields-fieldRow-'.$className.'">';
             foreach ($matches[1] as $match) {
 
                 $subdivisionOptions = ($match === 'administrativeArea')
@@ -332,9 +337,9 @@ class Address extends Field implements PreviewableFieldInterface
                     : [];
 
                 $formatRow = str_replace(
-                    '%' . $match,
+                    '%'.$match,
                     Craft::$app->getView()->renderTemplate(
-                        'nsm-fields/_components/fieldtypes/Address/input/' . $match,
+                        'nsm-fields/_components/fieldtypes/Address/input/'.$match,
                         [
                             'name' => $this->handle,
                             'value' => $value,
@@ -472,10 +477,12 @@ class Address extends Field implements PreviewableFieldInterface
 
         $subdivisionRepository = new SubdivisionRepository();
         $subdivisions = $subdivisionRepository->getAll(array_filter([$countryCode, $parentId]));
-        $options = [[
-            'value' => '',
-            'label' => ''
-        ]];
+        $options = [
+            [
+                'value' => '',
+                'label' => '',
+            ],
+        ];
 
         foreach ($subdivisions as $key => $option) {
             $options[] = [
@@ -505,7 +512,7 @@ class Address extends Field implements PreviewableFieldInterface
          * Serialised value from the DB
          */
         if (is_string($value)) {
-            $value = json_decode($value, true);
+            $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
         }
 
         /**
@@ -522,14 +529,15 @@ class Address extends Field implements PreviewableFieldInterface
      * @param mixed $value
      * @param ElementInterface|null $element
      * @return array|mixed|null|string
+     * @throws JsonException
      */
-    public function serializeValue($value, ElementInterface $element = null)
+    public function serializeValue($value, ElementInterface $element = null): ?string
     {
-        if(empty($value)) {
+        if (empty($value)) {
             return null;
         }
 
-        $data = json_encode($value);
+        $data = json_encode($value, JSON_THROW_ON_ERROR);
 
         if (Craft::$app->getDb()->getIsMysql()) {
             // Encode any 4-byte UTF-8 characters.
@@ -541,6 +549,6 @@ class Address extends Field implements PreviewableFieldInterface
 
     public function getSearchKeywords($value, ElementInterface $element): string
     {
-        return (string)$value; // TODO: Change the autogenerated stub
+        return (string) $value; // TODO: Change the autogenerated stub
     }
 }

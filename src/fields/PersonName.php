@@ -15,6 +15,11 @@ use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
 use newism\fields\models\PersonNameModel;
+use RuntimeException;
+use Twig_Error_Loader;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
+use yii\base\InvalidParamException;
 use yii\db\Schema;
 
 /**
@@ -63,9 +68,9 @@ class PersonName extends Field implements PreviewableFieldInterface
      * Get settings HTML
      *
      * @return string
-     * @throws \yii\base\Exception
-     * @throws \Twig_Error_Loader
-     * @throws \RuntimeException
+     * @throws Exception
+     * @throws Twig_Error_Loader
+     * @throws RuntimeException
      */
     public function getSettingsHtml()
     {
@@ -93,8 +98,7 @@ class PersonName extends Field implements PreviewableFieldInterface
     public function normalizeValue(
         $value,
         ElementInterface $element = null
-    )
-    {
+    ) {
         if (is_string($value)) {
             $value = json_decode($value, true);
         }
@@ -112,17 +116,16 @@ class PersonName extends Field implements PreviewableFieldInterface
      * @param mixed $value
      * @param ElementInterface|null $element
      * @return string
-     * @throws \yii\base\InvalidParamException
-     * @throws \yii\base\Exception
-     * @throws \Twig_Error_Loader
-     * @throws \RuntimeException
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidParamException
+     * @throws Exception
+     * @throws Twig_Error_Loader
+     * @throws RuntimeException
+     * @throws InvalidConfigException
      */
     public function getInputHtml(
         $value,
         ElementInterface $element = null
-    ): string
-    {
+    ): string {
         return Craft::$app->getView()->renderTemplate(
             'nsm-fields/_components/fieldtypes/PersonName/input',
             [
@@ -141,8 +144,7 @@ class PersonName extends Field implements PreviewableFieldInterface
     public function getSearchKeywords(
         $value,
         ElementInterface $element
-    ): string
-    {
+    ): string {
         return json_encode($this);
     }
 
@@ -157,7 +159,7 @@ class PersonName extends Field implements PreviewableFieldInterface
      */
     public function isValueEmpty($value, ElementInterface $element = null): bool
     {
-        if($value instanceof PersonNameModel) {
+        if ($value instanceof PersonNameModel) {
             return $value->isEmpty();
         }
 

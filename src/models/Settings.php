@@ -9,13 +9,27 @@
 namespace newism\fields\models;
 
 
-class Settings extends \craft\base\Model
+use craft\base\Model;
+use craft\behaviors\EnvAttributeParserBehavior;
+
+class Settings extends Model
 {
-    public $googleApiKey;
-    public $addressDefaultFormat;
+    public ?string $googleApiKey = '';
+
+    public function behaviors()
+    {
+        return [
+            'parser' => [
+                'class' => EnvAttributeParserBehavior::class,
+                'attributes' => ['googleApiKey'],
+            ],
+        ];
+    }
 
     public function rules()
     {
-        return [];
+        return [
+            ['googleApiKey', 'string'],
+        ];
     }
 }

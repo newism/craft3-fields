@@ -22,8 +22,8 @@ use newism\fields\fields\Address as AddressField;
 use newism\fields\fields\Email as EmailField;
 use newism\fields\fields\Embed as EmbedField;
 use newism\fields\fields\Gender;
-use newism\fields\fields\Telephone as TelephoneField;
 use newism\fields\fields\PersonName as PersonNameField;
+use newism\fields\fields\Telephone as TelephoneField;
 use newism\fields\models\Settings;
 use newism\fields\services\Embed;
 use yii\base\Event;
@@ -77,7 +77,7 @@ class NsmFields extends Plugin
 
         // Register our fields
         Event::on(
-            Fields::className(),
+            Fields::class,
             Fields::EVENT_REGISTER_FIELD_TYPES,
             function (RegisterComponentTypesEvent $event) {
                 $event->types[] = TelephoneField::class;
@@ -97,18 +97,18 @@ class NsmFields extends Plugin
 
         // Register our CP routes
         Event::on(
-            UrlManager::className(),
+            UrlManager::class,
             UrlManager::EVENT_REGISTER_CP_URL_RULES,
-            function (RegisterUrlRulesEvent $event) {
+            static function (RegisterUrlRulesEvent $event) {
                 $event->rules['cpActionTrigger1'] = 'nsm-fields/embed/parse';
             }
         );
 
         // Do something after we're installed
         Event::on(
-            Plugins::className(),
+            Plugins::class,
             Plugins::EVENT_AFTER_INSTALL_PLUGIN,
-            function (PluginEvent $event) {
+            static function (PluginEvent $event) {
             }
         );
 
@@ -121,23 +121,14 @@ class NsmFields extends Plugin
     // Protected Methods
     // =========================================================================
 
-    /**
-     * @return Settings
-     */
-    protected function createSettingsModel()
+    protected function createSettingsModel(): Settings
     {
         return new Settings();
     }
 
-    /**
-     * @return string
-     * @throws \yii\base\Exception
-     * @throws \Twig_Error_Loader
-     * @throws \RuntimeException
-     */
     protected function settingsHtml(): string
     {
-        return \Craft::$app->getView()->renderTemplate(
+        return Craft::$app->getView()->renderTemplate(
             'nsm-fields/settings',
             [
                 'settings' => $this->getSettings(),

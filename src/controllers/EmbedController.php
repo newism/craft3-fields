@@ -12,7 +12,9 @@ namespace newism\fields\controllers;
 
 use Craft;
 use craft\web\Controller;
+use Exception;
 use newism\fields\NsmFields;
+use Twig_Error_Loader;
 
 /**
  * Embed Controller
@@ -52,7 +54,7 @@ class EmbedController extends Controller
 
     /**
      * @return string
-     * @throws \Twig_Error_Loader
+     * @throws Twig_Error_Loader
      * @throws \yii\base\Exception
      */
     public function actionParse(): string
@@ -61,10 +63,10 @@ class EmbedController extends Controller
         $value = null;
         $embedData = null;
 
-        if($rawInput) {
-            try{
+        if ($rawInput) {
+            try {
                 $embedData = NsmFields::getInstance()->embed->parse(urldecode($rawInput));
-            } catch (\Exception $exception) {
+            } catch (Exception $exception) {
 
             }
 

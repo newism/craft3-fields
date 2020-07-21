@@ -16,10 +16,14 @@ use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
 use craft\helpers\StringHelper;
 use craft\helpers\UrlHelper;
-use LitEmoji\LitEmoji;
 use newism\fields\assetbundles\embedfield\EmbedFieldAsset;
 use newism\fields\models\EmbedModel;
 use newism\fields\NsmFields;
+use RuntimeException;
+use Twig_Error_Loader;
+use yii\base\Exception;
+use yii\base\InvalidConfigException;
+use yii\base\InvalidParamException;
 use yii\db\Schema;
 use yii\helpers\Json;
 
@@ -63,9 +67,9 @@ class Embed extends Field implements PreviewableFieldInterface
      * Get settings HTML
      *
      * @return string
-     * @throws \yii\base\Exception
-     * @throws \Twig_Error_Loader
-     * @throws \RuntimeException
+     * @throws Exception
+     * @throws Twig_Error_Loader
+     * @throws RuntimeException
      */
     public function getSettingsHtml()
     {
@@ -107,6 +111,7 @@ class Embed extends Field implements PreviewableFieldInterface
                 $embedData = NsmFields::getInstance()->embed->parse($value['rawInput']);
                 $value['embedData'] = $embedData;
             }
+
             return new EmbedModel($value);
         }
 
@@ -120,14 +125,16 @@ class Embed extends Field implements PreviewableFieldInterface
      */
     public function serializeValue($value, ElementInterface $element = null)
     {
-        if(empty($value)) {
+        if (empty($value)) {
             return null;
         }
 
-        $data = json_encode([
-            'rawInput' => $value->rawInput,
-            'embedData' => $value->embedData
-        ]);
+        $data = json_encode(
+            [
+                'rawInput' => $value->rawInput,
+                'embedData' => $value->embedData,
+            ]
+        );
 
         if (Craft::$app->getDb()->getIsMysql()) {
             // Encode any 4-byte UTF-8 characters.
@@ -145,11 +152,12 @@ class Embed extends Field implements PreviewableFieldInterface
      */
     public function getSearchKeywords($value, ElementInterface $element): string
     {
-        $data = (string)$value;
+        $data = (string) $value;
         if (Craft::$app->getDb()->getIsMysql()) {
             // Encode any 4-byte UTF-8 characters.
             $data = StringHelper::encodeMb4($data);
         }
+
         return $data;
     }
 
@@ -160,11 +168,11 @@ class Embed extends Field implements PreviewableFieldInterface
      * @param mixed $value
      * @param ElementInterface|null $element
      * @return string
-     * @throws \yii\base\InvalidParamException
-     * @throws \yii\base\Exception
-     * @throws \Twig_Error_Loader
-     * @throws \RuntimeException
-     * @throws \yii\base\InvalidConfigException
+     * @throws InvalidParamException
+     * @throws Exception
+     * @throws Twig_Error_Loader
+     * @throws RuntimeException
+     * @throws InvalidConfigException
      */
     public function getInputHtml(
         $value,
@@ -223,9 +231,9 @@ class Embed extends Field implements PreviewableFieldInterface
      * @param mixed $value
      * @param ElementInterface $element
      * @return string
-     * @throws \Twig_Error_Loader
-     * @throws \yii\base\Exception
-     * @throws \yii\base\InvalidConfigException
+     * @throws Twig_Error_Loader
+     * @throws Exception
+     * @throws InvalidConfigException
      */
     public function getTableAttributeHtml(
         $value,
@@ -255,7 +263,7 @@ class Embed extends Field implements PreviewableFieldInterface
      */
     public function isValueEmpty($value, ElementInterface $element = null): bool
     {
-        if($value instanceof EmbedModel) {
+        if ($value instanceof EmbedModel) {
             return $value->isEmpty();
         }
 

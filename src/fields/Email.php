@@ -62,17 +62,19 @@ class Email extends PlainText
 
     public function getInputHtml($value, ElementInterface $element = null): string
     {
-        return Craft::$app->getView()->renderTemplate('nsm-fields/_components/fieldtypes/Email/input',
+        return Craft::$app->getView()->renderTemplate(
+            'nsm-fields/_components/fieldtypes/Email/input',
             [
                 'name' => $this->handle,
                 'value' => $value,
                 'field' => $this,
-            ]);
+            ]
+        );
     }
 
     public function normalizeValue($value, ElementInterface $element = null)
     {
-        if(empty($value)) {
+        if (empty($value)) {
             return null;
         }
 
