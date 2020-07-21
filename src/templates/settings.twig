@@ -2,6 +2,7 @@
 
 {% set fileConfig = craft.app.config.getConfigFromFile('nsm-fields') %}
 {{ forms.autoSuggestField({
+    first: true,
     suggestEnvVars: true,
     label: 'Google API Key'|t('nsm-fields'),
     instructions: 'Required for Address Autocomplete - See the [official documentation](https://developers.google.com/places/web-service/get-api-key).',
