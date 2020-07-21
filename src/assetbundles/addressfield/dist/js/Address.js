@@ -58,20 +58,23 @@
         initAutocomplete: function () {
             this.$autoCompleteInput = this.$element.find('#'+this.options.namespace+'-autoComplete');
 
-            this.autocomplete = new google.maps.places.Autocomplete(
-                this.$autoCompleteInput[0],
-                this.options.fieldSettings.autoCompleteConfiguration
-            );
+            if(this.$autoCompleteInput.length){
 
-            google.maps.event.addDomListener(this.$autoCompleteInput[0], 'keydown', function(e) {
-                if (e.keyCode === 13) {
-                    e.preventDefault();
-                }
-            });
+                this.autocomplete = new google.maps.places.Autocomplete(
+                    this.$autoCompleteInput[0],
+                    this.options.fieldSettings.autoCompleteConfiguration
+                );
 
-            // When the user selects an address from the dropdown, populate the address
-            // fields in the form.
-            this.autocomplete.addListener('place_changed', $.proxy(this.placeChanged, this));
+                google.maps.event.addDomListener(this.$autoCompleteInput[0], 'keydown', function(e) {
+                    if (e.keyCode === 13) {
+                        e.preventDefault();
+                    }
+                });
+
+                // When the user selects an address from the dropdown, populate the address
+                // fields in the form.
+                this.autocomplete.addListener('place_changed', $.proxy(this.placeChanged, this));
+            }
         },
 
         refreshCountry: function () {
