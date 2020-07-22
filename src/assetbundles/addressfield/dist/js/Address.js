@@ -48,11 +48,62 @@
             // Add loading state
             this.$spinner = $('<div class="spinner hidden"/>').insertAfter(this.$countryCodeInput.parent());
 
+            this.initMap();
             if (window.googleMapsPlacesApiLoaded) {
                 this.initAutocomplete();
             } else {
                 $('body').on('googleMapsPlacesApiLoaded', $.proxy(this.initAutocomplete, this));
             }
+        },
+
+        initMap: function () {
+            this.$mapContainer = this.$element.find('.nsmFields-address-map')
+            if(this.$mapContainer.length){
+                this.$map = new google.maps.Map(this.$mapContainer[0], {
+                    center: { lat: parseFloat(this.getElement('latitude').val() || this.$defaultMapCenter.lat), lng: parseFloat(this.getElement('longitude').val() || this.$defaultMapCenter.lng) },
+                    zoom: 8
+                });
+
+                this.$geocoder = new google.maps.Geocoder();
+
+                this.initMarker();
+            }
+        },
+
+        initMarker: function () {
+            var _this = this;
+            var pos = new google.maps.LatLng(parseFloat(this.getElement('latitude').val() || this.$defaultMapCenter.lat), parseFloat(this.getElement('longitude').val() || this.$defaultMapCenter.lng));
+
+            this.$marker = new google.maps.Marker({
+                position: pos,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                map: this.$map
+            });
+
+
+            google.maps.event.addListener(this.$marker, 'click', function(){
+                _this.updateMarkerPosition();
+            });
+
+            google.maps.event.addListener(this.$marker, 'dragend', function(){
+                _this.updateMarkerPosition();
+            });
+        },
+
+        updateMarkerPosition: function () {
+            var _this = this;
+            _this.$geocoder.geocode({ location: _this.$marker.getPosition() }, function(results, status) {
+                if (status === "OK") {
+                    if (results[0]) {
+                    _this.mapChanged(results[0])
+                    } else {
+                    window.alert("No results found");
+                    }
+                } else {
+                    window.alert("Geocoder failed due to: " + status);
+                }
+            });
         },
 
         initAutocomplete: function () {
@@ -143,6 +194,14 @@
                 _this.getElement('mapUrl').val(normalisedPlace.mapUrl);
             });
         },
+
+        mapChanged: function (place) {
+            var _this = this;
+            var normalisedPlace = this.normalisePlace(place);
+
+            _this.getElement('latitude').val(normalisedPlace.latitude);
+            _this.getElement('longitude').val(normalisedPlace.longitude);
+          },
 
         normalisePlace: function (result) {
             var normalised = {};

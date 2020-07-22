@@ -49,6 +49,7 @@ class Address extends Field implements PreviewableFieldInterface
 {
     public $defaultCountryCode = false;
     public $showAutoComplete = false;
+    public $showMap = false;
     public $autoCompleteConfiguration = '';
     public $showOrganization = false;
     public $showRecipient = true;
@@ -120,6 +121,7 @@ class Address extends Field implements PreviewableFieldInterface
             [
                 [['defaultCountryCode'], 'string'],
                 [['showAutoComplete'], 'boolean'],
+                [['showMap'], 'boolean'],
                 [['autoCompleteConfiguration'], 'string'],
                 [['autoCompleteConfiguration'], JsonValidator::class],
                 [['showOrganization'], 'boolean'],
@@ -302,9 +304,6 @@ class Address extends Field implements PreviewableFieldInterface
             $formatTemplate = str_replace('%organization', '', $formatTemplate);
         }
 
-        $formatTemplate .= "\n%latitude %longitude";
-        $formatTemplate .= "\n%mapUrl";
-
         $formatTemplate = preg_replace(
             '/(?:(?:\r\n|\r|\n)\s*){2}/s',
             "\n",
@@ -320,14 +319,6 @@ class Address extends Field implements PreviewableFieldInterface
         foreach ($formatRows as $formatRow) {
             preg_match_all('/%([a-zA-Z0-9]+)/i', $formatRow, $matches);
             $className = implode('-', $matches[1]);
-
-            if (!$fieldSettings['showLatLng'] && $className === 'latitude-longitude') {
-                $className .= ' hidden';
-            }
-
-            if (!$fieldSettings['showMapUrl'] && $className === 'mapUrl') {
-                $className .= ' hidden';
-            }
 
             $addressFields .= '<div class="flex nsmFields-fieldRow nsmFields-fieldRow-'.$className.'">';
             foreach ($matches[1] as $match) {
@@ -431,9 +422,6 @@ class Address extends Field implements PreviewableFieldInterface
             // Google wallet calls it "CEDEX" for every country that uses it.
             AddressField::SORTING_CODE => 'Cedex',
             AddressField::POSTAL_CODE => $postalCodeLabel,
-            'latitude' => 'Latitude',
-            'longitude' => 'Longitude',
-            'mapUrl' => 'Map URL',
         ];
 
         return $labels;
