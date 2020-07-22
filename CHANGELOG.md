@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.0.19 - 2020.07.23
+### Updated
+ - Added map + marker to Address field
+ 
 ## 0.0.18 - 2020.07.22
 ### Updated
  - Google API Key Setting can now be set as an `$_ENV` variables
