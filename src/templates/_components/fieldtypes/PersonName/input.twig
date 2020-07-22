@@ -2,7 +2,7 @@
 /**
  * NSM Fields plugin for Craft CMS 3.x
  *
- * Address Field Input
+ * Person Name Field Input
  *
  * @author    Leevi Graham
  * @copyright Copyright (c) 2017 Leevi Graham
@@ -14,80 +14,94 @@
 
 {% import "_includes/forms" as forms %}
 
-<div class="nsmFields-address">
+<style>
+.personName {
+    display: flex;
+    flex-wrap: wrap;
+}
 
-    <div class="nsmFields-address-container">
+.personName label {
+    font-size: 11px;
+    display: block;
+}
 
-        {% if fieldSettings.showAutoComplete %}
-            <div class="nsmfields-address-autoCompleteContainer">
-                <div class="texticon search icon clearable flex-grow">
-                    {{ forms.text({
-                        id: name ~ '-autoComplete'
-                    }) }}
-                </div>
-            </div>
-        {% endif %}
+.personName input {
+    width: 100%;
+}
 
-        <div class="nsmFields-address-countryCodeContainer">
-            <div class="flex nsmFields-fieldRow nsmFields-fieldRow-countryCode">
-                {{ countryCodeField | raw }}
-            </div>
-        </div>
+.personName > div {
+    flex: 1 0 auto;
+}
 
-        <div class="nsmFields-address-addressFieldsContainer" style="display:{{ countryCode ? 'block' : 'none' }}">
-            {% if addressFields %}
-                {{ addressFields | raw }}
-            {% endif %}
-        </div>
-        {% if fieldSettings.showMap %}
-        <div class="nsmFields-address-map-instructions">{{ 'Drag the marker to adjust the latitude and longitude'|t('nsm-fields') }}</div>
-        <div class="nsmFields-address-map"></div>
-        {% endif %}
-        <div class="{% if fieldSettings.showLatLng != true %}hidden{% else %}flex{% endif %} nsmFields-fieldRow nsmFields-fieldRow-latitude-longitude">
-            <div class="field-latitude">
-                <label for="{{ name ~ '-latitude' }}">{{ 'Latitude'|t('nsm-fields') }}</label>
-                {{ forms.text({
-                    id: name ~ '-latitude',
-                    name: name ~ '[latitude]',
-                    value: value ? value.latitude : null
-                }) }}
-            </div>
+.personName > div:first-child,
+.personName > div:last-child {
+    flex: 0 0 auto;
+}
 
-            <div class="field-longitude">
-                <label for="{{ name ~ '-longitude' }}">{{ 'Longitude'|t('nsm-fields') }}</label>
-                {{ forms.text({
-                    id: name ~ '-longitude',
-                    name: name ~ '[longitude]',
-                    value: value ? value.longitude : null
-                }) }}
-            </div>
-        </div>
-        <div class="{% if fieldSettings.showMapUrl != true %}hidden{% else %}flex{% endif %} nsmFields-fieldRow nsmFields-fieldRow-mapUrl">
-            <div class="flex-grow field-mapUrl">
-                <label for="{{ name }}-mapUrl">{{ 'Map URL'|t('nsm-fields') }}</label>
-                {{ forms.text({
-                    id: name ~ '-mapUrl',
-                    name: name ~ '[mapUrl]',
-                    attributes: {
-                        autocomplete: 'off',
-                    }
-                }) }}
-            </div>
-        </div>
-        <div class="{% if fieldSettings.showPlaceData != true %}hidden{% endif %}">
-            <div>
-                <a class="fieldtoggle collapsed" data-target="{{ name }}-advanced">{{ 'Place Data'|t('nsm-fields') }}</a>
-            </div>
-            <div id="{{ name }}-advanced" class="hidden">
-                {{ forms.textarea({
-                    label: 'Place Data',
-                    id: name ~ '-placeData',
-                    name: name ~ '[placeData]',
-                    rows: 20,
-                    value: value ? value.placeData
-                }) }}
-            </div>
-        </div>
+.personName > div {
+    margin-right: 5px;
+}
+
+.personName > div:last-child {
+    margin-right: 0;
+}
+
+.personName > div:last-child {
+    margin-right: 0;
+}
+
+.personName-honorificPrefix,
+.personName-honorificSuffix {
+    width: 60px;
+}
+</style>
+
+<div class="personName">
+    <div class="personName-honorificPrefix">
+        <label for="">Prefix</label>
+        {{ forms.text({
+            id: name ~ '-honorificPrefix',
+            name: name ~ '[honorificPrefix]',
+            value: value ? value.honorificPrefix,
+            class: 'nicetext',
+            style:"width: 6ch"
+        }) }}
+    </div>
+    <div class="personName-givenNames">
+        <label for="">Given Names</label>
+        {{ forms.text({
+            id: name ~ '-givenNames',
+            name: name ~ '[givenNames]',
+            value: value ? value.givenNames,
+            class: 'nicetext'
+        }) }}
+    </div>
+    <div class="personName-additionalNames">
+        <label for="">Additional Names</label>
+        {{ forms.text({
+            id: name ~ '-additionalNames',
+            name: name ~ '[additionalNames]',
+            value: value ? value.additionalNames,
+            class: 'nicetext'
+        }) }}
+    </div>
+    <div class="personName-familyNames">
+        <label for="">Family Names</label>
+        {{ forms.text({
+            id: name ~ '-familyNames',
+            name: name ~ '[familyNames]',
+            value: value ? value.familyNames,
+            class: 'nicetext'
+        }) }}
+    </div>
+    <div class="personName-honorificSuffix">
+        <label for="">Suffix</label>
+        {{ forms.text({
+            id: name ~ '-honorificSuffix',
+            name: name ~ '[honorificSuffix]',
+            value: value ? value.honorificSuffix,
+            class: 'nicetext',
+            style:"width: 12ch"
+        }) }}
     </div>
 </div>
-

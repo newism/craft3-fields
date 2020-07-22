@@ -37,24 +37,57 @@
         <div class="nsmFields-address-addressFieldsContainer" style="display:{{ countryCode ? 'block' : 'none' }}">
             {% if addressFields %}
                 {{ addressFields | raw }}
-                <div class="{% if fieldSettings.showPlaceData != true %}hidden{% endif %}">
-                    <div>
-                        <a class="fieldtoggle collapsed" data-target="{{ name }}-advanced">Place Data</a>
-                    </div>
-                    <div id="{{ name }}-advanced" class="hidden">
-                        {{ forms.textarea({
-                            label: 'Place Data',
-                            id: name ~ '-placeData',
-                            name: name ~ '[placeData]',
-                            rows: 20,
-                            value: value ? value.placeData
-                        }) }}
-                    </div>
-                </div>
             {% endif %}
         </div>
+        {% if fieldSettings.showMap %}
+        <div class="nsmFields-address-map-instructions">{{ 'Drag the marker to adjust the latitude and longitude'|t('nsm-fields') }}</div>
+        <div class="nsmFields-address-map"></div>
+        {% endif %}
+        <div class="{% if fieldSettings.showLatLng != true %}hidden{% else %}flex{% endif %} nsmFields-fieldRow nsmFields-fieldRow-latitude-longitude">
+            <div class="field-latitude">
+                <label for="{{ name ~ '-latitude' }}">{{ 'Latitude'|t('nsm-fields') }}</label>
+                {{ forms.text({
+                    id: name ~ '-latitude',
+                    name: name ~ '[latitude]',
+                    value: value ? value.latitude : null
+                }) }}
+            </div>
 
-
+            <div class="field-longitude">
+                <label for="{{ name ~ '-longitude' }}">{{ 'Longitude'|t('nsm-fields') }}</label>
+                {{ forms.text({
+                    id: name ~ '-longitude',
+                    name: name ~ '[longitude]',
+                    value: value ? value.longitude : null
+                }) }}
+            </div>
+        </div>
+        <div class="{% if fieldSettings.showMapUrl != true %}hidden{% else %}flex{% endif %} nsmFields-fieldRow nsmFields-fieldRow-mapUrl">
+            <div class="flex-grow field-mapUrl">
+                <label for="{{ name }}-mapUrl">{{ 'Map URL'|t('nsm-fields') }}</label>
+                {{ forms.text({
+                    id: name ~ '-mapUrl',
+                    name: name ~ '[mapUrl]',
+                    attributes: {
+                        autocomplete: 'off',
+                    }
+                }) }}
+            </div>
+        </div>
+        <div class="{% if fieldSettings.showPlaceData != true %}hidden{% endif %}">
+            <div>
+                <a class="fieldtoggle collapsed" data-target="{{ name }}-advanced">{{ 'Place Data'|t('nsm-fields') }}</a>
+            </div>
+            <div id="{{ name }}-advanced" class="hidden">
+                {{ forms.textarea({
+                    label: 'Place Data',
+                    id: name ~ '-placeData',
+                    name: name ~ '[placeData]',
+                    rows: 20,
+                    value: value ? value.placeData
+                }) }}
+            </div>
+        </div>
     </div>
 </div>
 
