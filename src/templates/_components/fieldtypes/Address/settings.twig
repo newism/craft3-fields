@@ -70,6 +70,15 @@
 }) }}
 
 {{ forms.checkboxField({
+    label: 'Show Map',
+    instructions: '',
+    id: 'showMap',
+    name: 'showMap',
+    checked: field['showMap'],
+    errors: field.getErrors('showMap')
+}) }}
+
+{{ forms.checkboxField({
     label: 'Show Auto Complete',
     instructions: '',
     id: 'showAutoComplete',

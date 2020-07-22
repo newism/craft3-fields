@@ -25,7 +25,7 @@ class AddressModel extends Model implements AddressInterface
                     'addressLine1',
                     'addressLine2',
                     'organization',
-                    'giveName',
+                    'givenName',
                     'additionalName',
                     'familyName',
                     'locale',
