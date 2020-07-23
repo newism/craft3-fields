@@ -9,6 +9,7 @@ Address field powered by Google's dataset ([commerceguys/addressing](https://git
 Features:
 
 * Auto-complete powered by Google Place API
+* Map powered by Google Maps Javascript API and Google Maps Geocoding API
 * Address form formatting based on country powered by [commerceguys/addressing](https://github.com/commerceguys/addressing)
 * Validation / Geo-coding on submission (TODO)
 
@@ -143,10 +144,10 @@ of the Composer documentation.
 ### Step 2: Install
 
 Install plugin in the Craft Control Panel under Settings > Plugins.
- 
+
 ## Configuration
 
-The plugin comes with a config.php file that defines some sensible defaults. 
+The plugin comes with a config.php file that defines some sensible defaults.
 
 Copy `src/config.php` to `CRAFT_CONFIG_PATH` and rename the file to `nsm-fields.php`.
 

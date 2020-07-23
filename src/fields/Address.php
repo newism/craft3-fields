@@ -309,6 +309,7 @@ class Address extends Field implements PreviewableFieldInterface
             "\n",
             $formatTemplate
         );
+        $formatTemplate = str_replace(',', '', $formatTemplate);
 
         $formatRows = array_filter(
             array_map('trim', explode("\n", $formatTemplate))
