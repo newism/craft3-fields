@@ -14,6 +14,7 @@
 
 {% import "_includes/forms" as forms %}
 
+<fieldset>
 {{ forms.selectField({
     label: 'Default Country',
     instructions: '',
@@ -99,4 +100,5 @@ See the [official documentation](https://developers.google.com/maps/documentatio
     value: field['autoCompleteConfiguration'],
     errors: field.getErrors('autoCompleteConfiguration')
 }) }}
+</fieldset>
 
