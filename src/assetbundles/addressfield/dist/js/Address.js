@@ -154,6 +154,7 @@
           'CRAFT_CSRF_TOKEN': Craft.cp.$primaryForm.find('[name="CRAFT_CSRF_TOKEN"]').val(),
           'countryCode': this.currentCountryCode,
           'namespace': this.options.namespace,
+          'handle': this.options.id,
         },
         $.proxy(function (response, textStatus) {
           this.$spinner.addClass('hidden');
