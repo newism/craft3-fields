@@ -1,8 +1,8 @@
 <?php
 /**
- * test plugin for Craft CMS 3.x
+ * NSM Fields for Craft CMS 3.x
  *
- * test
+ * nsm-fields
  *
  * @link      http://newism.com.au
  * @copyright Copyright (c) 2017 newism
@@ -33,7 +33,7 @@ use Twig_Error_Loader;
  * https://craftcms.com/docs/plugins/controllers
  *
  * @author    newism
- * @package   Test
+ * @package   nsm-fields
  * @since     1.0.0
  */
 class EmbedController extends Controller

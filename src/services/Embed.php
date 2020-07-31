@@ -1,8 +1,8 @@
 <?php
 /**
- * test plugin for Craft CMS 3.x
+ * NSM Fieldsfor Craft CMS 3.x
  *
- * test
+ * nsm-fields
  *
  * @link      http://newism.com.au
  * @copyright Copyright (c) 2017 Newism
@@ -22,7 +22,7 @@ use craft\base\Component;
  * https://craftcms.com/docs/plugins/services
  *
  * @author    Newism
- * @package   Test
+ * @package   nsm-fields
  * @since     1.0.0
  */
 class Embed extends Component
