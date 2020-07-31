@@ -4,35 +4,38 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.0.21 - 2020.07.31
+### Fixes
+ - Fixed Issue #58 - https://github.com/newism/craft3-fields/issues/58
 
 ## 0.0.20 - 2020.07.23
 ### Fixes
  - Fixed map loading when google hasn't loaded
- 
+
 ## 0.0.19 - 2020.07.23
 ### Updated
  - Added map + marker to Address field
- 
+
 ## 0.0.18 - 2020.07.22
 ### Updated
  - Google API Key Setting can now be set as an `$_ENV` variables
  - Code clean up
- 
+
 ## 0.0.17 - 2020.07.22
 ### Added
  - New setting to hide Address Place Data
 ### Fixes
  - Disabling AutoComplete breaks things! #43
- 
+
 ## 0.0.16 - 2020.07.21
 ### Fixes
  - Fixes Show Map Url field option
  - Fixes Person Name field spacing - Added flex wrap and margins
- 
+
 ## 0.0.15 - 2020.05.19
 ### Fixes
  - Fixes Neo / Matrix integration
- 
+
 ## 0.0.14 - 2019.01.15
 ### Fixes
  - Fixes #30: Default Country Code doesn't do anything.
@@ -46,7 +49,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 - Address uses a formatted string for search keywords
 - Embed uses the embed title for search keywords
 ### Fixed
-- Fixes #39 Adresse cannot contain emoji - Address and Embed now use `StringHelper::encodeMb4` to serialize their DB value 
+- Fixes #39 Adresse cannot contain emoji - Address and Embed now use `StringHelper::encodeMb4` to serialize their DB value
 
 ## 0.0.11 - 2018.08.21
 ### Added
@@ -59,15 +62,15 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
 ## 0.0.10 - 2018.1.03
 ### Fixed
 - Fixes #22 Encode all emoticons in shortcodes using LitEmoji
-- Craft 3 RC-13 compatibility 
+- Craft 3 RC-13 compatibility
 
 ## 0.0.8 - 2018.6.02
 ### Fixed
-- Fixes #18 Telephone field causes a PHP error when entry is saved 
+- Fixes #18 Telephone field causes a PHP error when entry is saved
 
 ## 0.0.7 - 2017.12.08
 ### Fixed
-- Fixes #15 Cannot read property 'serialize' of undefined - Address.js:88 
+- Fixes #15 Cannot read property 'serialize' of undefined - Address.js:88
 
 ## 0.0.6 - 2017.12.04
 ### Changed
