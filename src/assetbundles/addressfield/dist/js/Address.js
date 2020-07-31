@@ -33,7 +33,7 @@
   Plugin.prototype = {
 
     getElement: function (element) {
-      return this.$element.find('#' + this.options.namespace + '-' + element);
+      return this.$element.find('#' + this.options.namespacedId + '-' + element);
     },
 
     init: function (id) {
@@ -149,17 +149,18 @@
       this.$spinner.removeClass('hidden');
 
       jqXHR = Craft.postActionRequest(
-        'entries/switch-entry-type',
-        Craft.cp.$primaryForm.serialize(),
+        'nsm-fields/address/refresh-country',
+        {
+          'CRAFT_CSRF_TOKEN': Craft.cp.$primaryForm.find('[name="CRAFT_CSRF_TOKEN"]').val(),
+          'countryCode': this.currentCountryCode,
+          'namespace': this.options.namespace,
+        },
         $.proxy(function (response, textStatus) {
-          var newHtml;
           this.$spinner.addClass('hidden');
           if (textStatus === 'success') {
-            newHtml = $(response.fieldsHtml).find('#' + this.options.namespace + '-field .nsmFields-address-addressFieldsContainer');
-            newHtml.toggle(!!this.$countryCodeInput.val());
+            var newHtml = $(response.html).find('.nsmFields-address-addressFieldsContainer');
             this.$addressFieldsContainer.replaceWith(newHtml);
             this.$addressFieldsContainer = newHtml;
-            Craft.initUiElements(this.$addressFieldsContainer);
           }
         }, this));
 

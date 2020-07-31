@@ -187,7 +187,8 @@ class Address extends Field implements PreviewableFieldInterface
         $jsonVars = [
             'id' => $id,
             'name' => $this->handle,
-            'namespace' => $namespacedId,
+            'namespace' => Craft::$app->getView()->getNamespace(),
+            'namespacedId' => $namespacedId,
             'prefix' => Craft::$app->getView()->namespaceInputId(''),
             'fieldSettings' => $fieldSettings,
             'pluginSettings' => $pluginSettings,
@@ -209,7 +210,7 @@ class Address extends Field implements PreviewableFieldInterface
      * @throws Twig_Error_Loader
      * @throws RuntimeException
      */
-    protected function renderFormFields(AddressModel $value = null)
+    public function renderFormFields(AddressModel $value = null)
     {
         // Get our id and namespace
         $id = Craft::$app->getView()->formatInputId($this->handle);
@@ -229,6 +230,7 @@ class Address extends Field implements PreviewableFieldInterface
                 'value' => $countryCode,
                 'field' => $this,
                 'id' => $id,
+                'namespace' => Craft::$app->getView()->getNamespace(),
                 'namespacedId' => $namespacedId,
                 'settings' => $fieldSettings,
                 'countryOptions' => $this->getCountryOptions(),
@@ -245,6 +247,7 @@ class Address extends Field implements PreviewableFieldInterface
                 'value' => $value,
                 'field' => $this,
                 'id' => $id,
+                'namespace' => Craft::$app->getView()->getNamespace(),
                 'namespacedId' => $namespacedId,
                 'fieldSettings' => $fieldSettings,
                 'pluginSettings' => $pluginSettings,
@@ -337,6 +340,7 @@ class Address extends Field implements PreviewableFieldInterface
                             'value' => $value,
                             'field' => $this,
                             'id' => $id,
+                            'namespace' => Craft::$app->getView()->getNamespace(),
                             'namespacedId' => $namespacedId,
                             'settings' => $fieldSettings,
                             'addressFormat' => $addressFormat,

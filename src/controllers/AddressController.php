@@ -16,8 +16,11 @@ use Exception;
 use newism\fields\NsmFields;
 use Twig_Error_Loader;
 
+use yii\web\Response;
+use newism\fields\models\AddressModel;
+
 /**
- * Embed Controller
+ * Address Controller
  *
  * Generally speaking, controllers are the middlemen between the front end of
  * the CP/website and your plugin’s services. They contain action methods which
@@ -36,7 +39,7 @@ use Twig_Error_Loader;
  * @package   nsm-fields
  * @since     1.0.0
  */
-class EmbedController extends Controller
+class AddressController extends Controller
 {
 
     // Protected Properties
@@ -53,36 +56,25 @@ class EmbedController extends Controller
     // =========================================================================
 
     /**
-     * @return string
+     * @return response
      * @throws Twig_Error_Loader
      * @throws \yii\base\Exception
      */
-    public function actionParse(): string
+    public function actionRefreshCountry(): Response
     {
-        $rawInput = Craft::$app->request->get('url');
-        $value = null;
-        $embedData = null;
+        $this->requireAcceptsJson();
 
-        if ($rawInput) {
-            try {
-                $embedData = NsmFields::getInstance()->embed->parse(urldecode($rawInput));
-            } catch (Exception $exception) {
+        $address = Craft::$app->fields->getFieldByHandle('address');
 
-            }
+        $addressModel = new AddressModel([
+            'countryCode' => Craft::$app->request->post('countryCode')
+        ]);
 
-            $value = [
-                'rawInput' => $rawInput,
-                'embedData' => $embedData,
-            ];
-        }
+        $response = [
+            'html' => Craft::$app->getView()->namespaceInputs($address->renderFormFields($addressModel), Craft::$app->request->post('namespace'))
+        ];
 
-        return Craft::$app->getView()->renderTemplate(
-            'nsm-fields/_components/fieldtypes/Embed/inputEmbed.twig',
-            [
-                'name' => Craft::$app->request->get('name'),
-                'value' => $value,
-            ]
-        );
+        return $this->asJson($response);
     }
 
 }
