@@ -64,7 +64,7 @@ class AddressController extends Controller
     {
         $this->requireAcceptsJson();
 
-        $address = Craft::$app->fields->getFieldByHandle('address');
+        $address = Craft::$app->fields->getFieldByHandle(Craft::$app->request->post('handle'));
 
         $addressModel = new AddressModel([
             'countryCode' => Craft::$app->request->post('countryCode')
