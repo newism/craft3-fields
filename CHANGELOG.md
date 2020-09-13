@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.0.23 - 2020.09.13
+### Fixes
+ - Fixed Address Autocomplete
+ - Fixed Error on Craft 3.4.29.1 (plugin broken) #57 - https://github.com/newism/craft3-fields/issues/58
+
 ## 0.0.21 - 2020.07.31
 ### Fixes
  - Fixed Issue #58 - https://github.com/newism/craft3-fields/issues/58
