@@ -109,7 +109,6 @@
     },
 
     initAutocomplete: function () {
-      this.$autoCompleteInput = this.$element.find('#' + this.options.namespace + '-autoComplete');
 
       if (this.$autoCompleteInput.length) {
 
