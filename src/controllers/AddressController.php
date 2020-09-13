@@ -12,12 +12,9 @@ namespace newism\fields\controllers;
 
 use Craft;
 use craft\web\Controller;
-use Exception;
-use newism\fields\NsmFields;
-use Twig_Error_Loader;
-
-use yii\web\Response;
 use newism\fields\models\AddressModel;
+use Twig_Error_Loader;
+use yii\web\Response;
 
 /**
  * Address Controller
@@ -56,9 +53,8 @@ class AddressController extends Controller
     // =========================================================================
 
     /**
-     * @return response
-     * @throws Twig_Error_Loader
-     * @throws \yii\base\Exception
+     * @return Response
+     * @throws \yii\web\BadRequestHttpException
      */
     public function actionRefreshCountry(): Response
     {
@@ -66,12 +62,14 @@ class AddressController extends Controller
 
         $address = Craft::$app->fields->getFieldByHandle(Craft::$app->request->post('handle'));
 
-        $addressModel = new AddressModel([
-            'countryCode' => Craft::$app->request->post('countryCode')
-        ]);
+        $addressModel = new AddressModel(
+            [
+                'countryCode' => Craft::$app->request->post('countryCode'),
+            ]
+        );
 
         $response = [
-            'html' => Craft::$app->getView()->namespaceInputs($address->renderFormFields($addressModel), Craft::$app->request->post('namespace'))
+            'html' => Craft::$app->getView()->namespaceInputs($address->renderFormFields($addressModel), Craft::$app->request->post('namespace')),
         ];
 
         return $this->asJson($response);

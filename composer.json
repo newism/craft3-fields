@@ -2,7 +2,7 @@
     "name": "newism/craft3-fields",
     "description": "Address, telephone and email fields for CraftCMS 3.x",
     "type": "craft-plugin",
-    "version": "0.0.22",
+    "version": "0.0.23",
     "keywords": [
         "craft",
         "cms",
@@ -26,7 +26,6 @@
         }
     ],
     "require": {
-        "php": "^7.3",
         "craftcms/cms": "^3.0",
         "giggsey/libphonenumber-for-php": "^8.3",
         "commerceguys/addressing": "^1.0",
