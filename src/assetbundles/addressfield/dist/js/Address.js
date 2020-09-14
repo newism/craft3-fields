@@ -213,7 +213,8 @@
             this.getElement('countryCode').val(newCountryCode);
 
             $.when((currentCountryCode === newCountryCode) || this.refreshCountry()).then(function () {
-                _this.getElement('addressLine2').val((normalisedPlace.streetNumber || '') + ' ' + (normalisedPlace.route || ''));
+                _this.getElement('addressLine1').val((normalisedPlace.streetNumber || '') + ' ' + (normalisedPlace.route || ''));
+                _this.getElement('addressLine2').val('');
                 _this.getElement('locality').val(normalisedPlace.locality);
                 _this.getElement('administrativeArea').val(normalisedPlace.administrativeAreaCode);
                 _this.getElement('postalCode').val(normalisedPlace.postalCode);
