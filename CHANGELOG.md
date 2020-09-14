@@ -4,6 +4,10 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 0.0.24 - 2020.09.14
+### Fixes
+ - Changed: Autocomplete now fills in street address line 1 instead of 2.
+
 ## 0.0.23 - 2020.09.13
 ### Fixes
  - Fixed Address Autocomplete

@@ -2,7 +2,7 @@
     "name": "newism/craft3-fields",
     "description": "Address, telephone and email fields for CraftCMS 3.x",
     "type": "craft-plugin",
-    "version": "0.0.23",
+    "version": "0.0.24",
     "keywords": [
         "craft",
         "cms",
