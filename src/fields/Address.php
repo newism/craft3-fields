@@ -27,7 +27,7 @@ use craft\helpers\Json;
 use craft\helpers\StringHelper;
 use craft\web\View;
 use JsonException;
-use newism\fields\assetbundles\addressfield\AddressFieldAsset;
+use newism\fields\assetbundles\AddressField\AddressFieldAsset;
 use newism\fields\models\AddressModel;
 use newism\fields\NsmFields;
 use newism\fields\validators\JsonValidator;

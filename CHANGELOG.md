@@ -4,6 +4,11 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.0.0 - 2020.10.27
+### Fixes
+ - Asset bundle namespace - Composer 2 support
+ - v1 bump to allow for composer updates
+
 ## 0.0.24 - 2020.09.14
 ### Fixes
  - Changed: Autocomplete now fills in street address line 1 instead of 2.
