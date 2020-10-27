@@ -16,7 +16,7 @@ use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
 use craft\helpers\StringHelper;
 use craft\helpers\UrlHelper;
-use newism\fields\assetbundles\embedfield\EmbedFieldAsset;
+use newism\fields\assetbundles\EmbedField\EmbedFieldAsset;
 use newism\fields\models\EmbedModel;
 use newism\fields\NsmFields;
 use RuntimeException;

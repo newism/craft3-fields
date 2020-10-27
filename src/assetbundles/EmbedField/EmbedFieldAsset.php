@@ -8,13 +8,13 @@
  * @copyright Copyright (c) 2017 Leevi Graham
  */
 
-namespace newism\fields\assetbundles\addressfield;
+namespace newism\fields\assetbundles\EmbedField;
 
 use craft\web\AssetBundle;
 use craft\web\assets\cp\CpAsset;
 
 /**
- * AddressFieldAsset AssetBundle
+ * EmbedFieldAsset AssetBundle
  *
  * AssetBundle represents a collection of asset files, such as CSS, JS, images.
  *
@@ -31,7 +31,7 @@ use craft\web\assets\cp\CpAsset;
  * @package   NsmFields
  * @since     1.0.0
  */
-class AddressFieldAsset extends AssetBundle
+class EmbedFieldAsset extends AssetBundle
 {
     // Public Methods
     // =========================================================================
@@ -42,7 +42,7 @@ class AddressFieldAsset extends AssetBundle
     public function init()
     {
         // define the path that your publishable resources live
-        $this->sourcePath = "@newism/fields/assetbundles/addressfield/dist";
+        $this->sourcePath = "@newism/fields/assetbundles/embedfield/dist";
 
         // define the dependencies
         $this->depends = [
@@ -52,11 +52,11 @@ class AddressFieldAsset extends AssetBundle
         // define the relative path to CSS/JS files that should be registered with the page
         // when this asset bundle is registered
         $this->js = [
-            'js/Address.js',
+            'js/Embed.js',
         ];
 
         $this->css = [
-            'css/Address.css',
+            'css/Embed.css',
         ];
 
         parent::init();
