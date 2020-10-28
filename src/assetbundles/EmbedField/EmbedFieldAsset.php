@@ -42,7 +42,7 @@ class EmbedFieldAsset extends AssetBundle
     public function init()
     {
         // define the path that your publishable resources live
-        $this->sourcePath = "@newism/fields/assetbundles/embedfield/dist";
+        $this->sourcePath = "@newism/fields/assetbundles/EmbedField/dist";
 
         // define the dependencies
         $this->depends = [
