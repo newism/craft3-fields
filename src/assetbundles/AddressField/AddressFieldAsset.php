@@ -42,7 +42,7 @@ class AddressFieldAsset extends AssetBundle
     public function init()
     {
         // define the path that your publishable resources live
-        $this->sourcePath = "@newism/fields/assetbundles/addressfield/dist";
+        $this->sourcePath = "@newism/fields/assetbundles/AddressField/dist";
 
         // define the dependencies
         $this->depends = [
