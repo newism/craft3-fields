@@ -68,6 +68,7 @@
                 {{ forms.text({
                     id: name ~ '-mapUrl',
                     name: name ~ '[mapUrl]',
+                    value: value ? value.mapUrl : null,
                     attributes: {
                         autocomplete: 'off',
                     }
