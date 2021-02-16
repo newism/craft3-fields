@@ -1,4 +1,5 @@
 <?php
+
 namespace newism\fields\models;
 
 use craft\base\Model;
@@ -18,7 +19,7 @@ class Settings extends Model
                 'attributes' => [
                     'googleApiKey',
                     'facebookToken',
-                    'instagramToken'
+                    'instagramToken',
                 ],
             ],
         ];

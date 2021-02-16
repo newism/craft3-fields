@@ -28,4 +28,18 @@ return [
      * @see: See the [official documentation](https://developers.google.com/places/web-service/get-api-key).
      */
     'googleApiKey' => '',
+
+    /**
+     * Facebook Token
+     *
+     * @see: See the [official documentation](https://developers.facebook.com/docs/plugins/oembed).
+     */
+    'facebookToken' => '',
+
+    /**
+     * Instagram Token
+     *
+     * @see: See the [official documentation](https://developers.facebook.com/docs/instagram/oembed).
+     */
+    'instagramToken' => '',
 ];
