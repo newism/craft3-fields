@@ -7,13 +7,19 @@ use craft\behaviors\EnvAttributeParserBehavior;
 class Settings extends Model
 {
     public $googleApiKey = '';
+    public $facebookToken = '';
+    public $instagramToken = '';
 
     public function behaviors()
     {
         return [
             'parser' => [
                 'class' => EnvAttributeParserBehavior::class,
-                'attributes' => ['googleApiKey'],
+                'attributes' => [
+                    'googleApiKey',
+                    'facebookToken',
+                    'instagramToken'
+                ],
             ],
         ];
     }
@@ -22,6 +28,8 @@ class Settings extends Model
     {
         return [
             ['googleApiKey', 'string'],
+            ['facebookToken', 'string'],
+            ['instagramToken', 'string'],
         ];
     }
 }

@@ -11,6 +11,7 @@
 namespace newism\fields\services;
 
 use craft\base\Component;
+use newism\fields\NsmFields;
 
 /**
  * Embed Service
@@ -42,32 +43,36 @@ class Embed extends Component
      */
     public function parse($url)
     {
-        $info = \Embed\Embed::create($url);
+        $pluginSettings = NsmFields::getInstance()->getSettings();
+        $embed = new \Embed\Embed();
+        $embed->setSettings([
+            'facebook:token' => $pluginSettings->facebookToken,  //Required to embed content from Facebook
+            'instagram:token' => $pluginSettings->instagramToken, //Required to embed content from Instagram
+        ]);
+        $info = $embed->get($url);
         $result = [];
-        $result['title'] = $info->title;
-        $result['description'] = $info->description;
-        $result['url'] = $info->url;
-        $result['type'] = $info->type;
-        $result['tags'] = $info->tags;
-        $result['images'] = $info->images;
-        $result['image'] = $info->image;
-        $result['imageWidth'] = $info->imageWidth;
-        $result['imageHeight'] = $info->imageHeight;
-        $result['code'] = $info->code;
-        $result['source'] = $info->source;
-        $result['width'] = $info->width;
-        $result['height'] = $info->height;
-        $result['aspectRatio'] = $info->aspectRatio;
+
         $result['authorName'] = $info->authorName;
         $result['authorUrl'] = $info->authorUrl;
+        $result['cms'] = $info->cms;
+        $result['code'] = $info->code;
+        $result['description'] = $info->description;
+        $result['favicon'] = $info->favicon;
+        $result['feeds'] = $info->feeds;
+        $result['icon'] = $info->icon;
+        $result['image'] = $info->image;
+        $result['keywords'] = $info->keywords;
+        $result['language'] = $info->language;
+        $result['languages'] = $info->languages;
+        $result['license'] = $info->license;
         $result['providerName'] = $info->providerName;
         $result['providerUrl'] = $info->providerUrl;
-        $result['providerIcon'] = $info->providerIcon;
-        $result['providerIcons'] = $info->providerIcons;
-        $result['publishedDate'] = $info->publishedDate;
         $result['publishedTime'] = $info->publishedTime;
-        $result['license'] = $info->license;
-        $result['linkedData'] = $info->linkedData;
+        $result['redirect'] = $info->redirect;
+        $result['title'] = $info->title;
+        $result['url'] = $info->url;
+        $result['ombed'] =$info->getOEmbed()->all();
+        $result['linkedData'] =$info->getLinkedData()->all();
 
         return $result;
     }

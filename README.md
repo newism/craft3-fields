@@ -1,6 +1,35 @@
-**Attention**: This plugin is under active development and will change. This is a preview release.
+# A collection of custom Fields CraftCMS 3.x
 
-# Address, telephone and email fields for CraftCMS 3.x
+## Installation
+
+Open a command console, enter your project directory and execute the
+following command to download the latest stable version of this bundle:
+
+```console
+$ composer require newism/craft3-fields
+```
+
+Then install it…
+
+```console
+./craft plugin/install nsm-fields
+```
+
+## Configuration
+
+* If you're using Address Autocomplete you'll need an [api key](https://developers.google.com/places/web-service/get-api-key).
+* If you're embedding Instagram you'll need an [api key](https://developers.facebook.com/docs/instagram/oembed).
+* If you're embedding Facebook you'll need an [api key](https://developers.facebook.com/docs/plugins/oembed).
+
+Add the api keys to your environment and set in the plugin settings. See: https://craftcms.com/docs/3.x/config/#environmental-configuration
+
+Alternatively…
+
+Copy `src/config.php` to `CRAFT_CONFIG_PATH` and rename the file to `nsm-fields.php`.
+
+---
+
+# Fields
 
 ## Address
 
@@ -103,6 +132,33 @@ Given `entry.embedField` is your field…
 * `{{ entry.embedField.embedData }}` outputs the returned embed object.
 * `{{ entry.embedField.embedData.code | raw }}` outputs the returned embed javascript code.
 
+Additional data:
+
+    {{ entry.embedField.embedData.authorName }} // The resource author
+    {{ entry.embedField.embedData.authorUrl }} // The author url
+    {{ entry.embedField.embedData.cms }} // The cms used
+    {{ entry.embedField.embedData.code.html }} // The code to embed the image, video, etc
+    {{ entry.embedField.embedData.code.width }} // The exact width of the embed code (if exists)
+    {{ entry.embedField.embedData.code.height }} // The exact height of the embed code (if exists)
+    {{ entry.embedField.embedData.code.aspectRatio }} // The aspect ratio (width/height)
+    {{ entry.embedField.embedData.description }} //The page description
+    {{ entry.embedField.embedData.favicon }} // The favicon of the site (an .ico file or a png with up to 32x32px)
+    {{ entry.embedField.embedData.feeds }} // The RSS/Atom feeds
+    {{ entry.embedField.embedData.icon }} // The big icon of the site
+    {{ entry.embedField.embedData.image }} // The thumbnail or main image
+    {{ entry.embedField.embedData.keywords }} // The page keywords
+    {{ entry.embedField.embedData.language }} // The language of the page
+    {{ entry.embedField.embedData.languages }} // The alternative languages
+    {{ entry.embedField.embedData.license }} // The license url of the resource
+    {{ entry.embedField.embedData.providerName }} // The provider name of the page (Youtube, Twitter, Instagram, etc)
+    {{ entry.embedField.embedData.providerUrl }} // The provider url
+    {{ entry.embedField.embedData.publishedTime }} // The published time of the resource
+    {{ entry.embedField.embedData.redirect }}
+    {{ entry.embedField.embedData.title }} //The page title
+    {{ entry.embedField.embedData.url }} //The canonical url
+    {{ entry.embedField.embedData.ombed }} // oembed data 
+    {{ entry.embedField.embedData.linkedData }} // json-LD data
+
 ![Embed Demo](resources/img/embed-demo.gif)
 
 ## Person Name
@@ -126,51 +182,14 @@ Non-binary gender field with:
 
 ![Gender](resources/img/gender-field.png)
 
-## Installation
-
-### Step 1: Download the Bundle
-
-Open a command console, enter your project directory and execute the
-following command to download the latest stable version of this bundle:
-
-```console
-$ composer require newism/craft3-fields
-```
-
-This command requires you to have Composer installed globally, as explained
-in the [installation chapter](https://getcomposer.org/doc/00-intro.md)
-of the Composer documentation.
-
-### Step 2: Install
-
-Install plugin in the Craft Control Panel under Settings > Plugins.
-
-## Configuration
-
-The plugin comes with a config.php file that defines some sensible defaults.
-
-Copy `src/config.php` to `CRAFT_CONFIG_PATH` and rename the file to `nsm-fields.php`.
-
 ## Road Map
 
 Some things to do, and ideas for potential features:
 
-* Split out each field into it's own plugin. Keep this plugin as a single composer file which pulls all felds in
+* Split out each field into it's own plugin. Keep this plugin as a single composer file which pulls all fields in
 * Address validation / Geo-coding on submission
 * Display address as text in field with option to "Edit" to reduce size of field in UI
 * Update commerceguys/addressing when next stable version is released
-
-### 1.0
-
-* Release it
-
-### 1.1
-
-* Add "NSM Publish Hints" field
-
-### 1.2
-
-* ~~Add video field with yoututbe, vimeo previews~~ See Embed Field
 
 ## Credits
 

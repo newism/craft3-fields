@@ -1,6 +1,7 @@
 {% import "_includes/forms" as forms %}
 
 {% set fileConfig = craft.app.config.getConfigFromFile('nsm-fields') %}
+
 {{ forms.autoSuggestField({
     first: true,
     suggestEnvVars: true,
@@ -11,4 +12,28 @@
     value: settings.googleApiKey,
     errors: settings.getErrors('googleApiKey'),
     warning: (fileConfig.googleApiKey is defined) ? 'This is being overridden by the `googleApiKey` setting in `config/nsm-fields.php`.' : null,
+}) }}
+
+{{ forms.autoSuggestField({
+    first: true,
+    suggestEnvVars: true,
+    label: 'Instagram Token'|t('nsm-fields'),
+    instructions: 'Required to embed content from Instagram - See the [official documentation](https://developers.facebook.com/docs/instagram/oembed).',
+    id: 'instagramToken',
+    name: 'instagramToken',
+    value: settings.instagramToken,
+    errors: settings.getErrors('instagramToken'),
+    warning: (fileConfig.instagramToken is defined) ? 'This is being overridden by the `instagramToken` setting in `config/nsm-fields.php`.' : null,
+}) }}
+
+{{ forms.autoSuggestField({
+    first: true,
+    suggestEnvVars: true,
+    label: 'facebook Token'|t('nsm-fields'),
+    instructions: 'Required to embed content from Facebook - See the [official documentation](https://developers.facebook.com/docs/instagram/oembed).',
+    id: 'facebookToken',
+    name: 'facebookToken',
+    value: settings.facebookToken,
+    errors: settings.getErrors('facebookToken'),
+    warning: (fileConfig.facebookToken is defined) ? 'This is being overridden by the `facebookToken` setting in `config/nsm-fields.php`.' : null,
 }) }}
