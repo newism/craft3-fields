@@ -159,6 +159,12 @@ Additional data:
     {{ entry.embedField.embedData.ombed }} // oembed data 
     {{ entry.embedField.embedData.linkedData }} // json-LD data
 
+Note: embed data saved with v1 saved the html to `{{entry.embedField.embedData.code}}`. In v2 `{{ entry.embedField.embedData.code }}` changed to an array. Your templates will need to account for both versions… something like:
+
+```
+{{ (entry.embedField.embedData.code.html|default ?: entry.embedField.embedData.code|default) | raw }}
+```
+
 ![Embed Demo](resources/img/embed-demo.gif)
 
 ## Person Name
