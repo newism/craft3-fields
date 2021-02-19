@@ -4,7 +4,7 @@
     {% if value and value.embedData %}
         {% if value.embedData.code %}
             <div class="nsmFields-embed-embedDataCodePreview">
-                {{ value.embedData.code | raw }}
+                {{ (value.embedData.code.html|default ?: value.embedData.code|default) | raw }}
             </div>
         {% endif %}
         <a class="fieldtoggle collapsed" data-target="{{ name }}-advanced">Embed Data</a>
