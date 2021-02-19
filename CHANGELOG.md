@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 2.0.0-rc2 - 2021.02.17
+
+> v2.0.0 requires `"oembed/oembed": "^4.0"` which requires `"php": "^7.4|^8",`. Additionally the return data format has changed due to the updated `oembed/oembed` library. The new format can be found in the [https://github.com/newism/craft3-fields/blob/master/README.md](README.md). Existing content will still continue to work.
+
+### Fixes
+ - `{{ entry.embedField.embedData.code }}` is now an array. Use `{{ entry.embedField.embedData.code.html }}` to get the value
+
 ## 2.0.0-rc1 - 2021.02.16
 
 > v2.0.0 requires `"oembed/oembed": "^4.0"` which requires `"php": "^7.4|^8",`. Additionally the return data format has changed due to the updated `oembed/oembed` library. The new format can be found in the [https://github.com/newism/craft3-fields/blob/master/README.md](README.md). Existing content will still continue to work.
@@ -12,8 +19,8 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/) and this p
  - Updated dependency on `oembed/oembed` to ^v4.0
 
 ### Added
-- Added new facebookToken setting
-- Added new instagramToken setting
+- Added new `facebookToken` setting
+- Added new `instagramToken` setting
 
 ## 1.0.2 - 2021.01.19
 ### Fixes
