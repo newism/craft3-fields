@@ -111,6 +111,13 @@ class Telephone extends Field implements PreviewableFieldInterface
     public function normalizeValue($value, ElementInterface $element = null)
     {
         /**
+         * Just return value if it's already an TelephoneModel.
+         */
+        if ($value instanceof TelephoneModel) {
+            return $value;
+        }
+
+        /**
          * Serialised value from the DB
          */
         if (is_string($value)) {
@@ -118,16 +125,16 @@ class Telephone extends Field implements PreviewableFieldInterface
         }
 
         /**
-         * Default values
+         * Array value from post or unserialized array
          */
-        if (!is_array($value)) {
-            $value = [
-                'countryCode' => $this->defaultCountryCode,
-                'rawInput' => '',
-            ];
+        if (is_array($value) && !empty(array_filter($value))) {
+            return new TelephoneModel(
+                $value['countryCode'] ?? $this->defaultCountryCode,
+                $value['rawInput']
+            );
         }
 
-        return new TelephoneModel($value['countryCode'] ?? $this->defaultCountryCode, $value['rawInput']);
+        return null;
     }
 
     /**

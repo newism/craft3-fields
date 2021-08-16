@@ -99,10 +99,23 @@ class PersonName extends Field implements PreviewableFieldInterface
         $value,
         ElementInterface $element = null
     ) {
+        /**
+         * Just return value if it's already an PersonNameModel.
+         */
+        if ($value instanceof PersonNameModel) {
+            return $value;
+        }
+
+        /**
+         * Serialised value from the DB
+         */
         if (is_string($value)) {
             $value = json_decode($value, true);
         }
 
+        /**
+         * Array value from post or unserialized array
+         */
         if (is_array($value) && !empty(array_filter($value))) {
             return new PersonNameModel($value);
         }

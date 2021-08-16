@@ -102,10 +102,23 @@ class Embed extends Field implements PreviewableFieldInterface
      */
     public function normalizeValue($value, ElementInterface $element = null)
     {
-        if (is_string($value)) {
-            $value = json_decode($value, true);
+        /**
+         * Just return value if it's already an EmbedModel.
+         */
+        if ($value instanceof EmbedModel) {
+            return $value;
         }
 
+        /**
+         * Serialised value from the DB
+         */
+        if (is_string($value)) {
+            $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
+        }
+
+        /**
+         * Array value from post or unserialized array
+         */
         if (is_array($value) && $value['rawInput']) {
             if (!Craft::$app->getRequest()->getIsConsoleRequest() && Craft::$app->getRequest()->getIsPost()) {
                 $embedData = NsmFields::getInstance()->embed->parse($value['rawInput']);
