@@ -209,9 +209,9 @@ class Telephone extends Field implements PreviewableFieldInterface
      */
     private function getCountryOptions(): array
     {
-        // Removing the default value as the causes more problems and we already have a default value defined in the
-        // settings and trying to manage a field that can have the first Telephone object as an optional parameter
-        // is difficult.
+        // Removing the null default value as this causes more problems
+        // We already have a default country code defined in the settings and trying to manage a field that can have
+        // the first Telephone object as an optional parameter is difficult.
 //        $countries = [['value' => '', 'label' => '']];
 
         $countryRepository = new CountryRepository();
