@@ -129,7 +129,7 @@ class Telephone extends Field implements PreviewableFieldInterface
          */
         if (is_array($value) && !empty(array_filter($value))) {
             return new TelephoneModel(
-                $value['countryCode'] ?? $this->defaultCountryCode,
+                strlen($value['countryCode']) ? $value['countryCode'] : $this->defaultCountryCode,
                 $value['rawInput']
             );
         }
@@ -209,7 +209,10 @@ class Telephone extends Field implements PreviewableFieldInterface
      */
     private function getCountryOptions(): array
     {
-        $countries = [['value' => '', 'label' => '']];
+        // Removing the default value as the causes more problems and we already have a default value defined in the
+        // settings and trying to manage a field that can have the first Telephone object as an optional parameter
+        // is difficult.
+//        $countries = [['value' => '', 'label' => '']];
 
         $countryRepository = new CountryRepository();
         $countryData = $countryRepository->getList();
@@ -269,7 +272,7 @@ class Telephone extends Field implements PreviewableFieldInterface
     public function isValueEmpty($value, ElementInterface $element = null): bool
     {
         if ($value instanceof TelephoneModel) {
-            return (null === $value->phoneNumber);
+            return 0 === strlen($value->phoneNumber);
         }
 
         return parent::isValueEmpty($value, $element);
@@ -298,7 +301,7 @@ class Telephone extends Field implements PreviewableFieldInterface
                 $this->handle,
                 Craft::t(
                     'nsm-fields',
-                    'The string supplied did not seem to be a phone number.'
+                    'The string supplied did not seem to be a phone number or didn\'t match the expected format for the country.'
                 )
             );
         }
