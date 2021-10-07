@@ -111,23 +111,28 @@ class Telephone extends Field implements PreviewableFieldInterface
     public function normalizeValue($value, ElementInterface $element = null)
     {
         /**
+         * Just return value if it's already an TelephoneModel.
+         */
+        if ($value instanceof TelephoneModel) {
+            return $value;
+        }
+        /**
          * Serialised value from the DB
          */
         if (is_string($value)) {
             $value = json_decode($value, true);
         }
-
         /**
-         * Default values
+         * Array value from post or unserialized array
          */
-        if (!is_array($value)) {
-            $value = [
-                'countryCode' => $this->defaultCountryCode,
-                'rawInput' => '',
-            ];
+        if (is_array($value) && !empty(array_filter($value))) {
+            return new TelephoneModel(
+                strlen($value['countryCode']) ? $value['countryCode'] : $this->defaultCountryCode,
+                $value['rawInput']
+            );
         }
 
-        return new TelephoneModel($value['countryCode'] ?? $this->defaultCountryCode, $value['rawInput']);
+        return null;
     }
 
     /**
@@ -202,7 +207,10 @@ class Telephone extends Field implements PreviewableFieldInterface
      */
     private function getCountryOptions(): array
     {
-        $countries = [['value' => '', 'label' => '']];
+        // Removing the null default value as this causes more problems
+        // We already have a default country code defined in the settings and trying to manage a field that can have
+        // the first Telephone object as an optional parameter is difficult.
+//        $countries = [['value' => '', 'label' => '']];
 
         $countryRepository = new CountryRepository();
         $countryData = $countryRepository->getList();
@@ -262,7 +270,7 @@ class Telephone extends Field implements PreviewableFieldInterface
     public function isValueEmpty($value, ElementInterface $element = null): bool
     {
         if ($value instanceof TelephoneModel) {
-            return (null === $value->phoneNumber);
+            return 0 === strlen($value->phoneNumber);
         }
 
         return parent::isValueEmpty($value, $element);
@@ -291,7 +299,7 @@ class Telephone extends Field implements PreviewableFieldInterface
                 $this->handle,
                 Craft::t(
                     'nsm-fields',
-                    'The string supplied did not seem to be a phone number.'
+                    'The string supplied did not seem to be a phone number or didn\'t match the expected format for the country.'
                 )
             );
         }

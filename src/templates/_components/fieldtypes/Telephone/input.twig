@@ -21,7 +21,7 @@
         label: 'Country Code',
         id: name ~ 'CountryCode',
         name: name ~ '[countryCode]',
-        value: viewData ? viewData.countryCode,
+        value: viewData ? viewData.countryCode : settings.defaultCountryCode,
         options: countryOptions
     }) }}
 
