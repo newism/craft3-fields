@@ -4,6 +4,15 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+
+## 1.0.3.2 - 2021.10.08
+### Fixes
+- Missing composer.json version bump
+
+## 1.0.3.1 - 2021.10.08
+### Fixes
+- Using correct version 1 branch
+
 ## 1.0.3 - 2021.10.07
 ### Changed
 - Phone number country code select input no longer has an empty value and will default to the field's Default Country Code setting. #63 - https://github.com/newism/craft3-fields/issues/63
