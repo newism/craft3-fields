@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+## 1.0.3 - 2021.10.07
+### Changed
+- Phone number country code select input no longer has an empty value and will default to the field's Default Country Code setting. #63 - https://github.com/newism/craft3-fields/issues/63
+- Phone number validation message will point out that the phone number could be incorrect for the selected country code
+- Email address validator adds a regex validation to find characters that would prevent a valid email and has an error message to reflect this
+
 ## 1.0.2 - 2021.01.19
 ### Fixes
  - MapURL is persisted.  #61 - https://github.com/newism/craft3-fields/pull/61 @thomasgoemaere

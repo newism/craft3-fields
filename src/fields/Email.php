@@ -55,6 +55,14 @@ class Email extends PlainText
     public function getElementValidationRules(): array
     {
         $rules = parent::getElementValidationRules();
+        $rules[] = 'trim';
+        $rules[] = [
+            // the value is valid if it doesn't find a non-basic character
+            'match',
+            'not' => true,
+            'pattern' => '/[^a-z0-9_\-\@+\.]/i',
+            'message' => 'Some invalid or hidden characters were detected in the address. Please retype or paste as plain text'
+        ];
         $rules[] = 'email';
 
         return $rules;
