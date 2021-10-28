@@ -85,7 +85,7 @@
                     id: name ~ '-placeData',
                     name: name ~ '[placeData]',
                     rows: 20,
-                    value: value ? value.placeData
+                    value: value ? ((value.placeData is iterable) ? value.placeData|json_encode() : value.placeData)
                 }) }}
             </div>
         </div>
