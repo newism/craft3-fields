@@ -317,7 +317,7 @@ class Telephone extends Field implements PreviewableFieldInterface
      */
     public function getTableAttributeHtml($value, ElementInterface $element): string
     {
-        if (!$value->phoneNumber) {
+        if (!$value || !$value->phoneNumber) {
             return '';
         }
 
