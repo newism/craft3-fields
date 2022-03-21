@@ -65,7 +65,7 @@ class Telephone extends Field implements PreviewableFieldInterface
     /**
      * Init the field, set the phoneNumberUtil
      */
-    public function init()
+    public function init(): void
     {
         parent::init();
         $this->phoneNumberUtil = PhoneNumberUtil::getInstance();
@@ -108,7 +108,7 @@ class Telephone extends Field implements PreviewableFieldInterface
      *
      * @return mixed The prepared field value
      */
-    public function normalizeValue($value, ElementInterface $element = null)
+    public function normalizeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
     {
         /**
          * Just return value if it's already an TelephoneModel.
@@ -140,7 +140,7 @@ class Telephone extends Field implements PreviewableFieldInterface
     /**
      * @inheritdoc
      */
-    public function serializeValue($value, ElementInterface $element = null)
+    public function serializeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
     {
         if ($value instanceof TelephoneModel && !$value->phoneNumber) {
             return null;
@@ -155,10 +155,10 @@ class Telephone extends Field implements PreviewableFieldInterface
      *
      * @return string
      * @throws Exception
-     * @throws Twig_Error_Loader
+     * @throws \Twig\Error\LoaderError
      * @throws RuntimeException
      */
-    public function getSettingsHtml(): string
+    public function getSettingsHtml(): ?string
     {
         // Render the settings template
         return Craft::$app->getView()->renderTemplate(
@@ -176,12 +176,12 @@ class Telephone extends Field implements PreviewableFieldInterface
      * @param $value
      * @param ElementInterface|null $element
      * @return string
-     * @throws Twig_Error_Loader
+     * @throws \Twig\Error\LoaderError
      * @throws Exception
      */
     public function getInputHtml(
-        $value,
-        ElementInterface $element = null
+        mixed $value,
+        ?\craft\base\ElementInterface $element = null
     ): string {
 
         // Get our id and namespace
@@ -269,7 +269,7 @@ class Telephone extends Field implements PreviewableFieldInterface
      * @return bool Whether the value should be considered “empty”
      * @see Validator::$isValueEmpty
      */
-    public function isValueEmpty($value, ElementInterface $element = null): bool
+    public function isValueEmpty(mixed $value, ElementInterface $element = null): bool
     {
         if ($value instanceof TelephoneModel) {
             return 0 === strlen($value->phoneNumber);
@@ -315,7 +315,7 @@ class Telephone extends Field implements PreviewableFieldInterface
      *
      * @return string The HTML that should be shown for this field in Table View
      */
-    public function getTableAttributeHtml($value, ElementInterface $element): string
+    public function getTableAttributeHtml(mixed $value, ElementInterface $element): string
     {
         if (!$value || !$value->phoneNumber) {
             return '';

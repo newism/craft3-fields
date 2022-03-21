@@ -42,7 +42,7 @@ class Email extends PlainText
         return Craft::t('nsm-fields', 'NSM Email');
     }
 
-    public function getSettingsHtml()
+    public function getSettingsHtml(): ?string
     {
         return Craft::$app->getView()->renderTemplate(
             'nsm-fields/_components/fieldtypes/Email/settings',
@@ -55,7 +55,6 @@ class Email extends PlainText
     public function getElementValidationRules(): array
     {
         $rules = parent::getElementValidationRules();
-        $rules[] = 'trim';
         $rules[] = [
             // the value is valid if it doesn't find a non-basic character
             'match',
@@ -68,7 +67,7 @@ class Email extends PlainText
         return $rules;
     }
 
-    public function getInputHtml($value, ElementInterface $element = null): string
+    public function getInputHtml(mixed $value, ?\craft\base\ElementInterface $element = null): string
     {
         return Craft::$app->getView()->renderTemplate(
             'nsm-fields/_components/fieldtypes/Email/input',
@@ -80,7 +79,7 @@ class Email extends PlainText
         );
     }
 
-    public function normalizeValue($value, ElementInterface $element = null)
+    public function normalizeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
     {
         if (empty($value)) {
             return null;

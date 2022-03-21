@@ -11,7 +11,7 @@ class Settings extends Model
     public $facebookToken = '';
     public $instagramToken = '';
 
-    public function behaviors()
+    public function behaviors(): array
     {
         return [
             'parser' => [
@@ -25,7 +25,7 @@ class Settings extends Model
         ];
     }
 
-    public function rules()
+    public function rules(): array
     {
         return [
             ['googleApiKey', 'string'],

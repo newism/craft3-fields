@@ -69,10 +69,10 @@ class Gender extends Field implements PreviewableFieldInterface
      *
      * @return string
      * @throws Exception
-     * @throws Twig_Error_Loader
+     * @throws \Twig\Error\LoaderError
      * @throws RuntimeException
      */
-    public function getSettingsHtml()
+    public function getSettingsHtml(): ?string
     {
         return Craft::$app->getView()->renderTemplate(
             'nsm-fields/_components/fieldtypes/Gender/settings',
@@ -85,7 +85,7 @@ class Gender extends Field implements PreviewableFieldInterface
     /**
      * @return string
      */
-    public function getContentColumnType(): string
+    public function getContentColumnType(): array|string
     {
         return Schema::TYPE_TEXT;
     }
@@ -96,9 +96,9 @@ class Gender extends Field implements PreviewableFieldInterface
      * @return mixed|GenderModel
      */
     public function normalizeValue(
-        $value,
-        ElementInterface $element = null
-    ) {
+        mixed $value,
+        ?\craft\base\ElementInterface $element = null
+    ): mixed {
         /**
          * Just return value if it's already an GenderModel.
          */
@@ -131,13 +131,13 @@ class Gender extends Field implements PreviewableFieldInterface
      * @return string
      * @throws InvalidParamException
      * @throws Exception
-     * @throws Twig_Error_Loader
+     * @throws \Twig\Error\LoaderError
      * @throws RuntimeException
      * @throws InvalidConfigException
      */
     public function getInputHtml(
-        $value,
-        ElementInterface $element = null
+        mixed $value,
+        ?\craft\base\ElementInterface $element = null
     ): string {
         return Craft::$app->getView()->renderTemplate(
             'nsm-fields/_components/fieldtypes/Gender/input',
@@ -168,7 +168,7 @@ class Gender extends Field implements PreviewableFieldInterface
      * @return string
      */
     public function getSearchKeywords(
-        $value,
+        mixed $value,
         ElementInterface $element
     ): string {
         return json_encode($this);
@@ -183,7 +183,7 @@ class Gender extends Field implements PreviewableFieldInterface
      * @return bool Whether the value should be considered “empty”
      * @see Validator::$isEmpty
      */
-    public function isValueEmpty($value, ElementInterface $element = null): bool
+    public function isValueEmpty(mixed $value, ElementInterface $element = null): bool
     {
         if ($value instanceof GenderModel) {
             return $value->isEmpty();

@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/) and this project adheres to [Semantic Versioning](http://semver.org/).
 
+Unreleased
+
+### Changed
+- Now requires PHP ^8.0.2.
+- Now requires Craft ^4.0.0-beta.2
+- Added type hinting to method arguments and return values for Craft 4.0.0-beta.2 compatibility
+
 ## 2.0.0-rc3 - 2021.08.16
 
 ### Fixes

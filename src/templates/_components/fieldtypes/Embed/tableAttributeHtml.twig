@@ -15,9 +15,11 @@
 {% import "_includes/forms" as forms %}
 
 <div class="nsmFields-embed-tableAttributeHtml">
+    {% if value.embedData.icon|default %}
     <div class="nsmFields-embed-tableAttributeHtml-providerIcon">
-        <img src="{{ value.embedData.providerIcon }}" alt="{{ value.embedData.providerName }}" width="24px">
+        <img src="{{ value.embedData.icon }}" alt="{{ value.embedData.providerName }}" width="24px">
     </div>
+    {% endif %}
     <div>
         <div class="nsmFields-embed-tableAttributeHtml-url">{{ value.embedData.url }}</div>
         <div class="nsmFields-embed-tableAttributeHtml-title">{{ value.embedData.title }}</div>

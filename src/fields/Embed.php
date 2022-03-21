@@ -58,7 +58,7 @@ class Embed extends Field implements PreviewableFieldInterface
     /**
      * @return string
      */
-    public function getContentColumnType(): string
+    public function getContentColumnType(): array|string
     {
         return Schema::TYPE_TEXT;
     }
@@ -68,10 +68,10 @@ class Embed extends Field implements PreviewableFieldInterface
      *
      * @return string
      * @throws Exception
-     * @throws Twig_Error_Loader
+     * @throws \Twig\Error\LoaderError
      * @throws RuntimeException
      */
-    public function getSettingsHtml()
+    public function getSettingsHtml(): ?string
     {
         return Craft::$app->getView()->renderTemplate(
             'nsm-fields/_components/fieldtypes/Embed/settings',
@@ -98,9 +98,9 @@ class Embed extends Field implements PreviewableFieldInterface
     /**
      * @param mixed $value
      * @param ElementInterface|null $element
-     * @return mixed|EmbedModel
+     * @return EmbedModel|null
      */
-    public function normalizeValue($value, ElementInterface $element = null)
+    public function normalizeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
     {
         /**
          * Just return value if it's already an EmbedModel.
@@ -136,7 +136,7 @@ class Embed extends Field implements PreviewableFieldInterface
      * @param ElementInterface|null $element
      * @return array|mixed|null|string
      */
-    public function serializeValue($value, ElementInterface $element = null)
+    public function serializeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
     {
         if (empty($value)) {
             return null;
@@ -163,7 +163,7 @@ class Embed extends Field implements PreviewableFieldInterface
      * @param ElementInterface $element
      * @return string
      */
-    public function getSearchKeywords($value, ElementInterface $element): string
+    public function getSearchKeywords(mixed $value, ElementInterface $element): string
     {
         $data = (string) $value;
         if (Craft::$app->getDb()->getIsMysql()) {
@@ -183,13 +183,13 @@ class Embed extends Field implements PreviewableFieldInterface
      * @return string
      * @throws InvalidParamException
      * @throws Exception
-     * @throws Twig_Error_Loader
+     * @throws \Twig\Error\LoaderError
      * @throws RuntimeException
      * @throws InvalidConfigException
      */
     public function getInputHtml(
-        $value,
-        ElementInterface $element = null
+        mixed $value,
+        ?\craft\base\ElementInterface $element = null
     ): string {
 
         // Register our asset bundle
@@ -244,12 +244,12 @@ class Embed extends Field implements PreviewableFieldInterface
      * @param mixed $value
      * @param ElementInterface $element
      * @return string
-     * @throws Twig_Error_Loader
+     * @throws \Twig\Error\LoaderError
      * @throws Exception
      * @throws InvalidConfigException
      */
     public function getTableAttributeHtml(
-        $value,
+        mixed $value,
         ElementInterface $element
     ): string {
 
@@ -274,7 +274,7 @@ class Embed extends Field implements PreviewableFieldInterface
      * @return bool Whether the value should be considered “empty”
      * @see Validator::$isEmpty
      */
-    public function isValueEmpty($value, ElementInterface $element = null): bool
+    public function isValueEmpty(mixed $value, ElementInterface $element = null): bool
     {
         if ($value instanceof EmbedModel) {
             return $value->isEmpty();
