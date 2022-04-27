@@ -99,6 +99,10 @@ class PersonName extends Field implements PreviewableFieldInterface
         $value,
         ElementInterface $element = null
     ) {
+        if ($value instanceof PersonNameModel) {
+            return $value;
+        }
+        
         if (is_string($value)) {
             $value = json_decode($value, true);
         }

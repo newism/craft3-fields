@@ -102,6 +102,10 @@ class Embed extends Field implements PreviewableFieldInterface
      */
     public function normalizeValue($value, ElementInterface $element = null)
     {
+        if ($value instanceof EmbedModel) {
+            return $value;
+        }
+        
         if (is_string($value)) {
             $value = json_decode($value, true);
         }
