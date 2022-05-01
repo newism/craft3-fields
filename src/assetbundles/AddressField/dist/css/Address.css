@@ -1,22 +1,9 @@
-/**
- * NSM Fields plugin for Craft CMS
- *
- * Address Field CSS
- *
- * @author    Leevi Graham
- * @copyright Copyright (c) 2017 Leevi Graham
- * @link      http://newism.com.au
- * @package   NsmFields
- * @since     1.0.0
- */
-
 div.nsmFields-address-container {
   padding: 14px;
-  border: 1px solid #d5d8dd;
-  background: #f3f7fc;
-  border-radius: 5px;
-  margin-top: 10px;
-  box-shadow: 0 1px 5px -1px rgba(0, 0, 0, 0.1)
+  border: 1px solid rgba(0,0,0,.1);
+  background: rgba(0,0,0,.02);
+  border-radius: 4px;
+  margin-top: 4px;
 }
 
 .nsmfields-address-autoCompleteContainer {
@@ -74,10 +61,11 @@ div.nsmFields-fieldRow > *:not(:last-child) {
 
 .nsmFields-address-map-instructions {
   font-size: 11px;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
 }
 
 .nsmFields-address-map {
   height: 400px;
   margin-bottom: 5px;
+  margin-top: 20px;
 }

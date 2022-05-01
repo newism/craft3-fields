@@ -1,6 +1,6 @@
 <?php
 /**
- * NSM Fields plugin for Craft CMS 3.x
+ * NSM Fields plugin for Craft CMS
  *
  * Various fields for CraftCMS
  *

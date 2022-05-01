@@ -6,8 +6,8 @@ use yii\base\Model;
 
 class EmbedModel extends Model
 {
-    public $rawInput;
-    public $embedData;
+    public ?string $rawInput;
+    public ?array $embedData;
 
     public function isEmpty(): bool
     {
@@ -16,6 +16,6 @@ class EmbedModel extends Model
 
     public function __toString()
     {
-        return (string) empty($this->embedData) ? $this->rawInput : $this->embedData['title'];
+        return empty($this->embedData) ? $this->rawInput : $this->embedData['title'];
     }
 }

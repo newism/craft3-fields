@@ -1,19 +1,7 @@
-/**
- * NSM Fields plugin for Craft CMS
- *
- * Embed Field CSS
- *
- * @author    Leevi Graham
- * @copyright Copyright (c) 2017 Leevi Graham
- * @link      http://newism.com.au
- * @package   NsmFields
- * @since     1.0.0
- */
-
 div.nsmFields-embed-container {
   padding: 14px;
-  border: 1px solid #e3e5e8;
-  background: #fafafa;
+  border: 1px solid rgba(0,0,0,.1);
+  background: rgba(0,0,0,.02);
   border-radius: 4px;
   margin-top: 4px;
 }

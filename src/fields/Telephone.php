@@ -1,14 +1,5 @@
 <?php
 
-/**
- * NSM Fields plugin for Craft CMS 3.x
- *
- * Various fields for CraftCMS
- *
- * @link      http://newism.com.au
- * @copyright Copyright (c) 2017 Leevi Graham
- */
-
 namespace newism\fields\fields;
 
 use CommerceGuys\Addressing\Country\CountryRepository;
@@ -16,71 +7,32 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
+use craft\helpers\Html;
 use libphonenumber\PhoneNumberUtil;
 use newism\fields\models\TelephoneModel;
-use RuntimeException;
-use Twig_Error_Loader;
-use yii\base\Exception;
 
 /**
- * Telephone Field
- *
- * @author    Leevi Graham
- * @package   NsmFields
- * @since     1.0.0
+ * @property-read array $countryOptions
+ * @property-read array $elementValidationRules
+ * @property-read null|string $settingsHtml
  */
 class Telephone extends Field implements PreviewableFieldInterface
 {
-    // Public Properties
-    // =========================================================================
+    protected PhoneNumberUtil $phoneNumberUtil;
 
-    /**
-     * @var PhoneNumberUtil
-     */
-    protected $phoneNumberUtil;
-
-    /**
-     * Default Country Code
-     *
-     * @var string
-     */
-    public $defaultCountryCode = 'US';
-
-    // Static Methods
-    // =========================================================================
-
-    /**
-     * Returns the display name of this class.
-     *
-     * @return string The display name of this class.
-     */
+    public string $defaultCountryCode = 'US';
+    
     public static function displayName(): string
     {
-        return Craft::t('nsm-fields', 'NSM Telephone');
+        return Craft::t('nsm-fields', 'Telephone (Newism)');
     }
-
-    // Public Methods
-    // =========================================================================
-
-    /**
-     * Init the field, set the phoneNumberUtil
-     */
+    
     public function init(): void
     {
         parent::init();
         $this->phoneNumberUtil = PhoneNumberUtil::getInstance();
     }
-
-    /**
-     * Returns the validation rules for attributes.
-     *
-     * Validation rules are used by [[validate()]] to check if attribute values are valid.
-     * Child classes may override this method to declare different validation rules.
-     *
-     * More info: http://www.yiiframework.com/doc-2.0/guide-input-validation.html
-     *
-     * @return array
-     */
+    
     public function rules(): array
     {
         $rules = parent::rules();
@@ -94,39 +46,20 @@ class Telephone extends Field implements PreviewableFieldInterface
 
         return $rules;
     }
-
-    /**
-     * Normalizes the field’s value for use.
-     *
-     * This method is called when the field’s value is first accessed from the element. For example, the first time
-     * `entry.myFieldHandle` is called from a template, or right before [[getInputHtml()]] is called. Whatever
-     * this method returns is what `entry.myFieldHandle` will likewise return, and what [[getInputHtml()]]’s and
-     * [[serializeValue()]]’s $value arguments will be set to.
-     *
-     * @param mixed $value The raw field value
-     * @param ElementInterface|null $element The element the field is associated with, if there is one
-     *
-     * @return mixed The prepared field value
-     */
-    public function normalizeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
+    
+    public function normalizeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
-        /**
-         * Just return value if it's already an TelephoneModel.
-         */
+        // Just return value if it's already an TelephoneModel.
         if ($value instanceof TelephoneModel) {
             return $value;
         }
 
-        /**
-         * Serialised value from the DB
-         */
+        // Serialised value from the DB
         if (is_string($value)) {
             $value = json_decode($value, true);
         }
 
-        /**
-         * Array value from post or unserialized array
-         */
+        // Array value from post or unserialized array
         if (is_array($value) && !empty(array_filter($value))) {
             return new TelephoneModel(
                 strlen($value['countryCode']) ? $value['countryCode'] : $this->defaultCountryCode,
@@ -136,11 +69,8 @@ class Telephone extends Field implements PreviewableFieldInterface
 
         return null;
     }
-
-    /**
-     * @inheritdoc
-     */
-    public function serializeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
+    
+    public function serializeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
         if ($value instanceof TelephoneModel && !$value->phoneNumber) {
             return null;
@@ -149,18 +79,8 @@ class Telephone extends Field implements PreviewableFieldInterface
         return parent::serializeValue($value, $element);
     }
 
-
-    /**
-     * Returns the component’s settings HTML.
-     *
-     * @return string
-     * @throws Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws RuntimeException
-     */
     public function getSettingsHtml(): ?string
     {
-        // Render the settings template
         return Craft::$app->getView()->renderTemplate(
             'nsm-fields/_components/fieldtypes/Telephone/settings',
             [
@@ -169,23 +89,12 @@ class Telephone extends Field implements PreviewableFieldInterface
             ]
         );
     }
-
-    /**
-     * Returns the field’s input HTML.
-     *
-     * @param $value
-     * @param ElementInterface|null $element
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws Exception
-     */
-    public function getInputHtml(
-        mixed $value,
-        ?\craft\base\ElementInterface $element = null
-    ): string {
+    
+    public function getInputHtml(mixed $value, ?ElementInterface $element = null): string {
 
         // Get our id and namespace
-        $id = Craft::$app->getView()->formatInputId($this->handle);
+        $id = Html::id($this->handle);
+        $namespace =  Craft::$app->getView()->getNamespace();
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
 
         return Craft::$app->getView()->renderTemplate(
@@ -195,18 +104,14 @@ class Telephone extends Field implements PreviewableFieldInterface
                 'viewData' => $value,
                 'field' => $this,
                 'id' => $id,
+                'namespace' => $namespace,
                 'namespacedId' => $namespacedId,
                 'countryOptions' => $this->getCountryOptions(),
                 'settings' => $this->getSettings(),
             ]
         );
     }
-
-    /**
-     * Get country options
-     *
-     * @return array
-     */
+    
     private function getCountryOptions(): array
     {
         // Removing the null default value as this causes more problems
@@ -216,6 +121,7 @@ class Telephone extends Field implements PreviewableFieldInterface
 
         $countryRepository = new CountryRepository();
         $countryData = $countryRepository->getList();
+        $countries = [];
 
         foreach ($countryData as $key => $option) {
             $regionCode = $this->phoneNumberUtil->getCountryCodeForRegion(
@@ -230,72 +136,25 @@ class Telephone extends Field implements PreviewableFieldInterface
         return $countries;
     }
 
-    /**
-     * Returns the validation rules for an element with this field.
-     *
-     * Rules should be defined in the array syntax required by [[\yii\base\Model::rules()]],
-     * with one difference: you can skip the first argument (the attribute list).
-     *
-     * Below are some examples:
-     *
-     * ```php
-     * [
-     *     // explicitly specify the field attribute
-     *     [$this->handle, 'string', 'min' => 3, 'max' => 12],
-     *     // skip the field attribute
-     *     ['string', 'min' => 3, 'max' => 12],
-     *     // you can only pass the validator class name/handle if not setting any params
-     *     'bool',
-     * ];
-     * ```
-     *
-     * @return array
-     */
     public function getElementValidationRules(): array
     {
-        $rules = parent::getElementValidationRules();
-        // add our rule
-        $rules[] = 'validatePhoneNumber';
-
-        return $rules;
+        return array_merge(parent::getElementValidationRules(), [
+            'validatePhoneNumber'
+        ]);
     }
-
-    /**
-     * Returns whether the given value should be considered “empty” to a validator.
-     *
-     * @param mixed $value The field’s value
-     * @param ElementInterface $element
-     *
-     * @return bool Whether the value should be considered “empty”
-     * @see Validator::$isValueEmpty
-     */
+    
     public function isValueEmpty(mixed $value, ElementInterface $element = null): bool
     {
-        if ($value instanceof TelephoneModel) {
-            return 0 === strlen($value->phoneNumber);
-        }
-
-        return parent::isValueEmpty($value, $element);
+        return ($value instanceof TelephoneModel)
+            ? $value->isEmpty()
+            : parent::isValueEmpty($value, $element);
     }
+    
+    public function validatePhoneNumber( ElementInterface $element, array $params = null ) {
 
-    /**
-     * Validates the field value.
-     *
-     * @param ElementInterface $element
-     * @param array|null $params
-     * @return null|string
-     */
-    public function validatePhoneNumber(
-        ElementInterface $element,
-        array $params = null
-    ) {
-        /** @var TelephoneModel $value */
         $value = $element->getFieldValue($this->handle);
         $valid = $value->isValid();
 
-        /**
-         * Add the error
-         */
         if (!$valid) {
             $element->addError(
                 $this->handle,
@@ -306,21 +165,11 @@ class Telephone extends Field implements PreviewableFieldInterface
             );
         }
     }
-
-    /**
-     * Returns the HTML that should be shown for this field in Table View.
-     *
-     * @param mixed $value The field’s value
-     * @param ElementInterface $element The element the field is associated with
-     *
-     * @return string The HTML that should be shown for this field in Table View
-     */
+    
     public function getTableAttributeHtml(mixed $value, ElementInterface $element): string
     {
-        if (!$value || !$value->phoneNumber) {
-            return '';
-        }
-
-        return (string) sprintf('%s [%s]', (string) $value, $value->countryCode);
+        return ($value instanceof TelephoneModel && !$value->isEmpty())
+            ? (string) $value->format("E164")
+            : '';
     }
 }

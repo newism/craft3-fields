@@ -1,12 +1,4 @@
 <?php
-/**
- * NSM Fields plugin for Craft CMS 3.x
- *
- * Various fields for CraftCMS
- *
- * @link      http://newism.com.au
- * @copyright Copyright (c) 2017 Leevi Graham
- */
 
 namespace newism\fields\fields;
 
@@ -15,38 +7,21 @@ use craft\base\ElementInterface;
 use craft\fields\PlainText;
 
 /**
- * Email Field
  *
- * Whenever someone creates a new field in Craft, they must specify what
- * type of field it is. The system comes with a handful of field types baked in,
- * and we’ve made it extremely easy for plugins to add new ones.
- *
- * https://craftcms.com/docs/plugins/field-types
- *
- * @author    Leevi Graham
- * @package   NsmFields
- * @since     1.0.0
+ * @property-read array $elementValidationRules
+ * @property-read null|string $settingsHtml
  */
 class Email extends PlainText
 {
-    // Static Methods
-    // =========================================================================
-
-    /**
-     * Returns the display name of this class.
-     *
-     * @return string The display name of this class.
-     */
     public static function displayName(): string
     {
-        return Craft::t('nsm-fields', 'NSM Email');
+        return Craft::t('nsm-fields', 'Email (Newism)');
     }
 
     public function getSettingsHtml(): ?string
     {
         return Craft::$app->getView()->renderTemplate(
-            'nsm-fields/_components/fieldtypes/Email/settings',
-            [
+            'nsm-fields/_components/fieldtypes/Email/settings',[
                 'field' => $this,
             ]
         );
@@ -55,19 +30,12 @@ class Email extends PlainText
     public function getElementValidationRules(): array
     {
         $rules = parent::getElementValidationRules();
-        $rules[] = [
-            // the value is valid if it doesn't find a non-basic character
-            'match',
-            'not' => true,
-            'pattern' => '/[^a-z0-9_\-\@+\.]/i',
-            'message' => 'Some invalid or hidden characters were detected in the address. Please retype or paste as plain text'
-        ];
         $rules[] = 'email';
 
         return $rules;
     }
 
-    public function getInputHtml(mixed $value, ?\craft\base\ElementInterface $element = null): string
+    public function getInputHtml(mixed $value, ?ElementInterface $element = null): string
     {
         return Craft::$app->getView()->renderTemplate(
             'nsm-fields/_components/fieldtypes/Email/input',
@@ -78,14 +46,4 @@ class Email extends PlainText
             ]
         );
     }
-
-    public function normalizeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
-    {
-        if (empty($value)) {
-            return null;
-        }
-
-        return $value;
-    }
-
 }

@@ -1,12 +1,4 @@
 <?php
-/**
- * NSM Fields plugin for Craft CMS 3.x
- *
- * Various fields for CraftCMS
- *
- * @link      http://newism.com.au
- * @copyright Copyright (c) 2017 Leevi Graham
- */
 
 namespace newism\fields\fields;
 
@@ -14,63 +6,27 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
+use craft\helpers\Html;
 use craft\helpers\StringHelper;
 use craft\helpers\UrlHelper;
 use newism\fields\assetbundles\EmbedField\EmbedFieldAsset;
 use newism\fields\models\EmbedModel;
 use newism\fields\NsmFields;
-use RuntimeException;
-use Twig_Error_Loader;
-use yii\base\Exception;
-use yii\base\InvalidConfigException;
-use yii\base\InvalidParamException;
 use yii\db\Schema;
 use yii\helpers\Json;
 
-/**
- * Embed Field
- *
- * Whenever someone creates a new field in Craft, they must specify what
- * type of field it is. The system comes with a handful of field types baked in,
- * and we’ve made it extremely easy for plugins to add new ones.
- *
- * https://craftcms.com/docs/plugins/field-types
- *
- * @author    Leevi Graham
- * @package   NsmFields
- * @since     1.0.0
- */
 class Embed extends Field implements PreviewableFieldInterface
 {
-    // Static Methods
-    // =========================================================================
-
-    /**
-     * Returns the display name of this class.
-     *
-     * @return string The display name of this class.
-     */
     public static function displayName(): string
     {
-        return Craft::t('nsm-fields', 'NSM Embed');
+        return Craft::t('nsm-fields', 'Embed (Newism)');
     }
 
-    /**
-     * @return string
-     */
     public function getContentColumnType(): array|string
     {
         return Schema::TYPE_TEXT;
     }
 
-    /**
-     * Get settings HTML
-     *
-     * @return string
-     * @throws Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws RuntimeException
-     */
     public function getSettingsHtml(): ?string
     {
         return Craft::$app->getView()->renderTemplate(
@@ -81,44 +37,19 @@ class Embed extends Field implements PreviewableFieldInterface
         );
     }
 
-    /**
-     * @return array
-     */
-    public function rules(): array
+    public function normalizeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
-        $rules = parent::rules();
-        $rules = array_merge(
-            $rules,
-            []
-        );
-
-        return $rules;
-    }
-
-    /**
-     * @param mixed $value
-     * @param ElementInterface|null $element
-     * @return EmbedModel|null
-     */
-    public function normalizeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
-    {
-        /**
-         * Just return value if it's already an EmbedModel.
-         */
+        // Just return value if it's already an EmbedModel.
         if ($value instanceof EmbedModel) {
             return $value;
         }
 
-        /**
-         * Serialised value from the DB
-         */
+        // Serialised value from the DB
         if (is_string($value)) {
             $value = json_decode($value, true, 512, JSON_THROW_ON_ERROR);
         }
 
-        /**
-         * Array value from post or unserialized array
-         */
+        // Array value from post or unserialized array
         if (is_array($value) && $value['rawInput']) {
             if (!Craft::$app->getRequest()->getIsConsoleRequest() && Craft::$app->getRequest()->getIsPost()) {
                 $embedData = NsmFields::getInstance()->embed->parse($value['rawInput']);
@@ -131,12 +62,7 @@ class Embed extends Field implements PreviewableFieldInterface
         return null;
     }
 
-    /**
-     * @param mixed $value
-     * @param ElementInterface|null $element
-     * @return array|mixed|null|string
-     */
-    public function serializeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
+    public function serializeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
         if (empty($value)) {
             return null;
@@ -156,47 +82,17 @@ class Embed extends Field implements PreviewableFieldInterface
 
         return $data;
     }
-
-
-    /**
-     * @param mixed $value
-     * @param ElementInterface $element
-     * @return string
-     */
-    public function getSearchKeywords(mixed $value, ElementInterface $element): string
+    
+    public function getInputHtml(mixed $value, ?ElementInterface $element = null): string
     {
-        $data = (string) $value;
-        if (Craft::$app->getDb()->getIsMysql()) {
-            // Encode any 4-byte UTF-8 characters.
-            $data = StringHelper::encodeMb4($data);
-        }
-
-        return $data;
-    }
-
-
-    /**
-     * Returns the field’s input HTML.
-     *
-     * @param mixed $value
-     * @param ElementInterface|null $element
-     * @return string
-     * @throws InvalidParamException
-     * @throws Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws RuntimeException
-     * @throws InvalidConfigException
-     */
-    public function getInputHtml(
-        mixed $value,
-        ?\craft\base\ElementInterface $element = null
-    ): string {
 
         // Register our asset bundle
         Craft::$app->getView()->registerAssetBundle(EmbedFieldAsset::class);
 
         // Get our id and namespace
-        $id = Craft::$app->getView()->formatInputId($this->handle);
+// Get our id and namespace
+        $id = Html::id($this->handle);
+        $namespace = Craft::$app->getView()->getNamespace();
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
 
         $pluginSettings = NsmFields::getInstance()->getSettings();
@@ -216,7 +112,7 @@ class Embed extends Field implements PreviewableFieldInterface
         $jsonVars = Json::encode($jsonVars);
 
         Craft::$app->getView()->registerJs(
-            '$("#'.$namespacedId.'-field").NsmFieldsEmbed('.$jsonVars.');'
+            "$('#{$namespacedId}-field').NsmFieldsEmbed({$jsonVars});"
         );
 
         return Craft::$app->getView()->renderTemplate(
@@ -233,26 +129,8 @@ class Embed extends Field implements PreviewableFieldInterface
         );
     }
 
-    public function getElementValidationRules(): array
+    public function getTableAttributeHtml(mixed $value, ElementInterface $element): string
     {
-        $rules = parent::getElementValidationRules();
-
-        return $rules;
-    }
-
-    /**
-     * @param mixed $value
-     * @param ElementInterface $element
-     * @return string
-     * @throws \Twig\Error\LoaderError
-     * @throws Exception
-     * @throws InvalidConfigException
-     */
-    public function getTableAttributeHtml(
-        mixed $value,
-        ElementInterface $element
-    ): string {
-
         Craft::$app->getView()->registerAssetBundle(EmbedFieldAsset::class);
 
         if (!$value) {
@@ -265,23 +143,10 @@ class Embed extends Field implements PreviewableFieldInterface
         );
     }
 
-    /**
-     * Returns whether the given value should be considered “empty” to a validator.
-     *
-     * @param mixed $value The field’s value
-     * @param ElementInterface $element
-     *
-     * @return bool Whether the value should be considered “empty”
-     * @see Validator::$isEmpty
-     */
     public function isValueEmpty(mixed $value, ElementInterface $element = null): bool
     {
-        if ($value instanceof EmbedModel) {
-            return $value->isEmpty();
-        }
-
-        return parent::isValueEmpty($value, $element);
+        return ($value instanceof EmbedModel)
+            ? $value->isEmpty() :
+            parent::isValueEmpty($value, $element);
     }
-
-
 }

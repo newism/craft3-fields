@@ -1,6 +1,6 @@
 {#
 /**
- * NSM Fields plugin for Craft CMS 3.x
+ * NSM Fields plugin for Craft CMS
  *
  * Address Field Input
  *
@@ -40,8 +40,8 @@
             {% endif %}
         </div>
         {% if fieldSettings.showMap %}
-        <div class="nsmFields-address-map-instructions">{{ 'Drag the marker to adjust the latitude and longitude'|t('nsm-fields') }}</div>
-        <div class="nsmFields-address-map"></div>
+            <div class="nsmFields-address-map"></div>
+            <div class="nsmFields-address-map-instructions">{{ 'Drag the marker to adjust the latitude and longitude'|t('nsm-fields') }}</div>
         {% endif %}
         <div class="{% if fieldSettings.showLatLng != true %}hidden{% else %}flex{% endif %} nsmFields-fieldRow nsmFields-fieldRow-latitude-longitude">
             <div class="field-latitude">

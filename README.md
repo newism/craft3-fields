@@ -1,18 +1,12 @@
-# A collection of custom Fields CraftCMS 3.x
+# A collection of custom Fields CraftCMS
 
 ## Installation
 
 Open a command console, enter your project directory and execute the
-following command to download the latest stable version of this bundle:
+following command to download the latest stable version of this plugin:
 
 ```console
-$ composer require newism/craft3-fields
-```
-
-Then install it…
-
-```console
-./craft plugin/install nsm-fields
+$ composer require newism/craft-fields && ./craft plugin/install nsm-fields
 ```
 
 ## Configuration

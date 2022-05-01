@@ -1,22 +1,9 @@
-{#
-/**
- * NSM Fields plugin for Craft CMS 3.x
- *
- * Email Field Input
- *
- * @author    Leevi Graham
- * @copyright Copyright (c) 2017 Leevi Graham
- * @link      http://newism.com.au
- * @package   NsmFields
- * @since     1.0.0
- */
-#}
-
 {% import "_includes/forms" as forms %}
 
 {{ forms.text({
     id: name,
     name: name,
     value: value,
+    type: 'email',
     class: 'nicetext'
 }) }}

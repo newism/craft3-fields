@@ -152,6 +152,7 @@
                     'countryCode': this.currentCountryCode,
                     'namespace': this.options.namespace,
                     'handle': this.options.id,
+                    'context': this.options.context,
                 },
                 $.proxy(function (response, textStatus) {
                     this.$spinner.addClass('hidden');

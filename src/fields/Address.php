@@ -1,12 +1,4 @@
 <?php
-/**
- * NSM Fields plugin for Craft CMS 3.x
- *
- * Various fields for CraftCMS
- *
- * @link      http://newism.com.au
- * @copyright Copyright (c) 2017 Leevi Graham
- */
 
 namespace newism\fields\fields;
 
@@ -23,78 +15,46 @@ use Craft;
 use craft\base\ElementInterface;
 use craft\base\Field;
 use craft\base\PreviewableFieldInterface;
+use craft\helpers\App;
+use craft\helpers\Html;
 use craft\helpers\Json;
 use craft\helpers\StringHelper;
 use craft\web\View;
-use JsonException;
 use newism\fields\assetbundles\AddressField\AddressFieldAsset;
 use newism\fields\models\AddressModel;
 use newism\fields\NsmFields;
 use newism\fields\validators\JsonValidator;
-use RuntimeException;
-use Twig_Error_Loader;
-use yii\base\Exception;
-use yii\base\InvalidConfigException;
-use yii\base\InvalidParamException;
 use yii\db\Schema;
 
 /**
- * Address Field
- *
- * @author    Leevi Graham
- * @package   NsmFields
- * @since     1.0.0
+ * @property-read string[][] $countryOptions
+ * @property-read string|array $contentColumnType
+ * @property-read null|string $settingsHtml
  */
 class Address extends Field implements PreviewableFieldInterface
 {
-    public $defaultCountryCode = false;
-    public $showAutoComplete = false;
-    public $showMap = false;
-    public $autoCompleteConfiguration = '';
-    public $showOrganization = false;
-    public $showRecipient = true;
-    public $showLatLng = true;
-    public $showMapUrl = true;
-    public $showPlaceData = false;
+    public ?string $defaultCountryCode = null;
+    public bool $showAutoComplete = false;
+    public bool $showMap = false;
+    public string $autoCompleteConfiguration = '';
+    public bool $showOrganization = false;
+    public bool $showRecipient = true;
+    public bool $showLatLng = true;
+    public bool $showMapUrl = true;
+    public bool $showPlaceData = false;
 
-    // Static Methods
-    // =========================================================================
-
-    /**
-     * Returns the display name of this class.
-     *
-     * @return string The display name of this class.
-     */
     public static function displayName(): string
     {
-        return Craft::t('nsm-fields', 'NSM Address');
+        return Craft::t('nsm-fields', 'Address (Newism)');
     }
 
-    /**
-     * Returns the column type that this field should get within the content table.
-     *
-     * This method will only be called if [[hasContentColumn()]] returns true.
-     *
-     * @return string The column type. [[\yii\db\QueryBuilder::getColumnType()]] will be called
-     * to convert the give column type to the physical one. For example, `string` will be converted
-     * as `varchar(255)` and `string(100)` becomes `varchar(100)`. `not null` will automatically be
-     * appended as well.
-     * @see \yii\db\QueryBuilder::getColumnType()
-     */
     public function getContentColumnType(): array|string
     {
         return Schema::TYPE_TEXT;
     }
 
-    /**
-     * @return string
-     * @throws Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws RuntimeException
-     */
     public function getSettingsHtml(): ?string
     {
-        // Render the settings template
         return Craft::$app->getView()->renderTemplate(
             'nsm-fields/_components/fieldtypes/Address/settings',
             [
@@ -103,21 +63,10 @@ class Address extends Field implements PreviewableFieldInterface
         );
     }
 
-    /**
-     * Returns the validation rules for attributes.
-     *
-     * Validation rules are used by [[validate()]] to check if attribute values are valid.
-     * Child classes may override this method to declare different validation rules.
-     *
-     * More info: http://www.yiiframework.com/doc-2.0/guide-input-validation.html
-     *
-     * @return array
-     */
     public function rules(): array
     {
-        $rules = parent::rules();
-        $rules = array_merge(
-            $rules,
+        return array_merge(
+            parent::rules(),
             [
                 [['defaultCountryCode'], 'string'],
                 [['showAutoComplete'], 'boolean'],
@@ -130,64 +79,41 @@ class Address extends Field implements PreviewableFieldInterface
                 [['showMapUrl'], 'boolean'],
             ]
         );
-
-        return $rules;
     }
 
-    /**
-     * @param mixed $value
-     * @param ElementInterface $element
-     * @return string
-     */
-    public function getTableAttributeHtml(
-        mixed $value,
-        ElementInterface $element
-    ): string {
-
+    public function getTableAttributeHtml(mixed $value, ElementInterface $element): string
+    {
         if (!$value) {
             return '';
         }
 
-        return '<pre>'.(string) $value.'</pre>';
+        return "<pre>$value</pre>";
     }
-
-    /**
-     * @param null|AddressModel $value The field’s value. This will either be the [[normalizeValue() normalized value]],
-     *                                               raw POST data (i.e. if there was a validation error), or null
-     * @param ElementInterface|null $element The element the field is associated with, if there is one
-     *
-     * @return string The input HTML.
-     * @throws InvalidParamException
-     * @throws InvalidConfigException
-     * @throws Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws RuntimeException
-     */
-    public function getInputHtml(
-        mixed $value,
-        ?\craft\base\ElementInterface $element = null
-    ): string {
-        // Register our asset bundle
+    
+    public function getInputHtml(mixed $value, ?ElementInterface $element = null): string
+    {
         Craft::$app->getView()->registerAssetBundle(AddressFieldAsset::class);
 
         $this->renderFieldJs();
 
         // Get our id and namespace
-        $id = Craft::$app->getView()->formatInputId($this->handle);
+        $id = Html::id($this->handle);
+        $namespace = Craft::$app->getView()->getNamespace();
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
 
         $pluginSettings = NsmFields::getInstance()->getSettings();
         $fieldSettings = $this->getSettings();
         $fieldSettings['autoCompleteConfiguration'] =
             $fieldSettings['autoCompleteConfiguration']
-                ? Json::decode($fieldSettings['autoCompleteConfiguration'], true)
+                ? json_decode($fieldSettings['autoCompleteConfiguration'], true, 512, )
                 : [];
 
         // Variables to pass down to our field JavaScript to let it namespace properly
         $jsonVars = [
             'id' => $id,
+            'context' => $this->context,
             'name' => $this->handle,
-            'namespace' => Craft::$app->getView()->getNamespace(),
+            'namespace' => $namespace,
             'namespacedId' => $namespacedId,
             'prefix' => Craft::$app->getView()->namespaceInputId(''),
             'fieldSettings' => $fieldSettings,
@@ -197,30 +123,21 @@ class Address extends Field implements PreviewableFieldInterface
         $jsonVars = Json::encode($jsonVars);
 
         Craft::$app->getView()->registerJs(
-            '$("#'.$namespacedId.'-field").NsmFieldsAddress('.$jsonVars.');'
+            "$('#{$namespacedId}-field').NsmFieldsAddress({$jsonVars});"
         );
 
         return $this->renderFormFields($value);
     }
 
-    /**
-     * @param AddressModel $value
-     * @return string
-     * @throws Exception
-     * @throws \Twig\Error\LoaderError
-     * @throws RuntimeException
-     */
-    public function renderFormFields(AddressModel $value = null)
+    public function renderFormFields(AddressModel $value = null): string
     {
         // Get our id and namespace
-        $id = Craft::$app->getView()->formatInputId($this->handle);
+        $id = Html::id($this->handle);
+        $namespace =  Craft::$app->getView()->getNamespace();
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
 
         $fieldSettings = $this->getSettings();
         $pluginSettings = NsmFields::getInstance()->getSettings();
-
-        $fieldLabels = null;
-        $addressFields = null;
 
         $countryCode = $value ? $value->getCountryCode() : $this->defaultCountryCode;
         $countryCodeField = Craft::$app->getView()->renderTemplate(
@@ -230,7 +147,7 @@ class Address extends Field implements PreviewableFieldInterface
                 'value' => $countryCode,
                 'field' => $this,
                 'id' => $id,
-                'namespace' => Craft::$app->getView()->getNamespace(),
+                'namespace' => $namespace,
                 'namespacedId' => $namespacedId,
                 'settings' => $fieldSettings,
                 'countryOptions' => $this->getCountryOptions(),
@@ -247,7 +164,7 @@ class Address extends Field implements PreviewableFieldInterface
                 'value' => $value,
                 'field' => $this,
                 'id' => $id,
-                'namespace' => Craft::$app->getView()->getNamespace(),
+                'namespace' => $namespace,
                 'namespacedId' => $namespacedId,
                 'fieldSettings' => $fieldSettings,
                 'pluginSettings' => $pluginSettings,
@@ -263,7 +180,7 @@ class Address extends Field implements PreviewableFieldInterface
         $pluginSettings = NsmFields::getInstance()->getSettings();
 
         // Note: refer to src/assetbundles/addressfield/dist/js/Address.js for the callback name
-        $googleApiKey = \Craft::parseEnv($pluginSettings->googleApiKey);
+        $googleApiKey = App::parseEnv($pluginSettings->googleApiKey);
         $mapUrl = sprintf(
             'https://maps.googleapis.com/maps/api/js?key=%s&libraries=places&callback=googleMapsPlacesApiLoadedCallback',
             $googleApiKey
@@ -279,14 +196,17 @@ class Address extends Field implements PreviewableFieldInterface
         );
     }
 
-    private function renderAddressFields($value)
+    private function renderAddressFields($value): string
     {
-        $id = Craft::$app->getView()->formatInputId($this->handle);
+        // Get our id and namespace
+        $id = Html::id($this->handle);
+        $namespace =  Craft::$app->getView()->getNamespace();
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
+        
         $countryCode = $value ? $value->getCountryCode() : $this->defaultCountryCode;
 
         if (empty($countryCode)) {
-            return;
+            return '';
         }
 
         $fieldSettings = $this->getSettings();
@@ -324,7 +244,7 @@ class Address extends Field implements PreviewableFieldInterface
             preg_match_all('/%([a-zA-Z0-9]+)/i', $formatRow, $matches);
             $className = implode('-', $matches[1]);
 
-            $addressFields .= '<div class="flex nsmFields-fieldRow nsmFields-fieldRow-'.$className.'">';
+            $addressFields .= '<div class="flex nsmFields-fieldRow nsmFields-fieldRow-' . $className . '">';
             foreach ($matches[1] as $match) {
 
                 $subdivisionOptions = ($match === 'administrativeArea')
@@ -332,15 +252,15 @@ class Address extends Field implements PreviewableFieldInterface
                     : [];
 
                 $formatRow = str_replace(
-                    '%'.$match,
+                    '%' . $match,
                     Craft::$app->getView()->renderTemplate(
-                        'nsm-fields/_components/fieldtypes/Address/input/'.$match,
+                        'nsm-fields/_components/fieldtypes/Address/input/' . $match,
                         [
                             'name' => $this->handle,
                             'value' => $value,
                             'field' => $this,
                             'id' => $id,
-                            'namespace' => Craft::$app->getView()->getNamespace(),
+                            'namespace' => $namespace,
                             'namespacedId' => $namespacedId,
                             'settings' => $fieldSettings,
                             'addressFormat' => $addressFormat,
@@ -431,12 +351,7 @@ class Address extends Field implements PreviewableFieldInterface
 
         return $labels;
     }
-
-    /**
-     * Get country options
-     *
-     * @return array
-     */
+    
     public function getCountryOptions(): array
     {
         $countryRepository = new CountryRepository();
@@ -451,19 +366,9 @@ class Address extends Field implements PreviewableFieldInterface
 
         return $options;
     }
-
-    /**
-     * Get subdivision options
-     *
-     * @param $countryCode
-     * @param null $parentId
-     * @return array
-     */
-    private function getSubdivisionOptions(
-        $countryCode,
-        $parentId = null
-    ): array {
-
+    
+    private function getSubdivisionOptions($countryCode, $parentId = null): array
+    {
         if (!$countryCode) {
             return [];
         }
@@ -486,13 +391,8 @@ class Address extends Field implements PreviewableFieldInterface
 
         return $options;
     }
-
-    /**
-     * @param mixed $value
-     * @param ElementInterface|null $element
-     * @return mixed|AddressModel
-     */
-    public function normalizeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
+    
+    public function normalizeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
         /**
          * Just return value if it's already an AddressModel.
@@ -512,19 +412,14 @@ class Address extends Field implements PreviewableFieldInterface
          * Array value from post or unserialized array
          */
         if (is_array($value) && !empty(array_filter($value))) {
+            unset($value['country']);
             return new AddressModel($value);
         }
 
         return null;
     }
-
-    /**
-     * @param mixed $value
-     * @param ElementInterface|null $element
-     * @return array|mixed|null|string
-     * @throws JsonException
-     */
-    public function serializeValue(mixed $value, ?\craft\base\ElementInterface $element = null): mixed
+    
+    public function serializeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
         if (empty($value)) {
             return null;
@@ -540,8 +435,4 @@ class Address extends Field implements PreviewableFieldInterface
         return $data;
     }
 
-    public function getSearchKeywords(mixed $value, ElementInterface $element): string
-    {
-        return (string) $value; // TODO: Change the autogenerated stub
-    }
 }

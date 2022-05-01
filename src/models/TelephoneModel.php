@@ -11,21 +11,11 @@ use libphonenumber\PhoneNumberUtil;
 
 class TelephoneModel extends Model implements JsonSerializable
 {
-    /** @var string */
-    public $countryCode;
-
-    /** @var string */
-    public $rawInput;
-
-    /** @var PhoneNumber */
-    public $phoneNumber;
-
-    /** @var PhoneNumberUtil */
-    private $phoneNumberUtil;
-
-    /**
-     * @return array
-     */
+    public string $countryCode;
+    public string $rawInput;
+    public ?PhoneNumber $phoneNumber;
+    private PhoneNumberUtil $phoneNumberUtil;
+    
     public function attributeLabels(): array
     {
         return [
@@ -34,12 +24,7 @@ class TelephoneModel extends Model implements JsonSerializable
             'phoneNumber' => 'Phone Number',
         ];
     }
-
-    /**
-     * TelephoneModel constructor.
-     * @param string $countryCode
-     * @param string $rawInput
-     */
+    
     public function __construct($countryCode, $rawInput)
     {
         $this->phoneNumberUtil = PhoneNumberUtil::getInstance();
@@ -58,26 +43,16 @@ class TelephoneModel extends Model implements JsonSerializable
 //            $phoneNumber->setRawInput($rawInput);
         }
     }
-
-    /**
-     * @return string
-     */
+    
     public function __toString()
     {
-        if (empty($this->phoneNumber)) {
-            return "";
-        }
-
-        return $this->phoneNumberUtil->format($this->phoneNumber, PhoneNumberFormat::INTERNATIONAL);
+        return $this->phoneNumber
+            ? $this->phoneNumberUtil->format($this->phoneNumber, PhoneNumberFormat::INTERNATIONAL)
+            : '';
     }
 
-    /**
-     * @param $format
-     * @return string
-     */
     public function format($format): string
     {
-
         $formats = [
             'E164' => PhoneNumberFormat::E164,
             'international' => PhoneNumberFormat::INTERNATIONAL,
@@ -89,12 +64,7 @@ class TelephoneModel extends Model implements JsonSerializable
 
         return !empty($this->phoneNumber) ? $this->phoneNumberUtil->format($this->phoneNumber, $format) : '';
     }
-
-    /**
-     * json serialize countryCode and phoneNumber for DB storage
-     *
-     * @return array
-     */
+    
     public function jsonSerialize(): array
     {
         return [
@@ -103,12 +73,7 @@ class TelephoneModel extends Model implements JsonSerializable
             'phoneNumber' => $this->format(PhoneNumberFormat::E164),
         ];
     }
-
-    /**
-     * Return view data
-     *
-     * @return array
-     */
+    
     public function getViewData(): array
     {
         return [
@@ -119,18 +84,18 @@ class TelephoneModel extends Model implements JsonSerializable
                 : null,
         ];
     }
-
-    /**
-     * Is valid?
-     *
-     * @return bool
-     */
-    public function isValid()
+    
+    public function isValid(): bool
     {
-        return (boolean) ($this->phoneNumber && $this->phoneNumberUtil->isValidNumberForRegion(
+        return ($this->phoneNumber && $this->phoneNumberUtil->isValidNumberForRegion(
                 $this->phoneNumber,
                 $this->countryCode
             )
         );
+    }
+    
+    public function isEmpty(): bool
+    {
+        return empty(trim($this->phoneNumber));
     }
 }
