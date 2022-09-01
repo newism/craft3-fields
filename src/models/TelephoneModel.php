@@ -13,7 +13,7 @@ class TelephoneModel extends Model implements JsonSerializable
 {
     public string $countryCode;
     public string $rawInput;
-    public ?PhoneNumber $phoneNumber;
+    public ?PhoneNumber $phoneNumber = null;
     private PhoneNumberUtil $phoneNumberUtil;
     
     public function attributeLabels(): array
