@@ -29,7 +29,7 @@
         "giggsey/libphonenumber-for-php": "^8.3",
         "commerceguys/addressing": "^1.0",
         "nyholm/psr7": "^1.2",
-        "embed/embed": "^4.0"
+        "embed/embed": "^3.0|^4.0"
     },
     "autoload": {
         "psr-4": {
