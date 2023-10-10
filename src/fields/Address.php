@@ -89,7 +89,7 @@ class Address extends Field implements PreviewableFieldInterface
 
         return "<pre>$value</pre>";
     }
-    
+
     public function getInputHtml(mixed $value, ?ElementInterface $element = null): string
     {
         Craft::$app->getView()->registerAssetBundle(AddressFieldAsset::class);
@@ -192,7 +192,8 @@ class Address extends Field implements PreviewableFieldInterface
                 'defer' => '',
                 'position' => View::POS_END,
                 'depends' => [AddressFieldAsset::class],
-            ]
+            ],
+			'googleMapsPlaces'
         );
     }
 
@@ -202,7 +203,7 @@ class Address extends Field implements PreviewableFieldInterface
         $id = Html::id($this->handle);
         $namespace =  Craft::$app->getView()->getNamespace();
         $namespacedId = Craft::$app->getView()->namespaceInputId($id);
-        
+
         $countryCode = $value ? $value->getCountryCode() : $this->defaultCountryCode;
 
         if (empty($countryCode)) {
@@ -351,7 +352,7 @@ class Address extends Field implements PreviewableFieldInterface
 
         return $labels;
     }
-    
+
     public function getCountryOptions(): array
     {
         $countryRepository = new CountryRepository();
@@ -366,7 +367,7 @@ class Address extends Field implements PreviewableFieldInterface
 
         return $options;
     }
-    
+
     private function getSubdivisionOptions($countryCode, $parentId = null): array
     {
         if (!$countryCode) {
@@ -391,7 +392,7 @@ class Address extends Field implements PreviewableFieldInterface
 
         return $options;
     }
-    
+
     public function normalizeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
         /**
@@ -418,7 +419,7 @@ class Address extends Field implements PreviewableFieldInterface
 
         return null;
     }
-    
+
     public function serializeValue(mixed $value, ?ElementInterface $element = null): mixed
     {
         if (empty($value)) {
